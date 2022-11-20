@@ -27,26 +27,27 @@
 
     <div class="add-box">
         <div class="close-btn">
-            <img src="images/close-white.png" alt="">
+            <img src="images/close-white.png" alt="close button" class="close-btn">
         </div>
         <form action="">
             <div class="input-container">
-                <label for="book-title">Title</label>
-                <input type="text" id="book-title">
+                <label for="book-title" aria-label="required">Title *</label>
+                <input type="text" id="book-title" required autocomplete="off">
             </div>
 
             <div class="input-container">
-                <label for="book-author">Author</label>
-                <input type="text" id="book-author">
+                <label for="book-author"aria-label="required">Author *</label>
+                <input type="text" id="book-author" required autocomplete="off">
             </div>
 
             <div class="input-container">
                 <label for="book-image">Book Image URL</label>
-                <input type="text" id="book-image">
+                <input type="text" id="book-image" autocomplete="off")
+                ">
             </div>
             <div class="input-container">
-                <label for="book-pages">Pages Total</label>
-                <input type="text" id="book-pages">
+                <label for="book-pages" aria-label="required">Pages Total *</label>
+                <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off">
             </div>
             <div class="input-container">
                 <label for="book-read"><h4>Book Completed?</h4></label>
@@ -56,10 +57,10 @@
                 </label>
             </div>
             <div class="input-container pages-read">
-                <label for="book-pages">Pages Read</label>
-                <input type="text" id="book-pages">
+                <label for="book-pages" aria-label="required">Pages Read *</label>
+                <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off">
             </div>
-            <button type="button">ADD BOOK</button>
+            <button id="add-book" type="button">ADD BOOK</button>
         </form>
     </div>
 

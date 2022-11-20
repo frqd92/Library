@@ -2,6 +2,9 @@
     --nav-bg: rgb(7, 18, 55);
     --body-bg: rgb(41, 17, 226);
     --font-color-white: white;
+    --add-bg: rgb(0, 0, 0, 0.5);
+    --add-btn-bg:  rgb(6, 6, 14,);
+    --form-btn: rgb(50, 50, 129);
 }
 *{
     box-sizing: border-box;
@@ -30,25 +33,177 @@ nav h1 {
     border-bottom:1px solid rgb(255, 255, 255);
    
 }
-.add-box-container{
-    width: 100%;
-    padding: 2px;
-    background-color: rgb(6, 6, 14);
-    text-align: center;
-    color: var( --font-color-white);
-    font-family: 'Rajdhani', sans-serif;
-    cursor: pointer;
-    position: relative;
-}
-
-.add-box{
-
-}
 nav h2{
     cursor: pointer;
 }
+
 .nav-options{
     justify-self: end;
     display: flex;
     gap: 3rem;
+}
+
+.bg-div{ /* low opacity background behind add box container */
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0);
+    opacity: 0.4;
+    display: none;
+    z-index: 1;
+}
+
+.add-box-container{/* add a box button nav */
+    width: 100%;
+    padding: 2px;
+    background: var(--add-bg);
+    text-align: center;
+    color: var( --font-color-white);
+    font-family: 'Rajdhani', sans-serif;
+    cursor: pointer;
+  
+}
+
+
+
+/* add book box */
+.add-box{ 
+    position: fixed;
+    width: 500px;
+    height:500px;
+    top: 50%;
+    left: 50%;
+    margin-top: -250px; /* Negative half of height. */
+    margin-left: -250px; /* Negative half of width. */
+    background: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    z-index: 2;
+    background: var(--add-bg);
+    color: rgb(203, 192, 192);
+    font-family: 'Rajdhani', sans-serif;
+    padding: 60px 40px;
+    visibility: hidden;
+}
+
+.input-container{
+    margin-bottom: 1.8rem;
+    font-size: 1.2rem;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    padding-bottom: 5px;
+}
+
+.input-container input[type=text]{
+    outline: none;
+    background: none;
+    all:unset;
+    border-bottom: 1px solid rgb(238, 236, 236, 0.4);
+    padding: 2px;
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--font-color-white);
+
+    font-size: 1.2rem;
+}
+.close-btn{
+    text-align: end;
+
+}
+.close-btn img {
+    width: 2rem;
+    position: absolute;
+    top: 5px;
+}
+
+/* form */
+form{
+    display: grid;
+}
+form button{
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+    background: var(--form-btn);
+    border: none;
+    color:var(--font-color-white);
+    font-family: 'Mulish', sans-serif;
+    outline: none;
+    
+}
+
+.pages-read {
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* switch button */
+
+.toggle{
+
+    --width: 50px;
+    --height: calc(var(--width) / 2);
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+.toggle h4 {
+    font-size: 1.2rem;
+}
+.toggle-fill{
+    position: relative;
+    width:var(--width);
+    height: var(--height);
+    box-shadow: 0 0 12px rgb(168, 154, 154, 0.5);
+
+    background: rgb(88, 179, 88);
+    transition: background 0.2s;
+    border-radius: 2px;
+ 
+}
+.toggle-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--height);
+    width:var(--height);
+    background: rgb(0, 0, 0, 0.6);
+    border-radius: 2px;
+    transition: transform 0.2s;
+}
+.toggle-input:checked ~ .toggle-fill {
+    background: rgb(182, 100, 100);
+}
+.toggle-input:checked ~ .toggle-fill::after {
+    transform: translateX(var(--height));
+}
+.toggle-input{
+    display: none;
+
 }

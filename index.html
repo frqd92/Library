@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@500&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="bg-div"></div>
 <nav>
     <h1>Library</h1>
-
     <div class="nav-options">
         <h3>Stats</h3>
         <h3>Select</h3>
@@ -22,12 +22,47 @@
 </nav>
 <div class="add-box-container">
     <h2>ADD BOOK+</h2>
-    <div class="add-box"></div>
 </div>
 <main>
-    <div class="book-container">
-        
+
+    <div class="add-box">
+        <div class="close-btn">
+            <img src="images/close-white.png" alt="">
+        </div>
+        <form action="">
+            <div class="input-container">
+                <label for="book-title">Title</label>
+                <input type="text" id="book-title">
+            </div>
+
+            <div class="input-container">
+                <label for="book-author">Author</label>
+                <input type="text" id="book-author">
+            </div>
+
+            <div class="input-container">
+                <label for="book-image">Book Image URL</label>
+                <input type="text" id="book-image">
+            </div>
+            <div class="input-container">
+                <label for="book-pages">Pages Total</label>
+                <input type="text" id="book-pages">
+            </div>
+            <div class="input-container">
+                <label for="book-read"><h4>Book Completed?</h4></label>
+                <label for="book-read" class="toggle">
+                <input type="checkbox" class="toggle-input" id="book-read">
+                <div class="toggle-fill"></div>
+                </label>
+            </div>
+            <div class="input-container pages-read">
+                <label for="book-pages">Pages Read</label>
+                <input type="text" id="book-pages">
+            </div>
+            <button type="button">ADD BOOK</button>
+        </form>
     </div>
+
 </main>
 
 

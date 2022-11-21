@@ -7,13 +7,14 @@ let textInputs = document.querySelectorAll("input[type=text]");
 let addBookBtn = document.getElementById("add-book");
 addBookBtn.addEventListener("click", checkForm);
 let currentEditIndex=0;
+
 // javascript form validation 
 
 function checkForm(e){
     let validityCheck = false;
     let invalidIndex;
     from=e.target.id;
-    console.log(from)
+
 
     for(let index=0;index<textInputs.length;index++){
         if(textInputs[index].checkValidity()){
@@ -35,22 +36,20 @@ function checkForm(e){
 
     }
     else if (validityCheck === true && from ==="edit-book"){
-        editBookFromLibrary();
+        let crntArrow = arrBtns;
+        editBookFromLibrary(crntArrow);
     }
 }
 
-function editBook(editBtn){
+function editBook(editBtn, currentArrows){
     editBtn.addEventListener("click", (e)=>{
        bgDiv.style.display="block";
        addBox.style.display="block";
        addBookBtn.style.display="none";
        editBookBtn.style.display="block";
-   
        let editBtns = document.querySelectorAll(".edit-book");
        for(let index=0;index<editBtns.length; index++){ 
            editBtns[index].id=index;
-          
-       // myLibrary.splice(currentIndex,1);
        }
        let currentIndex = e.target.id;
        textInputs[0].value = myLibrary[currentIndex].title;
@@ -59,11 +58,10 @@ function editBook(editBtn){
        toggle.checked = myLibrary[currentIndex].read;
        textInputs[3].value = myLibrary[currentIndex].pagesTotal;
        textInputs[4].value = myLibrary[currentIndex].pagesRead;
-   
        toggle.checked?pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
        currentEditIndex = currentIndex;
-       editBookBtn.addEventListener("click",checkForm);
-
+       arrBtns = currentArrows;
+       editBookBtn.addEventListener("click", checkForm);
     })
    }
    
@@ -73,47 +71,138 @@ function editBook(editBtn){
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.push(bookObj);
-    console.log("hello")
     createBook();
 }
 
-function editBookFromLibrary(){
+function editBookFromLibrary(currentArrows){
+
     myLibrary[currentEditIndex].title = textInputs[0].value;
     myLibrary[currentEditIndex].author = textInputs[1].value;
     myLibrary[currentEditIndex].url = textInputs[2].value;
     myLibrary[currentEditIndex].checked = toggle.checked;
     myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
     myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
-    editBook()
+    //edit title and author
+    let bookTitles = document.querySelectorAll(".book-title");
+    let bookAuthors = document.querySelectorAll(".book-author");
+    let bookCovers = document.querySelectorAll(".book-image");
+
+    //edit image url
+    bookTitles[currentEditIndex].textContent = textInputs[0].value;
+    bookAuthors[currentEditIndex].textContent = textInputs[1].value;
+    if(textInputs[2].value){ 
+        bookCovers[currentEditIndex].setAttribute("src",`${textInputs[2].value}`)
+    }else{ 
+        bookCovers[currentEditIndex].setAttribute("src","images/book-cover.png") 
+    }
+
+    //edit progress text
+    let currentPageTexts = document.querySelectorAll(".current-page-text");
+    toggle.checked?currentPageTexts[currentEditIndex].textContent="Current Page":currentPageTexts[currentEditIndex].textContent="Book Completed!";
+
+    let currentPages = document.querySelectorAll(".current-page");
+    currentPages[currentEditIndex].textContent = textInputs[4].value;
+
+    let totalPages = document.querySelectorAll(".total-pages")
+    totalPages[currentEditIndex].textContent = textInputs[3].value;
+
+    //edit progress bars & arrows
+    //arrowup arrowdown currentpage, totalpage, barprogress,currentText
+    let arrowsUp = document.querySelectorAll(".up");
+    let arrowsDown = document.querySelectorAll(".down");
+    let arrowContainers = document.querySelectorAll(".arrow-container");
+ 
+
+    let barProgress = document.querySelectorAll(".bar-progress")
+
+
+    let percentageEdit = (textInputs[4].value / textInputs[3].value) * 100;
+    barProgress[currentEditIndex].style.cssText = `width: ${percentageEdit}%;`;
+    if(percentageEdit ===100) barProgress[currentEditIndex].style.background = 'rgb(27, 158, 34)';
+    
+    arrowFunc(arrowsUp[currentEditIndex], arrowsDown[currentEditIndex], currentPages[currentEditIndex], totalPages[currentEditIndex], barProgress[currentEditIndex],currentPageTexts[currentEditIndex], true);
+
+
 }
+
+function arrowFunc(up, down,page, total, barProgress, text){
+    let currentPage = parseInt(page.textContent);
+    total = parseInt(page.textContent);
+
+
+    up.addEventListener("mousedown", incrementFunc, true);
+    function incrementFunc(){
+        if(currentPage<total){
+            currentPage += 1;
+            page.textContent = currentPage;
+        }
+        updateProgressBar(currentPage,total, barProgress, text);
+
+    }   
+    down.addEventListener("mousedown", decrementFunc);
+    function decrementFunc(){
+        if(currentPage>0){
+            currentPage -= 1;
+            page.textContent = currentPage;
+        }
+        updateProgressBar(currentPage,total, barProgress, text);
+    }
+    
+
+    
+//WHERE YOU LEFT OFF.. ARROW THING NOT WORKING, FORK AND REWRITE IT ALL
+
+
+ function updateProgressBar(currentPage, total, barProgress, text){
+    let percentageComplete = (currentPage/total)*100;
+    barProgress.style.cssText = `width: ${percentageComplete}%;`;
+    percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
+    percentageComplete<100 ? text.textContent = "Current Page" : text.textContent="Book Completed!";
+ }
+ 
+}
+
+
 
 
 function createBook(){
     //creates empty book
-    let book = document.createElement("div");
+    let book = document.createElement("div"); //*****
     let bookContainer = document.querySelector(".book-container");
+    let trashBtn = document.createElement("img");
+    let editBtn = document.createElement("img");
+    let holdDelText = document.createElement("p");
+    let bookCover = document.createElement("img"); //*****
+    let titleAuthorContainer = document.createElement("div");
+    let bookTitle = document.createElement("p"); 
+    let bookAuthor = document.createElement("p");
+    let pageProgress = document.createElement("div");
+    let currentText = document.createElement("p");
+    let currentPage = document.createElement("span");
+    let arrowContainer= document.createElement("div");
+    let arrowUp = document.createElement("img");
+    let arrowDown = document.createElement("img");
+    let divider = document.createElement("p");
+    let totalPages = document.createElement("span");
+    let progressBarContainer = document.createElement("div");
+    let bar = document.createElement("div");
+    let barProgress = document.createElement("div");
+
     book.classList.add("book");
     bookContainer.appendChild(book);
-
     //trash and edit buttons
-    let trashBtn = document.createElement("img");
     trashBtn.setAttribute("src", "images/delete-white.png");
     trashBtn.setAttribute("class", "delete-book");
-    let editBtn = document.createElement("img");
     editBtn.setAttribute("src", "images/application-edit-white.png");
     editBtn.setAttribute("class", "edit-book");
     book.appendChild(trashBtn);
     book.appendChild(editBtn);
-
-    let holdDelText = document.createElement("p");
     holdDelText.classList.add("hold-delete-text");
     holdDelText.textContent = `Hold for 3 seconds to delete`;
-
     book.appendChild(holdDelText);
-   
+    
 
     //book cover
-    let bookCover = document.createElement("img");
     bookCover.setAttribute("alt",`cover of ${textInputs[0].value}`)
     if(textInputs[2].value){ //if user inserts an image
         bookCover.setAttribute("src",`${textInputs[2].value}`)
@@ -124,11 +213,8 @@ function createBook(){
     book.appendChild(bookCover);
 
     //title and author
-    let titleAuthorContainer = document.createElement("div");
     titleAuthorContainer.classList.add("title-author");
-    let bookTitle = document.createElement("p");
     bookTitle.classList.add("book-title");
-    let bookAuthor = document.createElement("p");
     bookAuthor.classList.add("book-author");
     bookTitle.textContent = textInputs[0].value;
     bookAuthor.textContent = textInputs[1].value;
@@ -137,14 +223,10 @@ function createBook(){
     book.appendChild(titleAuthorContainer);
 
     //progress text
-    let pageProgress = document.createElement("div");
     pageProgress.classList.add("page-progress");
     book.appendChild(pageProgress);
-    let currentText = document.createElement("p");
     currentText.classList.add("current-page-text");
-    let currentPage = document.createElement("span");
     currentPage.classList.add("current-page");
-    let arrowContainer= document.createElement("div");
     arrowContainer.classList.add("arrow-container");
     pageProgress.appendChild(currentText);
     pageProgress.appendChild(arrowContainer);
@@ -153,8 +235,7 @@ function createBook(){
 
     toggle.checked?currentText.textContent="Current Page":currentText.textContent="Book Completed!"; //change to "book completed" if book done
     
-    let arrowUp = document.createElement("img");
-    let arrowDown = document.createElement("img");
+    //arrows 
     arrowUp.setAttribute("src", "images/arrow-up-white.png");
     arrowDown.setAttribute("src", "images/arrow-down-white.png");
     arrowUp.classList.add("arrow");
@@ -164,41 +245,37 @@ function createBook(){
     arrowContainer.appendChild(arrowUp);
     arrowContainer.appendChild(arrowDown);
     
-    let divider = document.createElement("p");
+    //divider and text progress
     divider.classList.add("divider");
     divider.textContent="|";
     pageProgress.appendChild(divider);
     
-    let totalPages = document.createElement("span");
+
     totalPages.classList.add("total-pages");
     totalPages.textContent=textInputs[3].value;
     pageProgress.appendChild(totalPages);
 
     //progress bar
-    let progressBarContainer = document.createElement("div");
+
     book.appendChild(progressBarContainer);
     progressBarContainer.classList.add("progress-bar-container");
 
-
-    let bar = document.createElement("div");
     bar.classList.add("bar");
     progressBarContainer.appendChild(bar);
-   
-    let barProgress = document.createElement("div");
     barProgress.classList.add("bar-progress");
     bar.appendChild(barProgress);
     percentageComplete = (textInputs[4].value / textInputs[3].value)*100;
-   
     barProgress.style.cssText = `width: ${percentageComplete}%;`;
 
     if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
     
-    arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText);
+    arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText); //increment and decrement pages
+
+ 
     deleteBook(trashBtn, holdDelText);
     editBook(editBtn)
 
     clearInputs();
-
 
 }
 
@@ -216,7 +293,6 @@ addBoxBtn.addEventListener("click", ()=>{
     addBookBtn.style.display="block";
     editBookBtn.style.display="none";
 })
-
 function deleteBook(trashBtn, text){
     //hold for 3 seconds to delete
     let timer = 0;
@@ -264,32 +340,6 @@ function deleteBook(trashBtn, text){
 }
 
 
-function arrowFunc(up, down,page, total, barProgress, text){
-    let currentPage = parseInt(page.textContent);
-    up.addEventListener("mousedown", ()=>{
-        if(currentPage<total){
-            currentPage += 1;
-            page.textContent = currentPage;
-        }
-        updateProgressBar(currentPage,total, barProgress, text);
-    })
-    down.addEventListener("mousedown", ()=>{
-        if(currentPage>0){
-            currentPage -= 1;
-            page.textContent = currentPage;
-        }
-        updateProgressBar(currentPage,total, barProgress, text);
-    })
-
-
- function updateProgressBar(currentPage, total, barProgress, text){
-    let percentageComplete = (currentPage/total)*100;
-    barProgress.style.cssText = `width: ${percentageComplete}%;`;
-    percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
-    percentageComplete<100 ? text.textContent = "Current Page" : text.textContent="Book Completed!";
- }
- 
-}
 
 function clearInputs(){
     for (let index = 0; index<textInputs.length;index++){

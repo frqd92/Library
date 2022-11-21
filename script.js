@@ -84,15 +84,17 @@ function createBook(){
     pageProgress.classList.add("page-progress");
     book.appendChild(pageProgress);
     let currentText = document.createElement("p");
-    let currentPage = document.createElement("span")
-    let arrowContainer= document.createElement("div")
+    let currentPage = document.createElement("span");
+    currentPage.classList.add("current-page");
+    let arrowContainer= document.createElement("div");
     arrowContainer.classList.add("arrow-container");
     pageProgress.appendChild(currentText);
     pageProgress.appendChild(arrowContainer);
     currentPage.textContent=textInputs[4].value;
     arrowContainer.appendChild(currentPage);
 
-    currentText.textContent="Current page"; //change to page complete if book done
+
+    currentText.textContent="Current page:"; //change to page complete if book done
 
     let arrowUp = document.createElement("img");
     let arrowDown = document.createElement("img");
@@ -107,7 +109,6 @@ function createBook(){
     
     let divider = document.createElement("p");
     divider.classList.add("divider");
-    divider.textContent = "|";
     pageProgress.appendChild(divider);
     
     let totalPages = document.createElement("span");
@@ -128,14 +129,35 @@ function createBook(){
    
     let barProgress = document.createElement("div");
     barProgress.classList.add("bar-progress");
-    progressBarContainer.appendChild(barProgress);
-    progressBarContainer.innerHTML = `<div class="bar"><div class="bar-progress"></div>`
+    bar.appendChild(barProgress);
     percentageComplete = (textInputs[4].value / textInputs[3].value)*100;
    
-    // barProgress.style.width = `${percentageComplete}%;`;
-    console.log(barProgress.style.width)
+    barProgress.style.cssText = `width: ${percentageComplete}%;`;
 
+    percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
+    
+    arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value);
     clearInputs();
+}
+
+function arrowFunc(up, down,page, total){
+    let currentPage = parseInt(page.textContent);
+    up.addEventListener("mousedown", ()=>{
+        if(currentPage<total){
+            currentPage += 1;
+            page.textContent = currentPage;
+        }
+
+    })
+    down.addEventListener("mousedown", ()=>{
+        if(currentPage>0){
+            currentPage -= 1;
+            page.textContent = currentPage;
+        }
+
+    })
+//where you left off. Fix issue where arrows move when incrementing 
+// and also do the progress bar, make it change with the arrows
 }
 
 

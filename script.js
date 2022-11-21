@@ -26,16 +26,120 @@ function checkForm(){
     if(validityCheck === false ){
         textInputs[invalidIndex].style.borderBottom='1px solid rgba(204, 40,40 , 0.8)';
     }
-    else{addCard()}
+    else{addBookToLibrary()}
 }
 
 //adds book card after form check passes
-function addCard(){
+function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.push(bookObj);
-    clearInputs();
+  
+    createBook();
     console.log(myLibrary)
 }
+
+function createBook(){
+    //creates empty book
+    let book = document.createElement("div");
+    let bookContainer = document.querySelector(".book-container");
+    book.classList.add("book");
+    bookContainer.appendChild(book);
+
+    //trash and edit buttons
+    let trashBtn = document.createElement("img");
+    trashBtn.setAttribute("src", "images/delete-white.png");
+    trashBtn.setAttribute("id", "delete-book");
+    let editBtn = document.createElement("img");
+    editBtn.setAttribute("src", "images/application-edit-white.png");
+    editBtn.setAttribute("id", "edit-book");
+    book.appendChild(trashBtn);
+    book.appendChild(editBtn);
+
+    //book cover
+    let bookCover = document.createElement("img");
+    bookCover.setAttribute("alt",`cover of ${textInputs[0].value}`)
+    if(textInputs[2].value){ //if user inserts an image
+        bookCover.setAttribute("src",`${textInputs[2].value}`)
+    }else{ //default image if none is inserted
+        bookCover.setAttribute("src","images/book-cover.png") 
+    }
+    bookCover.classList.add("book-image");
+    book.appendChild(bookCover);
+
+    //title and author
+    let titleAuthorContainer = document.createElement("div");
+    titleAuthorContainer.classList.add("title-author");
+    let bookTitle = document.createElement("p");
+    bookTitle.classList.add("book-title");
+    let bookAuthor = document.createElement("p");
+    bookAuthor.classList.add("book-author");
+    bookTitle.textContent = textInputs[0].value;
+    bookAuthor.textContent = textInputs[1].value;
+    titleAuthorContainer.appendChild(bookTitle);
+    titleAuthorContainer.appendChild(bookAuthor);
+    book.appendChild(titleAuthorContainer);
+
+    //progress
+    let pageProgress = document.createElement("div");
+    pageProgress.classList.add("page-progress");
+    book.appendChild(pageProgress);
+    let currentText = document.createElement("p");
+    let currentPage = document.createElement("span")
+    let arrowContainer= document.createElement("div")
+    arrowContainer.classList.add("arrow-container");
+    pageProgress.appendChild(currentText);
+    pageProgress.appendChild(arrowContainer);
+    currentPage.textContent=textInputs[4].value;
+    arrowContainer.appendChild(currentPage);
+
+    currentText.textContent="Current page"; //change to page complete if book done
+
+    let arrowUp = document.createElement("img");
+    let arrowDown = document.createElement("img");
+    arrowUp.setAttribute("src", "images/arrow-up-white.png");
+    arrowDown.setAttribute("src", "images/arrow-down-white.png");
+    arrowUp.classList.add("arrow");
+    arrowUp.classList.add("up");
+    arrowDown.classList.add("arrow");
+    arrowDown.classList.add("down");
+    arrowContainer.appendChild(arrowUp);
+    arrowContainer.appendChild(arrowDown);
+    
+    let divider = document.createElement("p");
+    divider.classList.add("divider");
+    divider.textContent = "|";
+    pageProgress.appendChild(divider);
+    
+    let totalPages = document.createElement("span");
+    totalPages.classList.add("total-pages");
+    totalPages.textContent=textInputs[3].value;
+    pageProgress.appendChild(totalPages);
+
+
+    //progress bar
+    let progressBarContainer = document.createElement("div");
+    book.appendChild(progressBarContainer);
+    progressBarContainer.classList.add("progress-bar-container");
+
+
+    let bar = document.createElement("div");
+    bar.classList.add("bar");
+    progressBarContainer.appendChild(bar);
+   
+    let barProgress = document.createElement("div");
+    barProgress.classList.add("bar-progress");
+    progressBarContainer.appendChild(barProgress);
+    progressBarContainer.innerHTML = `<div class="bar"><div class="bar-progress"></div>`
+    percentageComplete = (textInputs[4].value / textInputs[3].value)*100;
+   
+    // barProgress.style.width = `${percentageComplete}%;`;
+    console.log(barProgress.style.width)
+
+    clearInputs();
+}
+
+
+
 
 function clearInputs(){
     for (let index = 0; index<textInputs.length;index++){

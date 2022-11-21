@@ -223,7 +223,7 @@ form button{
 .current-page-text{
     color: #dee2ed;
     white-space: nowrap;
-   
+   text-align: center;
    display: block;
    width: 120px;
 }
@@ -307,27 +307,47 @@ form button{
 .book-btn{
     border: 1px solid red;
 }
-#delete-book, #edit-book{
+.delete-book, .edit-book{
     position:absolute;
     cursor: pointer;
     transition: transform 0.1s linear;
 }
-#delete-book{
+.book .delete-book{
     top:4px;
     width: 25px;
     left: 345px;
 }
-#delete-book:hover, #edit-book:hover{
+.delete-book:hover, .edit-book:hover{
     transform: scale(1.2);
 }
-#delete-book:active, #edit-book:active{
+.delete-book:active, .edit-book:active{
     transform: scale(1);
 }
-#edit-book{
+
+.book .edit-book{
     width: 20px;
     top:6px;
     left:310px;
 }
+
+.hold-delete-text{
+    position: absolute;
+    top: -23px;
+    right: -60px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 12px;
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
 
 
                                                                     /* switch button */

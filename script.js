@@ -47,13 +47,21 @@ function createBook(){
 
     //trash and edit buttons
     let trashBtn = document.createElement("img");
+    trashBtn.classList.add("delete-book");
     trashBtn.setAttribute("src", "images/delete-white.png");
-    trashBtn.setAttribute("id", "delete-book");
+    trashBtn.setAttribute("class", "delete-book");
     let editBtn = document.createElement("img");
     editBtn.setAttribute("src", "images/application-edit-white.png");
-    editBtn.setAttribute("id", "edit-book");
+    editBtn.setAttribute("class", "edit-book");
     book.appendChild(trashBtn);
     book.appendChild(editBtn);
+
+    let holdDelText = document.createElement("p");
+    holdDelText.classList.add("hold-delete-text");
+    holdDelText.textContent = `Hold for 3 seconds to delete`;
+
+    book.appendChild(holdDelText);
+   
 
     //book cover
     let bookCover = document.createElement("img");
@@ -117,7 +125,6 @@ function createBook(){
     totalPages.textContent=textInputs[3].value;
     pageProgress.appendChild(totalPages);
 
-
     //progress bar
     let progressBarContainer = document.createElement("div");
     book.appendChild(progressBarContainer);
@@ -138,7 +145,36 @@ function createBook(){
     if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
     
     arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText);
+    deleteBook(trashBtn);
+
     clearInputs();
+}
+
+function deleteBook(trashBtn){
+    //hold for 3 seconds to delete
+    let timer = 0;
+    let interval;
+    
+    trashBtn.addEventListener("mousedown", (e)=>{
+        interval=setInterval(()=>{
+            timer +=1;
+            if(timer===3){
+                let deleteBtns = document.querySelectorAll(".delete-book");
+                for(let index=0;index<deleteBtns.length; index++){ //gets the index of each trash can and ultimately each book
+                deleteBtns[index].id=index;
+                let currentIndex = e.target.id;
+                myLibrary.splice(currentIndex,1);
+                e.target.parentNode.remove();
+                console.log(myLibrary)
+                clearInterval(interval);
+           }
+            }
+        },1000)
+    })
+    trashBtn.addEventListener("mouseup", ()=>{
+        clearInterval(interval);
+        timer =0;
+    })
 }
 
 
@@ -169,9 +205,6 @@ function arrowFunc(up, down,page, total, barProgress, text){
  }
  
 }
-
-
-
 
 function clearInputs(){
     for (let index = 0; index<textInputs.length;index++){

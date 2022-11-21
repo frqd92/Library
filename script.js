@@ -24,16 +24,26 @@ function checkForm(){
         }
     }
     if(validityCheck === false ){
-        console.log(textInputs[invalidIndex].style.border)
         textInputs[invalidIndex].style.borderBottom='1px solid rgba(204, 40,40 , 0.8)';
     }
- 
+    else{addCard()}
 }
 
+//adds book card after form check passes
+function addCard(){
+    let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
+    myLibrary.push(bookObj);
+    clearInputs();
+    console.log(myLibrary)
+}
 
-
-
-
+function clearInputs(){
+    for (let index = 0; index<textInputs.length;index++){
+        textInputs[index].value=""
+    }
+    toggle.checked=false;
+    pagesRead.style.visibility="hidden";
+}
 
 
 
@@ -61,9 +71,8 @@ function toggleFunc (){
     toggle.checked ? pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
     toggle.checked ? textInputs[4].value ="":textInputs[4].value=textInputs[3].value ;
 }
-textInputs[3].addEventListener("focusout", ()=>{
-    if(!toggle.checked){textInputs[4].value = textInputs[3].value;}
-})
+//validates pages read input with total pages if user has read or not
+textInputs[3].addEventListener("focusout", ()=>{if(!toggle.checked){textInputs[4].value = textInputs[3].value;}})
 textInputs[4].addEventListener("input", ()=>{
     if(textInputs[4].value === textInputs[3].value){
         toggle.checked = false;
@@ -80,9 +89,12 @@ addBoxBtn.addEventListener("click", ()=>{
     bgDiv.style.display="block"
     addBox.style.display="block"
 })
+//closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
     if(e.target.className==="bg-div" || e.target.className ==="close-btn"){
         addBox.style.display="none"
         bgDiv.style.display="none"
     }
 })
+// Enables Enter key to work as submit button when book box is in display
+window.addEventListener("keydown", (e)=>{if(e.key === "Enter" && addBox.style.display==="block"){ checkForm();}})

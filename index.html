@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@500&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@500&family=Nunito+Sans&family=Rajdhani:wght@600&family=Sarabun:ital,wght@1,200&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="bg-div"></div>
@@ -24,7 +24,6 @@
     <h2>ADD BOOK+</h2>
 </div>
 <main>
-
     <div class="add-box">
         <div class="close-btn">
             <img src="images/close-white.png" alt="close button" class="close-btn">
@@ -32,12 +31,12 @@
         <form action="">
             <div class="input-container">
                 <label for="book-title" aria-label="required">Title *</label>
-                <input type="text" id="book-title" required autocomplete="off">
+                <input type="text" id="book-title" required autocomplete="off" maxlength="55">
             </div>
 
             <div class="input-container">
                 <label for="book-author"aria-label="required">Author *</label>
-                <input type="text" id="book-author" required autocomplete="off">
+                <input type="text" id="book-author" required autocomplete="off" maxlength="30">
             </div>
 
             <div class="input-container">
@@ -64,6 +63,32 @@
         </form>
     </div>
 
+    <div class="book-container">
+        <div class="book">
+            <img src="images/delete-white.png" alt="delete book" id="delete-book">
+            <img src="images/application-edit-white.png" alt="edit book" id="edit-book">
+            <img src="https://upload.wikimedia.org/wikipedia/en/e/ea/FlowersForAlgernon.jpg" alt="book image" class="book-image">
+            <div class="title-author">
+                <p class="book-title">Flowers For Algernon</p>
+                <p class="book-author">Daniel Keyes</p>
+            </div>
+            <div class="page-progress">
+                <p>Current page</p> 
+                <div class="arrow-container">
+                    <span class="current-page">23</span>
+                    <img src="images/arrow-up-white.png" alt="increment page" class="arrow up">
+                    <img src="images/arrow-down-white.png" alt="decrement page" class="arrow down">
+                </div>
+                <p class="divider">|</p>
+                <span class="total-pages">311</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="bar">
+                <div class="bar-progress"></div>
+            </div>
+        </div>
+    </div>
+</div>
 </main>
 
 

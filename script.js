@@ -3,15 +3,18 @@ let myLibrary =[];
 function Book(title,author,url, pagesTotal, read, pagesRead){
     this.title = title; this.author=author; this.url=url; this.pagesTotal=pagesTotal;this.read=read;this.pagesRead=pagesRead;
 }
-
+let textInputs = document.querySelectorAll("input[type=text]");
 let addBookBtn = document.getElementById("add-book");
 addBookBtn.addEventListener("click", checkForm);
-
+let currentEditIndex=0;
 // javascript form validation 
-let textInputs = document.querySelectorAll("input[type=text]");
-function checkForm(){
+
+function checkForm(e){
     let validityCheck = false;
     let invalidIndex;
+    from=e.target.id;
+    console.log(from)
+
     for(let index=0;index<textInputs.length;index++){
         if(textInputs[index].checkValidity()){
             validityCheck=true;
@@ -26,17 +29,64 @@ function checkForm(){
     if(validityCheck === false ){
         textInputs[invalidIndex].style.borderBottom='1px solid rgba(204, 40,40 , 0.8)';
     }
-    else{addBookToLibrary()}
+
+    if(validityCheck === true && from ==="add-book"){
+        addBookToLibrary()
+
+    }
+    else if (validityCheck === true && from ==="edit-book"){
+        editBookFromLibrary();
+    }
 }
+
+function editBook(editBtn){
+    editBtn.addEventListener("click", (e)=>{
+       bgDiv.style.display="block";
+       addBox.style.display="block";
+       addBookBtn.style.display="none";
+       editBookBtn.style.display="block";
+   
+       let editBtns = document.querySelectorAll(".edit-book");
+       for(let index=0;index<editBtns.length; index++){ 
+           editBtns[index].id=index;
+          
+       // myLibrary.splice(currentIndex,1);
+       }
+       let currentIndex = e.target.id;
+       textInputs[0].value = myLibrary[currentIndex].title;
+       textInputs[1].value = myLibrary[currentIndex].author;
+       textInputs[2].value = myLibrary[currentIndex].url;
+       toggle.checked = myLibrary[currentIndex].read;
+       textInputs[3].value = myLibrary[currentIndex].pagesTotal;
+       textInputs[4].value = myLibrary[currentIndex].pagesRead;
+   
+       toggle.checked?pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
+       currentEditIndex = currentIndex;
+       editBookBtn.addEventListener("click",checkForm);
+
+    })
+   }
+   
+
 
 //adds book card after form check passes
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.push(bookObj);
-  
+    console.log("hello")
     createBook();
-    console.log(myLibrary)
 }
+
+function editBookFromLibrary(){
+    myLibrary[currentEditIndex].title = textInputs[0].value;
+    myLibrary[currentEditIndex].author = textInputs[1].value;
+    myLibrary[currentEditIndex].url = textInputs[2].value;
+    myLibrary[currentEditIndex].checked = toggle.checked;
+    myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
+    myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
+    editBook()
+}
+
 
 function createBook(){
     //creates empty book
@@ -47,7 +97,6 @@ function createBook(){
 
     //trash and edit buttons
     let trashBtn = document.createElement("img");
-    trashBtn.classList.add("delete-book");
     trashBtn.setAttribute("src", "images/delete-white.png");
     trashBtn.setAttribute("class", "delete-book");
     let editBtn = document.createElement("img");
@@ -145,38 +194,74 @@ function createBook(){
     if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
     
     arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText);
-    deleteBook(trashBtn);
+    deleteBook(trashBtn, holdDelText);
+    editBook(editBtn)
 
     clearInputs();
+
+
 }
 
-function deleteBook(trashBtn){
+
+
+//Make the add book box appear and disappear
+let addBoxBtn = document.querySelector(".add-box-container");
+let addBox = document.querySelector(".add-box");
+let bgDiv = document.querySelector(".bg-div");
+let closeBtn = document.querySelector("close-btn");
+let editBookBtn = document.getElementById("edit-book");
+addBoxBtn.addEventListener("click", ()=>{
+    bgDiv.style.display="block"
+    addBox.style.display="block"
+    addBookBtn.style.display="block";
+    editBookBtn.style.display="none";
+})
+
+function deleteBook(trashBtn, text){
     //hold for 3 seconds to delete
     let timer = 0;
+    let counter =2;
+    let revTimer;
     let interval;
-    
+
+    trashBtn.addEventListener("mouseover", ()=>{
+        text.style.display="block"
+    })
+
     trashBtn.addEventListener("mousedown", (e)=>{
+    
         interval=setInterval(()=>{
             timer +=1;
+            revTimer = counter + timer;
+            text.innerText = `Hold for ${revTimer-1} seconds to delete`;
+            counter = counter - 2;
             if(timer===3){
+                
                 let deleteBtns = document.querySelectorAll(".delete-book");
                 for(let index=0;index<deleteBtns.length; index++){ //gets the index of each trash can and ultimately each book
                 deleteBtns[index].id=index;
                 let currentIndex = e.target.id;
                 myLibrary.splice(currentIndex,1);
                 e.target.parentNode.remove();
-                console.log(myLibrary)
                 clearInterval(interval);
            }
             }
         },1000)
     })
-    trashBtn.addEventListener("mouseup", ()=>{
+    trashBtn.addEventListener("mouseup", ()=>{ //didn't know how to simplify.. how the fuk do you add multiple event listeners to same element google that shit after
         clearInterval(interval);
         timer =0;
+        counter=2;
+        text.innerText = `Hold for 3 seconds to delete`;
+    })
+    trashBtn.addEventListener("mouseleave", ()=>{
+        text.style.display="none"
+        clearInterval(interval);
+        timer =0;
+        counter=2;
+        text.innerText = `Hold for 3 seconds to delete`;
     })
 }
-
 
 
 function arrowFunc(up, down,page, total, barProgress, text){
@@ -249,15 +334,7 @@ textInputs[4].addEventListener("input", ()=>{
     }
 } )
 
-//Make the add book box appear and disappear
-let addBoxBtn = document.querySelector(".add-box-container");
-let addBox = document.querySelector(".add-box");
-let bgDiv = document.querySelector(".bg-div");
-let closeBtn = document.querySelector("close-btn");
-addBoxBtn.addEventListener("click", ()=>{
-    bgDiv.style.display="block"
-    addBox.style.display="block"
-})
+
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
     if(e.target.className==="bg-div" || e.target.className ==="close-btn"){

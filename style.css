@@ -53,7 +53,7 @@ nav h2{
     background-color: rgb(0, 0, 0);
     opacity: 0.4;
     display: none;
-    z-index: 1;
+    z-index: 2;
 }
 
 .add-box-container{/* add a box button nav */
@@ -66,7 +66,7 @@ nav h2{
     cursor: pointer;
     position: fixed;
     top:71px;
-    z-index: 3;
+    z-index: 1;
 }
 
 
@@ -142,7 +142,7 @@ input[type=text]:focus::-webkit-input-placeholder{
 form{
     display: grid;
 }
-form button{
+.add-box-main-form{
     border-radius: 5px;
     padding: 0.5rem 1rem;
     background: var(--form-btn);
@@ -152,7 +152,9 @@ form button{
     outline: none;
     
 }
-
+#edit-book {
+   
+}
 .pages-read {
    visibility: hidden;
 }
@@ -305,7 +307,7 @@ form button{
 }
 
 .book-btn{
-    border: 1px solid red;
+  background-color: rgb(220, 155, 34);
 }
 .delete-book, .edit-book{
     position:absolute;

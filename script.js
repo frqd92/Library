@@ -16,6 +16,19 @@ function checkForm(e){
     from=e.target.id;
 
     for(let index=0;index<textInputs.length;index++){
+
+        if(Number(textInputs[3].value)<Number(textInputs[4].value)){
+            console.log("true")
+            textInputs[4].setCustomValidity("Invalid");
+            textInputs[4].value="";
+            textInputs[4].placeholder=`Must be <= than total ${textInputs[3].value}`;
+        }
+        else{
+            textInputs[4].setCustomValidity("");
+        }
+        if(!textInputs[0].value ||!textInputs[1].value){
+            textInputs[0].placeholder="mandatory field"; textInputs[1].placeholder="mandatory field";
+        }
         if(textInputs[index].checkValidity()){
             validityCheck=true;
             textInputs[index].style.borderBottom='1px solid rgb(238, 236, 236, 0.3)';
@@ -40,7 +53,7 @@ function checkForm(e){
     }
 }
 
-function editBook(editBtn, currentArrows){
+function editBook(editBtn, currentPage){
     editBtn.addEventListener("click", (e)=>{
        bgDiv.style.display="block";
        addBox.style.display="block";
@@ -54,12 +67,11 @@ function editBook(editBtn, currentArrows){
        textInputs[0].value = myLibrary[currentIndex].title;
        textInputs[1].value = myLibrary[currentIndex].author;
        textInputs[2].value = myLibrary[currentIndex].url;
-       toggle.checked = myLibrary[currentIndex].read;
        textInputs[3].value = myLibrary[currentIndex].pagesTotal;
-       textInputs[4].value = myLibrary[currentIndex].pagesRead;
+       textInputs[4].value = currentPage.textContent;
+       textInputs[4].value === textInputs[3].value ? toggle.checked = false:toggle.checked = true;
        toggle.checked?pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
        currentEditIndex = currentIndex;
-       arrBtns = currentArrows;
        editBookBtn.addEventListener("click", checkForm);
     })
    }
@@ -73,10 +85,7 @@ function addBookToLibrary(){
     createBook(true);
 }
 
-function editBookFromLibrary(){
 
-
-}
 
 function arrowFunc(up, down,page, total, barProgress, text){
   
@@ -86,7 +95,6 @@ function arrowFunc(up, down,page, total, barProgress, text){
             page.textContent = Number(page.textContent) + 1;
         }
         updateProgressBar(page.textContent,total, barProgress, text);
-        console.log(page.textContent)
     }   
     down.addEventListener("mousedown", decrementFunc);
     function decrementFunc(){
@@ -94,7 +102,6 @@ function arrowFunc(up, down,page, total, barProgress, text){
      
             page.textContent = page.textContent - 1;
         }
-        console.log(page.textContent)
         updateProgressBar(page.textContent, total, barProgress, text);
     }
     
@@ -112,8 +119,6 @@ function arrowFunc(up, down,page, total, barProgress, text){
  }
  
 }
-
-
 
 
 function createBook(create){
@@ -152,7 +157,6 @@ function createBook(create){
 
 
     if(create){
-        console.log(true)
         book.classList.add("book");
         bookContainer.appendChild(book);
         //trash and edit buttons
@@ -239,7 +243,6 @@ function createBook(create){
     }
 
     if(!create){
-        console.log(false)
         myLibrary[currentEditIndex].title = textInputs[0].value;
         myLibrary[currentEditIndex].author = textInputs[1].value;
         myLibrary[currentEditIndex].url = textInputs[2].value;
@@ -287,20 +290,10 @@ function createBook(create){
 
 
     }
-
-
-
-  
-       
-    
-
-   
-   
     deleteBook(trashBtn, holdDelText);
-    editBook(editBtn)
-    clearInputs();
-
-
+    editBook(editBtn,currentPage)
+    if(create){clearInputs();}
+    if(!create){bgDiv.style.display="none"; addBox.style.display="none"}
 }
 
 
@@ -312,6 +305,7 @@ let bgDiv = document.querySelector(".bg-div");
 let closeBtn = document.querySelector("close-btn");
 let editBookBtn = document.getElementById("edit-book");
 addBoxBtn.addEventListener("click", ()=>{
+    clearInputs();
     bgDiv.style.display="block"
     addBox.style.display="block"
     addBookBtn.style.display="block";

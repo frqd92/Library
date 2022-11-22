@@ -7,7 +7,7 @@ let editBookBtn = document.getElementById("edit-book");
 let textInputs = document.querySelectorAll("input[type=text]");
 let addBookBtn = document.getElementById("add-book");
 let currentEditIndex=0;
-let trashIndex;
+let demoBooks = false;
 function Book(title,author,url, pagesTotal, read, pagesRead){
     this.title = title; this.author=author; this.url=url; this.pagesTotal=pagesTotal;this.read=read;this.pagesRead=pagesRead;
 }
@@ -17,7 +17,21 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
+function addDemoBooks(){
+    demoBooks = true;
+    let book1 = {
+        title: "Flowers for Algernon",
+        author: "Daniel Keyes",
+        url: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/FlowersForAlgernon.jpg/220px-FlowersForAlgernon.jpg',
+        pagesTotal: 311,
+        read:false,
+        pagesRead: 69,
+    }
 
+
+
+
+}
 
 
 
@@ -172,12 +186,17 @@ function createBook(create){
         editHoverText.textContent = "Edit";
         book.appendChild(editHoverText);
         book.appendChild(holdDelText);
-        
+
+        let titleField = textInputs[0];
+        let authorField = textInputs[1];
+        let imageField = textInputs[2];
+        let totalField = textInputs[3];
+        let readField = textInputs[4];
     
         //book cover
-        bookCover.setAttribute("alt",`cover of ${textInputs[0].value}`)
-        if(textInputs[2].value){ //if user inserts an image
-            bookCover.setAttribute("src",`${textInputs[2].value}`)
+        bookCover.setAttribute("alt",`cover of ${titleField.value}`)
+        if(imageField.value){ //if user inserts an image
+            bookCover.setAttribute("src",`${imageField.value}`)
         }else{ //default image if none is inserted
             bookCover.setAttribute("src","images/book-cover.png") 
         }
@@ -188,8 +207,8 @@ function createBook(create){
         titleAuthorContainer.classList.add("title-author");
         bookTitle.classList.add("book-title");
         bookAuthor.classList.add("book-author");
-        bookTitle.textContent = textInputs[0].value;
-        bookAuthor.textContent = textInputs[1].value;
+        bookTitle.textContent = titleField.value;
+        bookAuthor.textContent = authorField.value;
         titleAuthorContainer.appendChild(bookTitle);
         titleAuthorContainer.appendChild(bookAuthor);
         book.appendChild(titleAuthorContainer);
@@ -224,7 +243,7 @@ function createBook(create){
         
     
         totalPages.classList.add("total-pages");
-        totalPages.textContent=parseInt(textInputs[3].value);
+        totalPages.textContent=parseInt(totalField.value);
         pageProgress.appendChild(totalPages);
     
         //progress bar
@@ -236,12 +255,12 @@ function createBook(create){
         progressBarContainer.appendChild(bar);
         barProgress.classList.add("bar-progress");
         bar.appendChild(barProgress);
-        percentageComplete = (textInputs[4].value / textInputs[3].value)*100;
+        percentageComplete = (readField.value / totalField.value)*100;
         barProgress.style.cssText = `width: ${percentageComplete}%;`;
     
         if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
        
-        arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText); 
+        arrowFunc(arrowUp,arrowDown, currentPage, totalField.value, barProgress, currentText); 
 
     }
 

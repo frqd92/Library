@@ -7,7 +7,7 @@ let editBookBtn = document.getElementById("edit-book");
 let textInputs = document.querySelectorAll("input[type=text]");
 let addBookBtn = document.getElementById("add-book");
 let currentEditIndex=0;
-
+let trashIndex;
 function Book(title,author,url, pagesTotal, read, pagesRead){
     this.title = title; this.author=author; this.url=url; this.pagesTotal=pagesTotal;this.read=read;this.pagesRead=pagesRead;
 }
@@ -293,8 +293,9 @@ function createBook(create){
 
 
     }
+    editBook(editBtn,currentPage,editHoverText);
     deleteBook(trashBtn, holdDelText);
-    editBook(editBtn,currentPage,editHoverText)
+
     if(create){clearInputs();}
     if(!create){bgDiv.style.display="none"; addBox.style.display="none"}
 }
@@ -356,15 +357,14 @@ function deleteBook(trashBtn, text){
                 case 2: text.style.color="red"; break;
             }
             if(timer===3){
-                
-                let deleteBtns = document.querySelectorAll(".delete-book");
+            let deleteBtns = document.querySelectorAll(".delete-book");
                 for(let index=0;index<deleteBtns.length; index++){ //gets the index of each trash can and ultimately each book
-                deleteBtns[index].id=index;
+                    deleteBtns[index].id=index;
+                }
                 let currentIndex = e.target.id;
                 myLibrary.splice(currentIndex,1);
                 e.target.parentNode.remove();
                 clearInterval(interval);
-           }
             }
         },1000)
     })
@@ -396,7 +396,11 @@ function clearInputs(){
 
 
 
-
+window.addEventListener("click", (e)=>{ //to test library
+    if(e.target.textContent==="Library"){
+        console.log(myLibrary)
+    }
+})
 
 
 

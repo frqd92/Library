@@ -252,7 +252,7 @@ form{
 
 .arrow-container{
     position: relative;
- 
+
  
     width: 36px;
 }
@@ -331,16 +331,20 @@ form{
     top:6px;
     left:310px;
 }
-
-.hold-delete-text{
+.hold-delete-text, .hold-edit-text{
     position: absolute;
-    top: -23px;
-    right: -60px;
     font-family: 'Mulish', sans-serif;
     font-size: 12px;
     display: none;
+    top: -23px;
 }
+.hold-delete-text{
+    right: -60px;
+}
+.hold-edit-text{
+    right:  50px;
 
+}
 
 
 

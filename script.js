@@ -1,15 +1,50 @@
 let myLibrary =[];
+let addBoxBtn = document.querySelector(".add-box-container");
+let addBox = document.querySelector(".add-box");
+let bgDiv = document.querySelector(".bg-div");
+let closeBtn = document.querySelector("close-btn");
+let editBookBtn = document.getElementById("edit-book");
+let textInputs = document.querySelectorAll("input[type=text]");
+let addBookBtn = document.getElementById("add-book");
+let currentEditIndex=0;
 
 function Book(title,author,url, pagesTotal, read, pagesRead){
     this.title = title; this.author=author; this.url=url; this.pagesTotal=pagesTotal;this.read=read;this.pagesRead=pagesRead;
 }
-let textInputs = document.querySelectorAll("input[type=text]");
-let addBookBtn = document.getElementById("add-book");
 addBookBtn.addEventListener("click", checkForm);
-let currentEditIndex=0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // javascript form validation 
-
 function checkForm(e){
     let validityCheck = false;
     let invalidIndex;
@@ -53,7 +88,9 @@ function checkForm(e){
     }
 }
 
-function editBook(editBtn, currentPage){
+function editBook(editBtn, currentPage, text){
+    editBtn.addEventListener("mouseover", ()=>{text.style.display ="block";})
+    editBtn.addEventListener("mouseleave", ()=>{text.style.display ="none";})
     editBtn.addEventListener("click", (e)=>{
        bgDiv.style.display="block";
        addBox.style.display="block";
@@ -76,48 +113,11 @@ function editBook(editBtn, currentPage){
     })
    }
    
-
-
 //adds book card after form check passes
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.push(bookObj);
     createBook(true);
-}
-
-
-
-function arrowFunc(up, down,page, total, barProgress, text){
-  
-    up.addEventListener("mousedown", incrementFunc);
-    function incrementFunc(){
-        if(page.textContent<parseInt(total)){
-            page.textContent = Number(page.textContent) + 1;
-        }
-        updateProgressBar(page.textContent,total, barProgress, text);
-    }   
-    down.addEventListener("mousedown", decrementFunc);
-    function decrementFunc(){
-        if(page.textContent>0){
-     
-            page.textContent = page.textContent - 1;
-        }
-        updateProgressBar(page.textContent, total, barProgress, text);
-    }
-    
-
-    
-//WHERE YOU LEFT OFF.. ARROW THING NOT WORKING, FORK AND REWRITE IT ALL
-// ALSO validate pages read to be less than or equal to total pages
-
-
- function updateProgressBar(currentPage, total, barProgress, text){
-    let percentageComplete = (currentPage/total)*100;
-    barProgress.style.cssText = `width: ${percentageComplete}%;`;
-    percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
-    percentageComplete<100 ? text.textContent = "Current Page" : text.textContent="Book Completed!";
- }
- 
 }
 
 
@@ -128,6 +128,7 @@ function createBook(create){
     let trashBtn = document.createElement("img");
     let editBtn = document.createElement("img");
     let holdDelText = document.createElement("p");
+    let editHoverText = document.createElement("p");
     let bookCover = document.createElement("img"); //*****
     let titleAuthorContainer = document.createElement("div");
     let bookTitle = document.createElement("p"); 
@@ -144,7 +145,6 @@ function createBook(create){
     let bar = document.createElement("div");
     let barProgress = document.createElement("div");
         //edit book stuff
-
     let bookTitles = document.querySelectorAll(".book-title");
     let bookAuthors = document.querySelectorAll(".book-author");
     let bookCovers = document.querySelectorAll(".book-image");
@@ -168,6 +168,9 @@ function createBook(create){
         book.appendChild(editBtn);
         holdDelText.classList.add("hold-delete-text");
         holdDelText.textContent = `Hold for 3 seconds to delete`;
+        editHoverText.classList.add("hold-edit-text");
+        editHoverText.textContent = "Edit";
+        book.appendChild(editHoverText);
         book.appendChild(holdDelText);
         
     
@@ -291,19 +294,13 @@ function createBook(create){
 
     }
     deleteBook(trashBtn, holdDelText);
-    editBook(editBtn,currentPage)
+    editBook(editBtn,currentPage,editHoverText)
     if(create){clearInputs();}
     if(!create){bgDiv.style.display="none"; addBox.style.display="none"}
 }
 
-
-
 //Make the add book box appear and disappear
-let addBoxBtn = document.querySelector(".add-box-container");
-let addBox = document.querySelector(".add-box");
-let bgDiv = document.querySelector(".bg-div");
-let closeBtn = document.querySelector("close-btn");
-let editBookBtn = document.getElementById("edit-book");
+
 addBoxBtn.addEventListener("click", ()=>{
     clearInputs();
     bgDiv.style.display="block"
@@ -311,6 +308,32 @@ addBoxBtn.addEventListener("click", ()=>{
     addBookBtn.style.display="block";
     editBookBtn.style.display="none";
 })
+
+
+function arrowFunc(up, down,page, total, barProgress, text){
+    up.addEventListener("mousedown", incrementFunc);
+    function incrementFunc(){
+        if(page.textContent<parseInt(total)){
+            page.textContent = Number(page.textContent) + 1;
+        }
+        updateProgressBar(page.textContent,total, barProgress, text);
+    }   
+    down.addEventListener("mousedown", decrementFunc);
+    function decrementFunc(){
+        if(page.textContent>0){
+     
+            page.textContent = page.textContent - 1;
+        }
+        updateProgressBar(page.textContent, total, barProgress, text);
+    }
+    function updateProgressBar(currentPage, total, barProgress, text){
+    let percentageComplete = (currentPage/total)*100;
+    barProgress.style.cssText = `width: ${percentageComplete}%;`;
+    percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
+    percentageComplete<100 ? text.textContent = "Current Page" : text.textContent="Book Completed!";
+    }
+}
+
 function deleteBook(trashBtn, text){
     //hold for 3 seconds to delete
     let timer = 0;
@@ -320,15 +343,18 @@ function deleteBook(trashBtn, text){
 
     trashBtn.addEventListener("mouseover", ()=>{
         text.style.display="block"
+        text.style.color="rgb(180, 92, 97)";
     })
-
     trashBtn.addEventListener("mousedown", (e)=>{
-    
         interval=setInterval(()=>{
             timer +=1;
             revTimer = counter + timer;
             text.innerText = `Hold for ${revTimer-1} seconds to delete`;
             counter = counter - 2;
+            switch(timer){
+                case 1: text.style.color="rgb(199, 45, 45)"; break;
+                case 2: text.style.color="red"; break;
+            }
             if(timer===3){
                 
                 let deleteBtns = document.querySelectorAll(".delete-book");
@@ -342,22 +368,20 @@ function deleteBook(trashBtn, text){
             }
         },1000)
     })
-    trashBtn.addEventListener("mouseup", ()=>{ //didn't know how to simplify.. how the fuk do you add multiple event listeners to same element google that shit after
+    trashBtn.addEventListener("mouseup", ()=>{
         clearInterval(interval);
         timer =0;
         counter=2;
         text.innerText = `Hold for 3 seconds to delete`;
+        text.style.color="rgb(180, 92, 97)";
     })
     trashBtn.addEventListener("mouseleave", ()=>{
         text.style.display="none"
         clearInterval(interval);
         timer =0;
         counter=2;
-        text.innerText = `Hold for 3 seconds to delete`;
     })
 }
-
-
 
 function clearInputs(){
     for (let index = 0; index<textInputs.length;index++){

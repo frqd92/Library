@@ -15,7 +15,6 @@ function checkForm(e){
     let invalidIndex;
     from=e.target.id;
 
-
     for(let index=0;index<textInputs.length;index++){
         if(textInputs[index].checkValidity()){
             validityCheck=true;
@@ -36,8 +35,8 @@ function checkForm(e){
 
     }
     else if (validityCheck === true && from ==="edit-book"){
-        let crntArrow = arrBtns;
-        editBookFromLibrary(crntArrow);
+
+        createBook(false);
     }
 }
 
@@ -71,86 +70,38 @@ function editBook(editBtn, currentArrows){
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.push(bookObj);
-    createBook();
+    createBook(true);
 }
 
-function editBookFromLibrary(currentArrows){
-
-    myLibrary[currentEditIndex].title = textInputs[0].value;
-    myLibrary[currentEditIndex].author = textInputs[1].value;
-    myLibrary[currentEditIndex].url = textInputs[2].value;
-    myLibrary[currentEditIndex].checked = toggle.checked;
-    myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
-    myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
-    //edit title and author
-    let bookTitles = document.querySelectorAll(".book-title");
-    let bookAuthors = document.querySelectorAll(".book-author");
-    let bookCovers = document.querySelectorAll(".book-image");
-
-    //edit image url
-    bookTitles[currentEditIndex].textContent = textInputs[0].value;
-    bookAuthors[currentEditIndex].textContent = textInputs[1].value;
-    if(textInputs[2].value){ 
-        bookCovers[currentEditIndex].setAttribute("src",`${textInputs[2].value}`)
-    }else{ 
-        bookCovers[currentEditIndex].setAttribute("src","images/book-cover.png") 
-    }
-
-    //edit progress text
-    let currentPageTexts = document.querySelectorAll(".current-page-text");
-    toggle.checked?currentPageTexts[currentEditIndex].textContent="Current Page":currentPageTexts[currentEditIndex].textContent="Book Completed!";
-
-    let currentPages = document.querySelectorAll(".current-page");
-    currentPages[currentEditIndex].textContent = textInputs[4].value;
-
-    let totalPages = document.querySelectorAll(".total-pages")
-    totalPages[currentEditIndex].textContent = textInputs[3].value;
-
-    //edit progress bars & arrows
-    //arrowup arrowdown currentpage, totalpage, barprogress,currentText
-    let arrowsUp = document.querySelectorAll(".up");
-    let arrowsDown = document.querySelectorAll(".down");
-    let arrowContainers = document.querySelectorAll(".arrow-container");
- 
-
-    let barProgress = document.querySelectorAll(".bar-progress")
-
-
-    let percentageEdit = (textInputs[4].value / textInputs[3].value) * 100;
-    barProgress[currentEditIndex].style.cssText = `width: ${percentageEdit}%;`;
-    if(percentageEdit ===100) barProgress[currentEditIndex].style.background = 'rgb(27, 158, 34)';
-    
-    arrowFunc(arrowsUp[currentEditIndex], arrowsDown[currentEditIndex], currentPages[currentEditIndex], totalPages[currentEditIndex], barProgress[currentEditIndex],currentPageTexts[currentEditIndex], true);
+function editBookFromLibrary(){
 
 
 }
 
 function arrowFunc(up, down,page, total, barProgress, text){
-    let currentPage = parseInt(page.textContent);
-    total = parseInt(page.textContent);
-
-
-    up.addEventListener("mousedown", incrementFunc, true);
+  
+    up.addEventListener("mousedown", incrementFunc);
     function incrementFunc(){
-        if(currentPage<total){
-            currentPage += 1;
-            page.textContent = currentPage;
+        if(page.textContent<parseInt(total)){
+            page.textContent = Number(page.textContent) + 1;
         }
-        updateProgressBar(currentPage,total, barProgress, text);
-
+        updateProgressBar(page.textContent,total, barProgress, text);
+        console.log(page.textContent)
     }   
     down.addEventListener("mousedown", decrementFunc);
     function decrementFunc(){
-        if(currentPage>0){
-            currentPage -= 1;
-            page.textContent = currentPage;
+        if(page.textContent>0){
+     
+            page.textContent = page.textContent - 1;
         }
-        updateProgressBar(currentPage,total, barProgress, text);
+        console.log(page.textContent)
+        updateProgressBar(page.textContent, total, barProgress, text);
     }
     
 
     
 //WHERE YOU LEFT OFF.. ARROW THING NOT WORKING, FORK AND REWRITE IT ALL
+// ALSO validate pages read to be less than or equal to total pages
 
 
  function updateProgressBar(currentPage, total, barProgress, text){
@@ -165,8 +116,8 @@ function arrowFunc(up, down,page, total, barProgress, text){
 
 
 
-function createBook(){
-    //creates empty book
+function createBook(create){
+        //creates empty book
     let book = document.createElement("div"); //*****
     let bookContainer = document.querySelector(".book-container");
     let trashBtn = document.createElement("img");
@@ -187,95 +138,168 @@ function createBook(){
     let progressBarContainer = document.createElement("div");
     let bar = document.createElement("div");
     let barProgress = document.createElement("div");
+        //edit book stuff
 
-    book.classList.add("book");
-    bookContainer.appendChild(book);
-    //trash and edit buttons
-    trashBtn.setAttribute("src", "images/delete-white.png");
-    trashBtn.setAttribute("class", "delete-book");
-    editBtn.setAttribute("src", "images/application-edit-white.png");
-    editBtn.setAttribute("class", "edit-book");
-    book.appendChild(trashBtn);
-    book.appendChild(editBtn);
-    holdDelText.classList.add("hold-delete-text");
-    holdDelText.textContent = `Hold for 3 seconds to delete`;
-    book.appendChild(holdDelText);
+    let bookTitles = document.querySelectorAll(".book-title");
+    let bookAuthors = document.querySelectorAll(".book-author");
+    let bookCovers = document.querySelectorAll(".book-image");
+    let currentPages = document.querySelectorAll(".current-page");
+    let currentPageTexts = document.querySelectorAll(".current-page-text");
+    let totalPagesEdit = document.querySelectorAll(".total-pages")
+    let barProgressEdit = document.querySelectorAll(".bar-progress")
+    let percentageEdit = (textInputs[4].value / textInputs[3].value) * 100;
+    let arrowContainers = document.querySelectorAll(".arrow-container");
+
+
+    if(create){
+        console.log(true)
+        book.classList.add("book");
+        bookContainer.appendChild(book);
+        //trash and edit buttons
+        trashBtn.setAttribute("src", "images/delete-white.png");
+        trashBtn.setAttribute("class", "delete-book");
+        editBtn.setAttribute("src", "images/application-edit-white.png");
+        editBtn.setAttribute("class", "edit-book");
+        book.appendChild(trashBtn);
+        book.appendChild(editBtn);
+        holdDelText.classList.add("hold-delete-text");
+        holdDelText.textContent = `Hold for 3 seconds to delete`;
+        book.appendChild(holdDelText);
+        
     
+        //book cover
+        bookCover.setAttribute("alt",`cover of ${textInputs[0].value}`)
+        if(textInputs[2].value){ //if user inserts an image
+            bookCover.setAttribute("src",`${textInputs[2].value}`)
+        }else{ //default image if none is inserted
+            bookCover.setAttribute("src","images/book-cover.png") 
+        }
+        bookCover.classList.add("book-image");
+        book.appendChild(bookCover);
+    
+        //title and author
+        titleAuthorContainer.classList.add("title-author");
+        bookTitle.classList.add("book-title");
+        bookAuthor.classList.add("book-author");
+        bookTitle.textContent = textInputs[0].value;
+        bookAuthor.textContent = textInputs[1].value;
+        titleAuthorContainer.appendChild(bookTitle);
+        titleAuthorContainer.appendChild(bookAuthor);
+        book.appendChild(titleAuthorContainer);
+    
+        //pages read
+        pageProgress.classList.add("page-progress");
+        book.appendChild(pageProgress);
+        currentText.classList.add("current-page-text");
+        currentPage.classList.add("current-page");
+        arrowContainer.classList.add("arrow-container");
+        pageProgress.appendChild(currentText);
+        pageProgress.appendChild(arrowContainer);
+        currentPage.textContent=textInputs[4].value;
+        arrowContainer.appendChild(currentPage);
+    
+        toggle.checked?currentText.textContent="Current Page":currentText.textContent="Book Completed!"; //change to "book completed" if book done
+        
+        //arrows 
+        arrowUp.setAttribute("src", "images/arrow-up-white.png");
+        arrowDown.setAttribute("src", "images/arrow-down-white.png");
+        arrowUp.classList.add("arrow");
+        arrowUp.classList.add("up");
+        arrowDown.classList.add("arrow");
+        arrowDown.classList.add("down");
+        arrowContainer.appendChild(arrowUp);
+        arrowContainer.appendChild(arrowDown);
+        
+        //divider and pages total
+        divider.classList.add("divider");
+        divider.textContent="|";
+        pageProgress.appendChild(divider);
+        
+    
+        totalPages.classList.add("total-pages");
+        totalPages.textContent=parseInt(textInputs[3].value);
+        pageProgress.appendChild(totalPages);
+    
+        //progress bar
+    
+        book.appendChild(progressBarContainer);
+        progressBarContainer.classList.add("progress-bar-container");
+    
+        bar.classList.add("bar");
+        progressBarContainer.appendChild(bar);
+        barProgress.classList.add("bar-progress");
+        bar.appendChild(barProgress);
+        percentageComplete = (textInputs[4].value / textInputs[3].value)*100;
+        barProgress.style.cssText = `width: ${percentageComplete}%;`;
+    
+        if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
+       
+        arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText); 
 
-    //book cover
-    bookCover.setAttribute("alt",`cover of ${textInputs[0].value}`)
-    if(textInputs[2].value){ //if user inserts an image
-        bookCover.setAttribute("src",`${textInputs[2].value}`)
-    }else{ //default image if none is inserted
-        bookCover.setAttribute("src","images/book-cover.png") 
     }
-    bookCover.classList.add("book-image");
-    book.appendChild(bookCover);
 
-    //title and author
-    titleAuthorContainer.classList.add("title-author");
-    bookTitle.classList.add("book-title");
-    bookAuthor.classList.add("book-author");
-    bookTitle.textContent = textInputs[0].value;
-    bookAuthor.textContent = textInputs[1].value;
-    titleAuthorContainer.appendChild(bookTitle);
-    titleAuthorContainer.appendChild(bookAuthor);
-    book.appendChild(titleAuthorContainer);
-
-    //progress text
-    pageProgress.classList.add("page-progress");
-    book.appendChild(pageProgress);
-    currentText.classList.add("current-page-text");
-    currentPage.classList.add("current-page");
-    arrowContainer.classList.add("arrow-container");
-    pageProgress.appendChild(currentText);
-    pageProgress.appendChild(arrowContainer);
-    currentPage.textContent=textInputs[4].value;
-    arrowContainer.appendChild(currentPage);
-
-    toggle.checked?currentText.textContent="Current Page":currentText.textContent="Book Completed!"; //change to "book completed" if book done
+    if(!create){
+        console.log(false)
+        myLibrary[currentEditIndex].title = textInputs[0].value;
+        myLibrary[currentEditIndex].author = textInputs[1].value;
+        myLibrary[currentEditIndex].url = textInputs[2].value;
+        myLibrary[currentEditIndex].checked = toggle.checked;
+        myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
+        myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
+        //edit title and author
+        //edit image url
+        bookTitles[currentEditIndex].textContent = textInputs[0].value;
+        bookAuthors[currentEditIndex].textContent = textInputs[1].value;
+        if(textInputs[2].value){ 
+            bookCovers[currentEditIndex].setAttribute("src",`${textInputs[2].value}`)
+        }else{ 
+            bookCovers[currentEditIndex].setAttribute("src","images/book-cover.png") 
+        }
     
-    //arrows 
-    arrowUp.setAttribute("src", "images/arrow-up-white.png");
-    arrowDown.setAttribute("src", "images/arrow-down-white.png");
-    arrowUp.classList.add("arrow");
-    arrowUp.classList.add("up");
-    arrowDown.classList.add("arrow");
-    arrowDown.classList.add("down");
-    arrowContainer.appendChild(arrowUp);
-    arrowContainer.appendChild(arrowDown);
+        //edit progress text
+
+        toggle.checked?currentPageTexts[currentEditIndex].textContent="Current Page":currentPageTexts[currentEditIndex].textContent="Book Completed!";
     
-    //divider and text progress
-    divider.classList.add("divider");
-    divider.textContent="|";
-    pageProgress.appendChild(divider);
+        let arrowsUpDel = document.querySelectorAll(".up");
+        let arrowsDownDel = document.querySelectorAll(".down");
+        arrowsUpDel[currentEditIndex].remove();
+        arrowsDownDel[currentEditIndex].remove();
+
+        let newArrowUp = document.createElement("img");
+        let newArrowDown = document.createElement("img");
+        newArrowUp.setAttribute("src", "images/arrow-up-white.png");
+        newArrowDown.setAttribute("src", "images/arrow-down-white.png");
+        newArrowUp.classList.add("arrow");
+        newArrowUp.classList.add("up");
+        newArrowDown.classList.add("arrow");
+        newArrowDown.classList.add("down");
+        arrowContainers[currentEditIndex].appendChild(newArrowUp);
+        arrowContainers[currentEditIndex].appendChild(newArrowDown);
+
+        currentPages[currentEditIndex].textContent = parseInt(textInputs[4].value);
+        totalPagesEdit[currentEditIndex].textContent = parseInt(textInputs[3].value);
+        
+
+        barProgressEdit[currentEditIndex].style.cssText = `width: ${percentageEdit}%;`;
+        if(percentageEdit ===100) barProgressEdit[currentEditIndex].style.background = 'rgb(27, 158, 34)';
+        
+        arrowFunc(newArrowUp,newArrowDown, currentPages[currentEditIndex], textInputs[3].value, barProgressEdit[currentEditIndex], currentPageTexts[currentEditIndex]); 
+
+
+    }
+
+
+
+  
+       
     
 
-    totalPages.classList.add("total-pages");
-    totalPages.textContent=textInputs[3].value;
-    pageProgress.appendChild(totalPages);
-
-    //progress bar
-
-    book.appendChild(progressBarContainer);
-    progressBarContainer.classList.add("progress-bar-container");
-
-    bar.classList.add("bar");
-    progressBarContainer.appendChild(bar);
-    barProgress.classList.add("bar-progress");
-    bar.appendChild(barProgress);
-    percentageComplete = (textInputs[4].value / textInputs[3].value)*100;
-    barProgress.style.cssText = `width: ${percentageComplete}%;`;
-
-    if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
-    
-    arrowFunc(arrowUp,arrowDown, currentPage, textInputs[3].value, barProgress, currentText); //increment and decrement pages
-
- 
+   
+   
     deleteBook(trashBtn, holdDelText);
     editBook(editBtn)
-
     clearInputs();
+
 
 }
 

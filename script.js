@@ -7,7 +7,7 @@ let editBookBtn = document.getElementById("edit-book");
 let textInputs = document.querySelectorAll("input[type=text]");
 let addBookBtn = document.getElementById("add-book");
 let currentEditIndex=0;
-let demoBooks = false;
+
 function Book(title,author,url, pagesTotal, read, pagesRead){
     this.title = title; this.author=author; this.url=url; this.pagesTotal=pagesTotal;this.read=read;this.pagesRead=pagesRead;
 }
@@ -18,21 +18,38 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 function addDemoBooks(){
-    demoBooks = true;
-    let book1 = {
-        title: "Flowers for Algernon",
-        author: "Daniel Keyes",
-        url: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/FlowersForAlgernon.jpg/220px-FlowersForAlgernon.jpg',
-        pagesTotal: 311,
-        read:false,
-        pagesRead: 69,
+ 
+    let demoArray = [
+        {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
+        {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
+        {title: "Lullaby", author: "Chuck Palahniuk", url:'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg', pagesTotal: 272, read: false, pagesRead: 272},
+        {title: "Flowers for Algernon", author: "Daniel Keyes", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/FlowersForAlgernon.jpg/220px-FlowersForAlgernon.jpg', pagesTotal: 311, read:true, pagesRead: 32},
+        {title: "Prometheus Rising", author: "Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/PrometheusRisingCover.jpg/220px-PrometheusRisingCover.jpg', pagesTotal:262 , read:false, pagesRead:262 },
+        {title: "If on a Winter's Night a Traveler", author: "Italo Calvino", url: 'https://pictures.abebooks.com/isbn/9780749399238-us.jpg', pagesTotal: 260, read:true, pagesRead:34},
+        {title: "A Scanner Darkly", author: "Philip K. Dick", url: 'https://upload.wikimedia.org/wikipedia/en/2/27/AScannerDarkly%281stEd%29.jpg', pagesTotal: 220 , read:false , pagesRead: 220},
+        {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
+        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
+    ]
+
+    for(let index in demoArray){
+        let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[0].pagesRead);
+        myLibrary.push(bookObj);
+        createBook(true, demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
+
     }
-
-
-
 
 }
 
+
+
+window.addEventListener("click", (e)=>{ //to test library
+    if(e.target.textContent==="Library"){
+        addDemoBooks();
+    }
+    if(e.target.textContent==="Stats"){
+        console.log(myLibrary)
+    }
+})
 
 
 
@@ -67,7 +84,6 @@ function checkForm(e){
     for(let index=0;index<textInputs.length;index++){
 
         if(Number(textInputs[3].value)<Number(textInputs[4].value)){
-            console.log("true")
             textInputs[4].setCustomValidity("Invalid");
             textInputs[4].value="";
             textInputs[4].placeholder=`Must be <= than total ${textInputs[3].value}`;
@@ -135,7 +151,7 @@ function addBookToLibrary(){
 }
 
 
-function createBook(create){
+function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         //creates empty book
     let book = document.createElement("div"); //*****
     let bookContainer = document.querySelector(".book-container");
@@ -186,17 +202,26 @@ function createBook(create){
         editHoverText.textContent = "Edit";
         book.appendChild(editHoverText);
         book.appendChild(holdDelText);
+        let titleField = textInputs[0].value;
+        let authorField = textInputs[1].value;
+        let imageField = textInputs[2].value;
+        let totalField = textInputs[3].value;
+        let readField = textInputs[4].value;
+        let tog = rd;
+        if(tot){ //if demo books
+            titleField = tot;
+            authorField = aut;
+            imageField = url;
+            totalField = pagesTot;
+            readField = pagesRe;
+        }
 
-        let titleField = textInputs[0];
-        let authorField = textInputs[1];
-        let imageField = textInputs[2];
-        let totalField = textInputs[3];
-        let readField = textInputs[4];
+       
     
         //book cover
-        bookCover.setAttribute("alt",`cover of ${titleField.value}`)
-        if(imageField.value){ //if user inserts an image
-            bookCover.setAttribute("src",`${imageField.value}`)
+        bookCover.setAttribute("alt",`cover of ${titleField}`)
+        if(imageField){ //if user inserts an image
+            bookCover.setAttribute("src",`${imageField}`)
         }else{ //default image if none is inserted
             bookCover.setAttribute("src","images/book-cover.png") 
         }
@@ -207,8 +232,8 @@ function createBook(create){
         titleAuthorContainer.classList.add("title-author");
         bookTitle.classList.add("book-title");
         bookAuthor.classList.add("book-author");
-        bookTitle.textContent = titleField.value;
-        bookAuthor.textContent = authorField.value;
+        bookTitle.textContent = titleField;
+        bookAuthor.textContent = authorField;
         titleAuthorContainer.appendChild(bookTitle);
         titleAuthorContainer.appendChild(bookAuthor);
         book.appendChild(titleAuthorContainer);
@@ -221,11 +246,15 @@ function createBook(create){
         arrowContainer.classList.add("arrow-container");
         pageProgress.appendChild(currentText);
         pageProgress.appendChild(arrowContainer);
-        currentPage.textContent=textInputs[4].value;
+        currentPage.textContent=readField;
         arrowContainer.appendChild(currentPage);
     
-        toggle.checked?currentText.textContent="Current Page":currentText.textContent="Book Completed!"; //change to "book completed" if book done
+
+        readField<totalField ? currentText.textContent="Current Page":currentText.textContent="Book Completed!"; 
+
         
+   
+
         //arrows 
         arrowUp.setAttribute("src", "images/arrow-up-white.png");
         arrowDown.setAttribute("src", "images/arrow-down-white.png");
@@ -243,7 +272,7 @@ function createBook(create){
         
     
         totalPages.classList.add("total-pages");
-        totalPages.textContent=parseInt(totalField.value);
+        totalPages.textContent=parseInt(totalField);
         pageProgress.appendChild(totalPages);
     
         //progress bar
@@ -255,12 +284,11 @@ function createBook(create){
         progressBarContainer.appendChild(bar);
         barProgress.classList.add("bar-progress");
         bar.appendChild(barProgress);
-        percentageComplete = (readField.value / totalField.value)*100;
+        percentageComplete = (readField / totalField)*100;
         barProgress.style.cssText = `width: ${percentageComplete}%;`;
-    
         if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
        
-        arrowFunc(arrowUp,arrowDown, currentPage, totalField.value, barProgress, currentText); 
+        arrowFunc(arrowUp,arrowDown, currentPage, totalField, barProgress, currentText); 
 
     }
 
@@ -415,16 +443,6 @@ function clearInputs(){
 
 
 
-window.addEventListener("click", (e)=>{ //to test library
-    if(e.target.textContent==="Library"){
-        console.log(myLibrary)
-    }
-})
-
-
-
-
-
 
 
 
@@ -457,5 +475,5 @@ window.addEventListener("click", (e)=>{
         bgDiv.style.display="none"
     }
 })
-// Enables Enter key to work as submit button when book box is in display
+// Enables Enter key to work as submit button when book box is in display //FIX THIS 
 window.addEventListener("keydown", (e)=>{if(e.key === "Enter" && addBox.style.display==="block"){ checkForm();}})

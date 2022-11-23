@@ -24,62 +24,8 @@ window.addEventListener("click", (e)=>{ //to test library
     }
     if(target==="Stats"){
         console.log(myLibrary)
-
-        let otherOption = document.getElementById("other-option");
-        let selectDropOption = document.querySelector(".option-2");
-        console.log(selectDropOption)
-        console.log(otherOption)
     }
 })
-
-
-
-let selectActive = false;
-let option = "title";
-let selectDropOption = document.querySelector(".option-2");
-let selectArrow = document.getElementById("down-select");
-let selectDrop = document.querySelector(".search-drop-down");
-selectDrop.addEventListener("click", ()=>{
-    if (!selectActive){
-        selectActive=true;
-        selectDropOption.classList.add("option-2-drop");
-        selectArrow.classList.add("down-animation");
-    }
-    else if(selectActive ){
-        selectActive=false;
-        selectDropOption.classList.remove("option-2-drop");
-        selectArrow.classList.remove("down-animation");
-
-    }
-    searchBar.addEventListener("focus", ()=>{
-        selectActive=false;
-        selectDropOption.classList.remove("option-2-drop");
-        selectArrow.classList.remove("down-animation");
-    })   
-}, true)
-
-
-let otherOption = document.getElementById("other-option");
-otherOption.addEventListener("click", ()=>{
-    let selectedOption = document.getElementById("selected-option");
-    console.log(selectedOption.textContent)
-    if(option==="title"){
-        selectedOption.textContent="Author";
-        otherOption.textContent="Title"
-        option="author";
-    }
-    else{
-        selectedOption.textContent="Title";
-        otherOption.textContent="Author"
-        option="title";
-    }
-})
-
-
-
-
-
-
 
 
 
@@ -466,32 +412,6 @@ function clearInputs(){
 }
 
 
-//search bar
-let searchBar = document.getElementById("search-bar");
-searchBar.addEventListener("input", ()=>{
-    let allBooks= document.querySelectorAll(".book");
-    let barText = searchBar.value;
-    let bookTitles = document.querySelectorAll(".book-title");
-
-    if(barText){
-       for(let index in allBooks){
-            if(bookTitles[index].textContent!==undefined){
-                if(bookTitles[index].textContent.match(/[a-z!?]/gi).join("").toLowerCase().includes(barText.toLocaleLowerCase().replace(/\s/g, "").match(/[a-z!?]/gi).join(""))){
-                    allBooks[index].style.display="grid";
-                }
-                else{allBooks[index].style.display="none";}
-            }
-       }
-       console.log(barText)
-    }
-    else{
-            for(let index in allBooks){
-                if(bookTitles[index].textContent!==undefined){
-                    allBooks[index].style.display="grid";
-                }
-            }
-        }
-    })
 
 //add book box toggle
 let toggle = document.querySelector('input[type="checkbox"]');
@@ -523,10 +443,93 @@ window.addEventListener("keydown", (e)=>{if(e.key === "Enter" && addBox.style.di
 
 
 
+//search bar functionality 
+let searchBar = document.getElementById("search-bar");
+searchBar.addEventListener("input", searchBarFunc);
+
+searchBar.addEventListener("focus",searchBarFunc);
+function searchBarFunc(){
+    let allBooks= document.querySelectorAll(".book");
+    let barText = searchBar.value;
+    let bookTitles = document.querySelectorAll(".book-title");
+    let bookAuthors = document.querySelectorAll(".book-author");
+
+    if(option==="title"){
+        searchBy(bookTitles);
+    }
+    else if(option==="author"){
+        searchBy(bookAuthors);
+    }
+    function searchBy(element){
+        if(barText){
+            for(let index in allBooks){
+                    if(element[index].textContent!==undefined){
+                        if(element[index].textContent.match(/[a-z!?]/gi).join("").toLowerCase().includes(barText.toLocaleLowerCase().replace(/\s/g, "").match(/[a-z!?]/gi).join(""))){
+                            allBooks[index].style.display="grid";
+                        }
+                        else{allBooks[index].style.display="none";}
+                    }
+            }
+            }
+            else{
+                    for(let index in allBooks){
+                        if(element[index].textContent!==undefined){
+                            allBooks[index].style.display="grid";
+                        }
+                    }
+                }
+    }
+
+}
 
 
 
+let selectActive = false;
+let option = "title";
+let selectDropOption = document.querySelector(".option-2");
+let selectArrow = document.getElementById("down-select");
+let selectDrop = document.querySelector(".search-drop-down");
+//main drop down button
+selectDrop.addEventListener("click", ()=>{
+    if (!selectActive){
+        selectActive=true;
+        selectDropOption.classList.add("option-2-drop");
+        selectArrow.classList.add("down-animation");
+    }
+    else if(selectActive){
+      removeDropDown();
 
+    }
+    searchBar.addEventListener("focus",removeDropDown);
+    searchBar.addEventListener("click", removeDropDown)
+
+
+    function removeDropDown(){
+        selectDropOption.classList.remove("option-2-drop");
+        selectArrow.classList.remove("down-animation");
+        selectActive=false;
+    }
+},true)
+//the hidden option
+let otherOption = document.getElementById("other-option");
+otherOption.addEventListener("click", ()=>{
+    selectDropOption.classList.remove("option-2-drop");
+    let selectedOption = document.getElementById("selected-option");
+   
+    if(option==="title"){
+        selectedOption.textContent="Author";
+        otherOption.textContent="Title"
+        option="author";
+        searchBar.placeholder="Search by author";
+    }
+    else{
+        selectedOption.textContent="Title";
+        otherOption.textContent="Author"
+        option="title";
+        searchBar.placeholder="Search by title";
+    }
+    searchBar.focus();
+})
 
 
 function addDemoBooks(){
@@ -541,7 +544,6 @@ function addDemoBooks(){
         {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
         {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
     ]
-
     for(let index in demoArray){
         let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[0].pagesRead);
         myLibrary.push(bookObj);

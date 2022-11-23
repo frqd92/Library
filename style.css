@@ -75,6 +75,10 @@ position: relative;
 #selected-option{
     padding-left: 15px;
 }
+#other-option{
+    width: 100%;
+    text-align: center;
+}
 .option-2{
     font-size: 14px;
     width: 70px;

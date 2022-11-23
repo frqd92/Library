@@ -24,37 +24,56 @@ window.addEventListener("click", (e)=>{ //to test library
     }
     if(target==="Stats"){
         console.log(myLibrary)
-      
 
+        let otherOption = document.getElementById("other-option");
+        let selectDropOption = document.querySelector(".option-2");
+        console.log(selectDropOption)
+        console.log(otherOption)
     }
 })
 
 
 
 let selectActive = false;
-let selectDrop = document.querySelector(".search-drop-down");
+let option = "title";
 let selectDropOption = document.querySelector(".option-2");
-selectDrop.addEventListener("mousedown", ()=>{
-
+let selectArrow = document.getElementById("down-select");
+let selectDrop = document.querySelector(".search-drop-down");
+selectDrop.addEventListener("click", ()=>{
     if (!selectActive){
         selectActive=true;
         selectDropOption.classList.add("option-2-drop");
-
+        selectArrow.classList.add("down-animation");
     }
     else if(selectActive ){
         selectActive=false;
         selectDropOption.classList.remove("option-2-drop");
+        selectArrow.classList.remove("down-animation");
 
     }
-
     searchBar.addEventListener("focus", ()=>{
         selectActive=false;
         selectDropOption.classList.remove("option-2-drop");
-    })
-    console.log(selectActive)
+        selectArrow.classList.remove("down-animation");
+    })   
+}, true)
 
+
+let otherOption = document.getElementById("other-option");
+otherOption.addEventListener("click", ()=>{
+    let selectedOption = document.getElementById("selected-option");
+    console.log(selectedOption.textContent)
+    if(option==="title"){
+        selectedOption.textContent="Author";
+        otherOption.textContent="Title"
+        option="author";
+    }
+    else{
+        selectedOption.textContent="Title";
+        otherOption.textContent="Author"
+        option="title";
+    }
 })
-
 
 
 
@@ -474,16 +493,6 @@ searchBar.addEventListener("input", ()=>{
         }
     })
 
-
-
-
-
-
-
-
-
-
-
 //add book box toggle
 let toggle = document.querySelector('input[type="checkbox"]');
 let pagesRead = document.querySelector(".pages-read");
@@ -500,7 +509,6 @@ textInputs[4].addEventListener("input", ()=>{
         pagesRead.style.visibility="hidden"
     }
 } )
-
 
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{

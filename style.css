@@ -39,18 +39,22 @@ nav h1 {
 }
 .search-bar-container{
    position: relative;
+
 }
 .search-drop-down{
 position: absolute;
 width: 90px;
+
 height: 28px;
-background: rgba(11, 7, 49);
+background: rgb(36, 30, 96);
 border-radius: 20px 0 0 20px;
 top: 4px;
 display: grid;
 align-items: center;
 padding-left: 8px;
 cursor: pointer;
+border: 0.5px solid rgb(0, 0, 0, 0.2);
+
 }
 .search-drop-down .drop-item{
 position: relative;
@@ -60,21 +64,25 @@ position: relative;
     justify-content: center;
     align-items: center;
     margin-top: 2px;
+    padding-top: 2px;
     position: absolute;
-
+    font-size: 0.8rem;
 }
 .option-1{
     top: 0px;
     left: -8px;
 }
+#selected-option{
+    padding-left: 15px;
+}
 .option-2{
     font-size: 14px;
     width: 70px;
     height: 25px;
-    top: -21px;
+    top: -23px;
     left: 3px;
-    border-radius: 0px 0 0px 0px;
-    background: rgba(109, 108, 121, 0.4);
+    border-radius: 0px 0 5px 5px;
+    background: rgb(36, 30, 96);
     z-index: -1;
     transition: transform 0.1s linear;
 }
@@ -95,6 +103,11 @@ position: relative;
 #down-select{
 margin: 3px 0 0 2px;
 width: 15px;
+transition: transform 0.2s linear;
+}
+
+.down-animation{
+    transform: rotate(270deg);
 }
 
 
@@ -104,7 +117,7 @@ width: 15px;
     width: 100%;
     border-radius: 20px;
     outline: none;
-    border: none;
+    border: 0.5px solid rgb(0, 0, 0, 0.2);
     height: 28px;
     font-family: 'Rajdhani', sans-serif;
     font-size: 1.2rem;

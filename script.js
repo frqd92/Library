@@ -27,10 +27,39 @@ window.addEventListener("click", (e)=>{ //to test library
     }
 })
 
+// Enables Enter key to work as submit button when book box is in display //FIX THIS 
+window.addEventListener("keydown", (e)=>{
+    let addBoxVis = addBox.style.display;
+    if(e.key.match(/[a-z]/g) && addBoxVis!=="block"){
+        searchBar.focus();
+        }
+    })
 
 
+//&& addBox.style.display!== "block"
 
 
+//addBook hover effect bullshit
+window.onload = function addBookBtnEffects(){
+    let plusSign = document.getElementById("plus-svg");
+    let addBookText = document.getElementById("add-book-text");
+
+    addBoxBtn.addEventListener("mouseover", ()=>{
+        plusSign.classList.add("plus-effect");
+        plusSign.style.marginLeft='10px';
+        addBookText.style.transform='scale(1.1)';
+    })
+    addBoxBtn.addEventListener("mouseleave", ()=>{
+        plusSign.classList.remove("plus-effect");
+        addBookText.style.transform= 'scale(1)';
+        plusSign.style.marginLeft='0px';
+    })
+    addBoxBtn.addEventListener("mousedown", ()=>{
+        addBookText.style.transform= 'scale(1)';
+        plusSign.style.marginLeft='0px';
+   
+    })
+}
 
 
 
@@ -50,10 +79,10 @@ window.addEventListener("click", (e)=>{ //to test library
 
 // javascript form validation 
 function checkForm(e){
+
     let validityCheck = false;
     let invalidIndex;
     from=e.target.id;
-
     for(let index=0;index<textInputs.length;index++){
 
         if(Number(textInputs[3].value)<Number(textInputs[4].value)){
@@ -83,10 +112,8 @@ function checkForm(e){
 
     if(validityCheck === true && from ==="add-book"){
         addBookToLibrary()
-
     }
     else if (validityCheck === true && from ==="edit-book"){
-
         createBook(false);
     }
 }
@@ -170,7 +197,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         book.appendChild(trashBtn);
         book.appendChild(editBtn);
         holdDelText.classList.add("hold-delete-text");
-        holdDelText.textContent = `Hold for 3 seconds to delete`;
+        holdDelText.textContent = `Hold 3 seconds to delete`;
         editHoverText.classList.add("hold-edit-text");
         editHoverText.textContent = "Edit";
         book.appendChild(editHoverText);
@@ -321,7 +348,6 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 }
 
 //Make the add book box appear and disappear
-
 addBoxBtn.addEventListener("click", ()=>{
     clearInputs();
     bgDiv.style.display="block"
@@ -370,7 +396,7 @@ function deleteBook(trashBtn, text){
         interval=setInterval(()=>{
             timer +=1;
             revTimer = counter + timer;
-            text.innerText = `Hold for ${revTimer-1} seconds to delete`;
+            text.innerText = `Hold ${revTimer-1} seconds to delete`;
             counter = counter - 2;
             switch(timer){
                 case 1: text.style.color="rgb(199, 45, 45)"; break;
@@ -392,7 +418,7 @@ function deleteBook(trashBtn, text){
         clearInterval(interval);
         timer =0;
         counter=2;
-        text.innerText = `Hold for 3 seconds to delete`;
+        text.innerText = `Hold 3 seconds to delete`;
         text.style.color="rgb(180, 92, 97)";
     })
     trashBtn.addEventListener("mouseleave", ()=>{
@@ -432,14 +458,18 @@ textInputs[4].addEventListener("input", ()=>{
 
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
-    if(e.target.className==="bg-div" || e.target.className ==="close-btn"){
+    let tar = e.target.className;
+    if(
+        tar==="bg-div"||
+        tar ==="close-btn"||
+        tar ==="search"||
+        e.target.id==="search-bar"||
+        e.target.id==="selected-option"
+        ){
         addBox.style.display="none"
         bgDiv.style.display="none"
     }
 })
-// Enables Enter key to work as submit button when book box is in display //FIX THIS 
-window.addEventListener("keydown", (e)=>{if(e.key === "Enter" && addBox.style.display==="block"){ checkForm();}})
-
 
 
 

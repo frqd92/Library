@@ -2,7 +2,8 @@
     --nav-bg: rgb(7, 18, 55);
     --body-bg: rgb(41, 17, 226);
     --font-color-white: white;
-    --add-bg: rgb(0, 0, 0, 0.85);
+    --add-bg: rgb(0, 0, 0, 1);
+    --add-box: rgb(0, 0, 0, 0.91);
     --add-btn-bg:  rgb(6, 6, 14,);
     --form-btn: rgb(50, 50, 129);
 }
@@ -41,10 +42,10 @@ nav h1 {
    position: relative;
 
 }
+
 .search-drop-down{
 position: absolute;
 width: 90px;
-
 height: 28px;
 background: rgb(36, 30, 96);
 border-radius: 20px 0 0 20px;
@@ -57,7 +58,7 @@ border: 0.5px solid rgb(0, 0, 0, 0.2);
 
 }
 .search-drop-down .drop-item{
-position: relative;
+    position: relative;
 }
 .drop-item{
     display: flex;
@@ -89,6 +90,7 @@ position: relative;
     background: rgb(36, 30, 96);
     z-index: -1;
     transition: transform 0.1s linear;
+  
 }
 
 .option-2:hover{
@@ -100,7 +102,7 @@ position: relative;
     transform: translate(0, 23px);
 }
 
-/*  .transform: translate(0, -23px);*/
+
 
 
 
@@ -165,10 +167,59 @@ nav h2{
     position: fixed;
     top:71px;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    height: 33px;
+}
+
+.add-box-container:hover{
+    background: rgb(20, 20, 20, 0.95);
+    height: 40px;
+    top: 67px;
+    z-index: 10;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+.add-box-container:active{
+    top:71px;
+    height: 33px;
+}
+.add-box-container h2{
+    align-self: center;
+
 }
 
 
 
+#plus-svg{
+    width: 25px;
+    fill: white;
+    margin-left: 3px;
+
+    align-self: center;
+}
+.plus-effect{
+    animation: infinite linear 2s plusAnimate;
+}
+@keyframes plusAnimate {
+    0%{
+        transform: scale(1);
+        transform: rotate(180deg);
+    }
+    6%{
+        transform: rotate(0deg);
+    }
+    50%{
+        transform: scale(1.5);
+    }
+    85%{
+     transform: rotate(-360deg);;
+    }
+    100%{
+        transform: scale(1);
+    }
+}
                                                                                 /* add book box */
 .add-box{ 
     position: fixed;
@@ -182,7 +233,7 @@ nav h2{
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     z-index: 2;
-    background: var(--add-bg);
+    background: var(--add-box);
     color: rgb(203, 192, 192);
     font-family: 'Rajdhani', sans-serif;
     padding: 60px 40px;
@@ -215,18 +266,16 @@ input[type=text]:focus::-webkit-input-placeholder{
 
 }
 
-.close-btn{
-    text-align: end;
-
-}
 .close-btn {
+    text-align: end;
     width: 1.5rem;
     position: absolute;
     top: 0;
     right: 0;
-    opacity: 0.5;
+    opacity: 0.8;
     transition: transform, opacity 0.2s linear;
     user-select: none;
+   
 }
 .close-btn:hover {
     transform: scale(1.1);

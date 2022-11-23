@@ -17,7 +17,7 @@ background: linear-gradient(to right, #17173c, #19215a, #0c1541);
 }
 nav {
     display: grid;
-    grid-template-columns: 4fr 1fr;
+    grid-template-columns: 4fr 2fr 1fr;
     background-color: var(--nav-bg);
     color: var( --font-color-white);
     justify-content: center;
@@ -28,6 +28,7 @@ nav {
     user-select: none;
     position: fixed;
     z-index: 2;
+    gap: 30px;
 }
 
 nav h1 {
@@ -35,6 +36,86 @@ nav h1 {
     margin-left: 2rem;
     border-bottom:1px solid rgb(255, 255, 255);
    
+}
+.search-bar-container{
+   position: relative;
+}
+.search-drop-down{
+position: absolute;
+width: 90px;
+height: 28px;
+background: rgba(11, 7, 49);
+border-radius: 20px 0 0 20px;
+top: 4px;
+display: grid;
+align-items: center;
+padding-left: 8px;
+cursor: pointer;
+}
+.search-drop-down .drop-item{
+position: relative;
+}
+.drop-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px;
+    position: absolute;
+
+}
+.option-1{
+    top: 0px;
+    left: -8px;
+}
+.option-2{
+    font-size: 14px;
+    width: 70px;
+    height: 25px;
+    top: -21px;
+    left: 3px;
+    border-radius: 0px 0 0px 0px;
+    background: rgba(109, 108, 121, 0.4);
+    z-index: -1;
+    transition: transform 0.1s linear;
+}
+
+.option-2:hover{
+    background: var(--body-bg);
+    
+}
+
+.option-2-drop{
+    transform: translate(0, 23px);
+}
+
+/*  .transform: translate(0, -23px);*/
+
+
+
+#down-select{
+margin: 3px 0 0 2px;
+width: 15px;
+}
+
+
+#search-bar{
+    padding: 5px 8px 5px 95px;
+    margin-top: 4px;
+    width: 100%;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    height: 28px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    background: #ffffff46;
+    color: rgb(13, 14, 15);
+}
+
+#search-bar::placeholder{
+    color: rgb(234, 223, 223);
+    opacity: 0.5;
+    font-size: 18px;
 }
 nav h2{
     cursor: pointer;
@@ -303,7 +384,7 @@ form{
     border-radius: 3px;
     height: 10px;
     width: 100%;
- 
+    transition: width 0.5s linear;
 }
 
 .book-btn{

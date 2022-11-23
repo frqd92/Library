@@ -13,10 +13,25 @@
 <body>
     <div class="bg-div"></div>
 <nav>
-    <h1>Library</h1>
+    <h1>Library Thing</h1>
+
+    <div class="search-bar-container">
+        <div class="search-drop-down">
+            <div class="drop-item option-1 ">
+                <p>Title</p>
+                <img src="images/arrow-down-white.png" alt="" id="down-select">
+            </div>
+            <div class="drop-item option-2">
+             <p>Author</p>
+            </div>
+          
+        </div>
+        <input type="text" id="search-bar"  placeholder="Search book cards">
+    </div>
+
     <div class="nav-options">
-        <h3>Stats</h3>
         <h3>Select</h3>
+        <h3>Stats</h3>
         <h3>Settings</h3>
     </div>
 </nav>
@@ -31,22 +46,22 @@
         <form action="">
             <div class="input-container">
                 <label for="book-title" aria-label="required">Title *</label>
-                <input type="text" id="book-title" required autocomplete="off" maxlength="55">
+                <input type="text" id="book-title" required autocomplete="off" maxlength="55" class="form-input">
             </div>
 
             <div class="input-container">
                 <label for="book-author"aria-label="required">Author *</label>
-                <input type="text" id="book-author" required autocomplete="off" maxlength="30">
+                <input type="text" id="book-author" required autocomplete="off" maxlength="30" class="form-input">
             </div>
 
             <div class="input-container">
                 <label for="book-image">Book Image URL</label>
-                <input type="text" id="book-image" autocomplete="off")
+                <input type="text" id="book-image" autocomplete="off" class="form-input")
                 ">
             </div>
             <div class="input-container">
                 <label for="book-pages" aria-label="required">Pages Total *</label>
-                <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off">
+                <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off" class="form-input">
             </div>
             <div class="input-container">
                 <label for="book-read"><h4>Book Completed?</h4></label>
@@ -57,7 +72,7 @@
             </div>
             <div class="input-container pages-read">
                 <label for="book-pages" aria-label="required">Pages Read *</label>
-                <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off">
+                <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off" class="form-input">
             </div>
             <button id="add-book" class="add-box-main-form" type="button">ADD BOOK</button>
             <button id="edit-book" class="add-box-main-form" type="button">EDIT BOOK</button>

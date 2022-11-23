@@ -4,7 +4,7 @@ let addBox = document.querySelector(".add-box");
 let bgDiv = document.querySelector(".bg-div");
 let closeBtn = document.querySelector("close-btn");
 let editBookBtn = document.getElementById("edit-book");
-let textInputs = document.querySelectorAll("input[type=text]");
+let textInputs = document.querySelectorAll(".form-input");
 let addBookBtn = document.getElementById("add-book");
 let currentEditIndex=0;
 
@@ -17,39 +17,47 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
-function addDemoBooks(){
- 
-    let demoArray = [
-        {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
-        {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
-        {title: "Lullaby", author: "Chuck Palahniuk", url:'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg', pagesTotal: 272, read: false, pagesRead: 272},
-        {title: "Flowers for Algernon", author: "Daniel Keyes", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/FlowersForAlgernon.jpg/220px-FlowersForAlgernon.jpg', pagesTotal: 311, read:true, pagesRead: 32},
-        {title: "Prometheus Rising", author: "Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/PrometheusRisingCover.jpg/220px-PrometheusRisingCover.jpg', pagesTotal:262 , read:false, pagesRead:262 },
-        {title: "If on a Winter's Night a Traveler", author: "Italo Calvino", url: 'https://pictures.abebooks.com/isbn/9780749399238-us.jpg', pagesTotal: 260, read:true, pagesRead:34},
-        {title: "A Scanner Darkly", author: "Philip K. Dick", url: 'https://upload.wikimedia.org/wikipedia/en/2/27/AScannerDarkly%281stEd%29.jpg', pagesTotal: 220 , read:false , pagesRead: 220},
-        {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
-        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
-    ]
-
-    for(let index in demoArray){
-        let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[0].pagesRead);
-        myLibrary.push(bookObj);
-        createBook(true, demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
-
-    }
-
-}
-
-
-
 window.addEventListener("click", (e)=>{ //to test library
-    if(e.target.textContent==="Library"){
+    let target = e.target.textContent;
+    if(target==="Library Thing"){
         addDemoBooks();
     }
-    if(e.target.textContent==="Stats"){
+    if(target==="Stats"){
         console.log(myLibrary)
+      
+
     }
 })
+
+
+
+let selectActive = false;
+let selectDrop = document.querySelector(".search-drop-down");
+let selectDropOption = document.querySelector(".option-2");
+selectDrop.addEventListener("mousedown", ()=>{
+
+    if (!selectActive){
+        selectActive=true;
+        selectDropOption.classList.add("option-2-drop");
+
+    }
+    else if(selectActive ){
+        selectActive=false;
+        selectDropOption.classList.remove("option-2-drop");
+
+    }
+
+    searchBar.addEventListener("focus", ()=>{
+        selectActive=false;
+        selectDropOption.classList.remove("option-2-drop");
+    })
+    console.log(selectActive)
+
+})
+
+
+
+
 
 
 
@@ -439,6 +447,32 @@ function clearInputs(){
 }
 
 
+//search bar
+let searchBar = document.getElementById("search-bar");
+searchBar.addEventListener("input", ()=>{
+    let allBooks= document.querySelectorAll(".book");
+    let barText = searchBar.value;
+    let bookTitles = document.querySelectorAll(".book-title");
+
+    if(barText){
+       for(let index in allBooks){
+            if(bookTitles[index].textContent!==undefined){
+                if(bookTitles[index].textContent.match(/[a-z!?]/gi).join("").toLowerCase().includes(barText.toLocaleLowerCase().replace(/\s/g, "").match(/[a-z!?]/gi).join(""))){
+                    allBooks[index].style.display="grid";
+                }
+                else{allBooks[index].style.display="none";}
+            }
+       }
+       console.log(barText)
+    }
+    else{
+            for(let index in allBooks){
+                if(bookTitles[index].textContent!==undefined){
+                    allBooks[index].style.display="grid";
+                }
+            }
+        }
+    })
 
 
 
@@ -477,3 +511,34 @@ window.addEventListener("click", (e)=>{
 })
 // Enables Enter key to work as submit button when book box is in display //FIX THIS 
 window.addEventListener("keydown", (e)=>{if(e.key === "Enter" && addBox.style.display==="block"){ checkForm();}})
+
+
+
+
+
+
+
+
+
+
+function addDemoBooks(){
+    let demoArray = [
+        {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
+        {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
+        {title: "Lullaby", author: "Chuck Palahniuk", url:'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg', pagesTotal: 272, read: false, pagesRead: 272},
+        {title: "Flowers for Algernon", author: "Daniel Keyes", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/FlowersForAlgernon.jpg/220px-FlowersForAlgernon.jpg', pagesTotal: 311, read:true, pagesRead: 32},
+        {title: "Prometheus Rising", author: "Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/PrometheusRisingCover.jpg/220px-PrometheusRisingCover.jpg', pagesTotal:262 , read:false, pagesRead:262 },
+        {title: "If on a Winter's Night a Traveler", author: "Italo Calvino", url: 'https://pictures.abebooks.com/isbn/9780749399238-us.jpg', pagesTotal: 260, read:true, pagesRead:34},
+        {title: "A Scanner Darkly", author: "Philip K. Dick", url: 'https://upload.wikimedia.org/wikipedia/en/2/27/AScannerDarkly%281stEd%29.jpg', pagesTotal: 220 , read:false , pagesRead: 220},
+        {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
+        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
+    ]
+
+    for(let index in demoArray){
+        let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[0].pagesRead);
+        myLibrary.push(bookObj);
+        createBook(true, demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
+
+    }
+
+}

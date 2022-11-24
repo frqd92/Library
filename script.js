@@ -63,6 +63,15 @@ function navSelect(){
         selectNavClose.removeEventListener("click", removeSelectMode);
     }
 
+    window.addEventListener("keyup", (e)=>{
+    if(e.key==="Escape"){
+        removeSelectMode();
+    }
+
+    
+
+    });
+
 
     function removeSelectMode(){
         for(let element of allBooks){

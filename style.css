@@ -48,11 +48,10 @@ nav h1 {
 
 
 
-/* select book style */
+/* select book drop down style */
 .select-container{
     width: 400px;
     height: 300px;
-
     border: 1.5px solid rgba(171, 172, 237, 0.626);
     position: absolute;
     border-radius: 5px;
@@ -296,12 +295,11 @@ nav h2{
 .select-nav-menu{
     position: fixed;
     width: 100%;
-    height: 32px;
+    max-height: 30px;
     background: var(--select-nav);
     z-index: 10;
-    top:72px;
+    top:70px;
     display: none;
-    border-top: 1px solid rgba(128, 128, 128, 0.554);
     justify-content: center;
     align-items: center;
    
@@ -309,31 +307,56 @@ nav h2{
     
 }
 .select-menu-items{
-    display: flex;
-    width: 40%;
+    display: grid;
+    grid-template-columns: 4fr 3fr 3fr 3fr 1fr;
+ 
+    width: 100%;
     font-family: 'Mulish', sans-serif;
     color:rgb(213, 213, 226);
-    justify-content: center;
+    justify-content: end;
     align-items: center;
   user-select: none;
-    
+    justify-content: center;
 
 }
-.select-menu-items p{
-    flex: 5;
+.num-items-selected{
+    justify-self: center;
+}
+.close-select-nav{
+    justify-self: end;
+    color: rgba(12, 10, 28, 0.544);
+    font-weight: bolder;
+    font-size: 1.4rem;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.close-select-nav:hover{
+    transform: scale(1.2);
+    color: rgb(210, 79, 79);
+}
+.close-select-nav:active{
+    transform: scale(1);
+}
+sup{
+    font-size: 0.7rem;
+    color:rgb(213, 213, 226);
 }
 .select-nav-btn{
-    flex:2;
+    max-height: 30px;
     outline: none;
-    border: 1px solid rgba(0, 0, 0, 0.251);
+    border-left: 2px solid rgba(0, 0, 0, 0.251);
+    border-right: 2px solid rgba(0, 0, 0, 0.251);
     padding: 3px;
     background: rgba(128, 128, 128, 0.262);
-    border-radius: 15px;
+   border-top:0 ;
+   border-bottom: 0;
     color: rgba(223, 227, 233, 0.574);
     font-family: 'Rajdhani', sans-serif;
     font-size: 1rem;
     margin-left: 1rem;
     cursor: pointer;
+    max-width: 250px;
+    min-width: 120px;
 }
 
 

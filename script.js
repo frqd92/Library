@@ -18,17 +18,32 @@ addBookBtn.addEventListener("click", checkForm);
 //When search bar is selected it should have a shiny outline thing 
 // fix bug: when select option is turned off the selected items are deleted(not from library)
 
+
+
+
+
+
+
+
+function createHighlightSelect(){
+    
+}
+
+
 //select books 
 let navSelectBtn = document.querySelector(".nav-select");
 let selectNavMenu = document.querySelector(".select-nav-menu");
+let numItemsSelectedText = document.querySelector(".num-items-selected");
 let isSelect = false;
-navSelectBtn.addEventListener("click", ()=>{
+navSelectBtn.addEventListener("click",navSelect);
+
+function navSelect(){
     let allBooks = document.querySelectorAll(".book");
+    let numItemsSelected = 0;
     if(!isSelect){
         isSelect = true;
         addBoxBtn.style.display="none";
         selectNavMenu.style.display="flex";
-
         for(let element of allBooks){
             let selectContainer = document.createElement("div");
             let selectCircle = document.createElement("div");
@@ -36,25 +51,31 @@ navSelectBtn.addEventListener("click", ()=>{
             selectContainer.classList.add("select-container");
             selectCircle.classList.add("select-circle")
             selectPoint.classList.add("select-circle-point");
-          
             element.appendChild(selectContainer);
             selectContainer.appendChild(selectCircle);
             selectCircle.appendChild(selectPoint);
+
+
             selectContainer.addEventListener("click", ()=>{
-    
                 if(element.classList.contains("selected-book")){
                     selectPoint.style.visibility="hidden";
                     element.classList.remove("selected-book");
+                    numItemsSelected--;
                 }
                 else{
                     selectPoint.style.visibility="visible";
                     element.classList.add("selected-book");
+                    numItemsSelected++;
                 }
+                numItemsSelected===1?numItemsSelectedText.innerText=`${numItemsSelected} item selected`:numItemsSelectedText.innerText=`${numItemsSelected} items selected`;               
             })
         }
+
+
     }
     else{
         isSelect=false;
+        numItemsSelected=0;
         addBoxBtn.style.display="flex";
         selectNavMenu.style.display="none";
         let selectContainers = document.querySelectorAll(".select-container");
@@ -70,14 +91,23 @@ navSelectBtn.addEventListener("click", ()=>{
         }
     
     }
-    
 
+}
 
-})
+    //select all button
 
+  
+    let selectAllBtn = document.getElementById("select-nav-all-btn");
+    selectAllBtn.addEventListener("click", selectAllFunc);
+    function selectAllFunc(){
+        let allBooks = document.querySelectorAll(".book");
 
-
-
+        for(let element of allBooks){
+            if(element.classList[1]!=="selected-book"){
+                element.classList.add("selected-book");
+            }
+       }
+    }
 
 
 
@@ -105,30 +135,9 @@ window.addEventListener("keydown", (e)=>{
     })
 
 
-//&& addBox.style.display!== "block"
 
 
-//addBook hover effect bullshit
-window.onload = function addBookBtnEffects(){
-    let plusSign = document.getElementById("plus-svg");
-    let addBookText = document.getElementById("add-book-text");
 
-    addBoxBtn.addEventListener("mouseover", ()=>{
-        plusSign.classList.add("plus-effect");
-        plusSign.style.marginLeft='10px';
-        addBookText.style.transform='scale(1.1)';
-    })
-    addBoxBtn.addEventListener("mouseleave", ()=>{
-        plusSign.classList.remove("plus-effect");
-        addBookText.style.transform= 'scale(1)';
-        plusSign.style.marginLeft='0px';
-    })
-    addBoxBtn.addEventListener("mousedown", ()=>{
-        addBookText.style.transform= 'scale(1)';
-        plusSign.style.marginLeft='0px';
-   
-    })
-}
 
 
 
@@ -426,6 +435,7 @@ addBoxBtn.addEventListener("click", ()=>{
 })
 
 
+
 function arrowFunc(up, down,page, total, barProgress, text){
    function getIndex(){
    //to update pages read changes from arrows to the library
@@ -648,6 +658,30 @@ otherOption.addEventListener("click", ()=>{
     searchBar.focus();
 })
 
+//addBook hover effect bullshit
+window.onload = function addBookBtnEffects(){
+    let plusSign = document.getElementById("plus-svg");
+    let addBookText = document.getElementById("add-book-text");
+
+    addBoxBtn.addEventListener("mouseover", ()=>{
+        plusSign.classList.add("plus-effect");
+        plusSign.style.marginLeft='10px';
+        addBookText.style.transform='scale(1.1)';
+    })
+    addBoxBtn.addEventListener("mouseleave", ()=>{
+        plusSign.classList.remove("plus-effect");
+        addBookText.style.transform= 'scale(1)';
+        plusSign.style.marginLeft='0px';
+    })
+    addBoxBtn.addEventListener("mousedown", ()=>{
+        addBookText.style.transform= 'scale(1)';
+        plusSign.style.marginLeft='0px';
+   
+    })
+}
+
+
+
 
 function addDemoBooks(){
     let demoArray = [
@@ -669,3 +703,5 @@ function addDemoBooks(){
     }
 
 }
+
+

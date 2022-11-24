@@ -14,7 +14,9 @@ function Book(title,author,url, pagesTotal, read, pagesRead){
 addBookBtn.addEventListener("click", checkForm);
 
 
-
+//DON'T FORGET:
+//When search bar is selected it should have a shiny outline thing 
+// fix bug: when select option is turned off the selected items are deleted(not from library)
 
 //select books 
 let navSelectBtn = document.querySelector(".nav-select");
@@ -25,7 +27,7 @@ navSelectBtn.addEventListener("click", ()=>{
     if(!isSelect){
         isSelect = true;
         addBoxBtn.style.display="none";
-        selectNavMenu.style.display="block";
+        selectNavMenu.style.display="flex";
 
         for(let element of allBooks){
             let selectContainer = document.createElement("div");
@@ -425,18 +427,36 @@ addBoxBtn.addEventListener("click", ()=>{
 
 
 function arrowFunc(up, down,page, total, barProgress, text){
+   function getIndex(){
+   //to update pages read changes from arrows to the library
+    let allArrowsUp = document.querySelectorAll(".up");
+    let allArrowsDown = document.querySelectorAll(".down")
+    for(let x=0;x<allArrowsUp.length;x++){
+        allArrowsUp[x].id=`${x}`;
+        allArrowsDown[x].id=`${x}`;
+    }
+    
+   }
     up.addEventListener("mousedown", incrementFunc);
-    function incrementFunc(){
+    function incrementFunc(e){
+        let tar = e.target.id;
+        getIndex();
         if(page.textContent<parseInt(total)){
             page.textContent = Number(page.textContent) + 1;
+            if(myLibrary[tar]){
+                myLibrary[tar].pagesRead=page.textContent;
+            }
+       
         }
         updateProgressBar(page.textContent,total, barProgress, text);
     }   
     down.addEventListener("mousedown", decrementFunc);
-    function decrementFunc(){
+    function decrementFunc(e){
+        let tar = e.target.id;
+        getIndex();
         if(page.textContent>0){
-     
             page.textContent = page.textContent - 1;
+            myLibrary[tar].pagesRead=page.textContent;
         }
         updateProgressBar(page.textContent, total, barProgress, text);
     }
@@ -642,7 +662,7 @@ function addDemoBooks(){
         {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
     ]
     for(let index in demoArray){
-        let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[0].pagesRead);
+        let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
         myLibrary.push(bookObj);
         createBook(true, demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
 

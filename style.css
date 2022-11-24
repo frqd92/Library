@@ -48,55 +48,6 @@ nav h1 {
 
 
 
-/* select book drop down style */
-.select-container{
-    width: 400px;
-    height: 300px;
-    border: 1.5px solid rgba(171, 172, 237, 0.626);
-    position: absolute;
-    border-radius: 5px;
-    cursor: pointer;
-
-}
-.select-container:hover{
-        background: rgba(171, 172, 237, 0.126);
-}
-
-.selected-book{
-
-    background:rgba(171, 172, 237, 0.129) !important;
-}
-
-.select-circle{
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    border-radius: 50px;
-    background: rgba(83, 84, 111, 0.971);
-    top: -10px;
-    left: -10px;
-    border: 0.1px solid rgba(171, 172, 237, 0.626);
-    border-left: 4px solid rgba(171, 172, 237, 0.626);
-;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
-}
-
-.select-circle-point{
-    width:18px;
-    height: 18px;
-    position: absolute;
-    background: rgba(21, 71, 158, 0.536);
-    border-radius: 50px;
-    top: 5px;
-    left: 3px;
-    box-shadow:
-    0 0 40px 3px #fff,
-    0 0 80px 6px rgb(221, 217, 18), 
-    0 0 120px 9px rgb(27, 85, 191); 
-  visibility: hidden;
-}
-
-
 
 
 
@@ -290,6 +241,57 @@ nav h2{
 
 
 
+                                                                        /* select book drop down style */
+.select-container{
+    width: 400px;
+    height: 300px;
+    border: 1.5px solid rgba(171, 172, 237, 0.626);
+    position: absolute;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+.select-container:hover{
+        background: rgba(171, 172, 237, 0.126);
+}
+
+.selected-book{
+
+    background:rgba(171, 172, 237, 0.129) !important;
+}
+
+.select-circle{
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50px;
+    background: rgba(83, 84, 111, 0.971);
+    top: -10px;
+    left: -10px;
+    border: 0.1px solid rgba(171, 172, 237, 0.626);
+    border-left: 4px solid rgba(171, 172, 237, 0.626);
+;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+.select-circle-point{
+    width:18px;
+    height: 18px;
+    position: absolute;
+    background: rgba(21, 71, 158, 0.536);
+    border-radius: 50px;
+    top: -5px;
+    left: -3px;
+    box-shadow:
+    0 0 40px 3px #fff,
+    0 0 80px 6px rgb(221, 217, 18), 
+    0 0 120px 9px rgb(27, 85, 191);
+}
+
+.circle-point-shown{
+    display: block;
+}
+
 
                                                                                 /* select nav options */
 .select-nav-menu{
@@ -308,15 +310,15 @@ nav h2{
 }
 .select-menu-items{
     display: grid;
-    grid-template-columns: 4fr 3fr 3fr 3fr 1fr;
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
  
     width: 100%;
     font-family: 'Mulish', sans-serif;
     color:rgb(213, 213, 226);
-    justify-content: end;
+ 
     align-items: center;
   user-select: none;
-    justify-content: center;
+    justify-content: space-evenly;
 
 }
 .num-items-selected{

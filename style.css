@@ -18,7 +18,7 @@ background: linear-gradient(to right, #17173c, #19215a, #0c1541);
 }
 nav {
     display: grid;
-    grid-template-columns: 4fr 2fr 1fr;
+    grid-template-columns: 4fr 3fr 1fr;
     background-color: var(--nav-bg);
     color: var( --font-color-white);
     justify-content: center;
@@ -38,9 +38,71 @@ nav h1 {
     border-bottom:1px solid rgb(255, 255, 255);
    
 }
+
+
+/* select nav */
+
+
+
+
+
+
+/* select book style */
+.select-container{
+    width: 400px;
+    height: 300px;
+
+    border: 1.5px solid rgba(171, 172, 237, 0.626);
+    position: absolute;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+.select-container:hover{
+        background: rgba(171, 172, 237, 0.126);
+}
+
+.selected-book{
+
+    background:rgba(171, 172, 237, 0.129) !important;
+}
+
+.select-circle{
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50px;
+    background: rgba(83, 84, 111, 0.971);
+    top: -10px;
+    left: -10px;
+    border: 0.1px solid rgba(171, 172, 237, 0.626);
+    border-left: 4px solid rgba(171, 172, 237, 0.626);
+;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+.select-circle-point{
+    width:18px;
+    height: 18px;
+    position: absolute;
+    background: rgba(21, 71, 158, 0.536);
+    border-radius: 50px;
+    top: 5px;
+    left: 3px;
+    box-shadow:
+    0 0 40px 3px #fff,
+    0 0 80px 6px rgb(221, 217, 18), 
+    0 0 120px 9px rgb(27, 85, 191); 
+  visibility: hidden;
+}
+
+
+
+
+
 .search-bar-container{
    position: relative;
-
+  
 }
 
 .search-drop-down{
@@ -83,7 +145,7 @@ border: 0.5px solid rgb(0, 0, 0, 0.2);
 .option-2{
     font-size: 14px;
     width: 70px;
-    height: 25px;
+    height: 23px;
     top: -23px;
     left: 3px;
     border-radius: 0px 0 5px 5px;
@@ -156,6 +218,10 @@ nav h2{
     z-index: 2;
 }
 
+
+
+
+                                                                /* add a box nav button */
 .add-box-container{/* add a box button nav */
     width: 100%;
     padding: 2px;
@@ -220,6 +286,33 @@ nav h2{
         transform: scale(1);
     }
 }
+
+
+
+
+                                                                                /* select nav options */
+.select-nav-menu{
+    position: fixed;
+    width: 100%;
+    height: 32px;
+    background: rgba(255, 0, 0, 0.586);
+    z-index: 10;
+    top:72px;
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                                                 /* add book box */
 .add-box{ 
     position: fixed;
@@ -548,4 +641,20 @@ form{
 .toggle-input{
     display: none;
 
+}
+
+
+
+
+
+@media screen and (max-width:1300px){
+    nav{
+        grid-template-columns: 4fr 5fr 1fr;
+    }
+}
+
+@media screen and (max-width:1000px){
+    nav{
+        grid-template-columns: 4fr 8fr 1fr;
+    }
 }

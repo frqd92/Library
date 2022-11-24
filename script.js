@@ -16,8 +16,77 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
+//select books 
+let navSelectBtn = document.querySelector(".nav-select");
+let selectNavMenu = document.querySelector(".select-nav-menu");
+let isSelect = false;
+navSelectBtn.addEventListener("click", ()=>{
+    let allBooks = document.querySelectorAll(".book");
+    if(!isSelect){
+        isSelect = true;
+        addBoxBtn.style.display="none";
+        selectNavMenu.style.display="block";
 
-window.addEventListener("click", (e)=>{ //to test library
+        for(let element of allBooks){
+            let selectContainer = document.createElement("div");
+            let selectCircle = document.createElement("div");
+            let selectPoint = document.createElement("div");
+            selectContainer.classList.add("select-container");
+            selectCircle.classList.add("select-circle")
+            selectPoint.classList.add("select-circle-point");
+          
+            element.appendChild(selectContainer);
+            selectContainer.appendChild(selectCircle);
+            selectCircle.appendChild(selectPoint);
+            selectContainer.addEventListener("click", ()=>{
+    
+                if(element.classList.contains("selected-book")){
+                    selectPoint.style.visibility="hidden";
+                    element.classList.remove("selected-book");
+                }
+                else{
+                    selectPoint.style.visibility="visible";
+                    element.classList.add("selected-book");
+                }
+            })
+        }
+    }
+    else{
+        isSelect=false;
+        addBoxBtn.style.display="flex";
+        selectNavMenu.style.display="none";
+        let selectContainers = document.querySelectorAll(".select-container");
+        let selectedBooks = document.querySelectorAll(".selected-book");
+        let selectedCircles = document.querySelectorAll(".select-circle");
+        let selectedCirclePoints = document.querySelectorAll(".select-circle-points")
+
+        for(let index = 0;index<selectContainers.length;index++){
+            selectContainers[index].remove();
+        }
+        for(let index=0; index<selectedBooks.length;index++){
+            selectedBooks[index].remove();
+        }
+    
+    }
+    
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+window.addEventListener("click", (e)=>{ //to test
     let target = e.target.textContent;
     if(target==="Library Thing"){
         addDemoBooks();
@@ -27,12 +96,10 @@ window.addEventListener("click", (e)=>{ //to test library
     }
 })
 
-// Enables Enter key to work as submit button when book box is in display //FIX THIS 
+
 window.addEventListener("keydown", (e)=>{
     let addBoxVis = addBox.style.display;
-    if(e.key.match(/[a-z]/g) && addBoxVis!=="block"){
-        searchBar.focus();
-        }
+    if(e.key.match(/[a-z]/gi) && addBoxVis!=="block"){searchBar.focus();} //focusses search bar when users types letters
     })
 
 

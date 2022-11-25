@@ -39,7 +39,12 @@ function navSelect(){
     let numItemsSelectedText = document.querySelector(".num-items-selected");
     let selectAllBtn = document.getElementById("select-nav-all-btn");
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
-    if(!isSelect){ //if select button is not selected hide add book nav and show select nav
+
+    if(allBooks.length===0){
+        checkIfEmpty("select")
+    }
+
+    if(!isSelect && allBooks.length>0){ //if select button is not selected hide add book nav and show select nav
         let index = 0;
         addBoxBtn.style.display="none";
         selectNavMenu.style.display="flex";
@@ -60,9 +65,7 @@ function navSelect(){
             selectContainer.addEventListener("click", (e)=>{
                 bookSelection(e.target.id, selectPoint);
              })
-      
-             console.log(element.querySelector(".delete-book"));
-             console.log(element.querySelector(".edit-book"));
+
              element.querySelector(".delete-book").style.opacity="0.2";
              element.querySelector(".edit-book").style.opacity="0.2";
              element.querySelector(".book-image").style.opacity="0.6";
@@ -76,16 +79,13 @@ function navSelect(){
         isSelect=true;
         }
     else{
-        for(let element of allBooks){
-            element.querySelector(".delete-book").style.opacity="1";
-            element.querySelector(".edit-book").style.opacity="1";
-            element.querySelector(".book-image").style.opacity="1";
-        }
+    
+
         deselectAllBtn.removeEventListener("click", deselectAll);
         selectAllBtn.removeEventListener("click", selectAll);
         removeSelectMode();
         selectNavClose.removeEventListener("click", removeSelectMode);  
-
+     
      
     }
 
@@ -148,8 +148,11 @@ function navSelect(){
             if(element.querySelector(".select-circle-point")!==null){
                 element.querySelector(".select-circle-point").remove();
             }
+            element.querySelector(".delete-book").style.opacity="1";
+            element.querySelector(".edit-book").style.opacity="1";
+            element.querySelector(".book-image").style.opacity="1";
         }
-        
+
         addBoxBtn.style.display="flex";
         selectNavMenu.style.display="none";
         selectNavClose.removeEventListener("click", removeSelectMode);
@@ -158,23 +161,32 @@ function navSelect(){
         numItemsSelectedText.textContent = "No items selected"; 
         }
 }
+function checkIfEmpty(from){ //checks if book area is empty, if so adds a text telling user how to add content
+    let mainBookContainer = document.querySelector(".book-container");
+    let emptyText = document.createElement("div");
+    if(!mainBookContainer.children.length){
+        emptyText.classList.add("empty-text");
+        mainBookContainer.appendChild(emptyText);
+        emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+    else{
+        if(from==="select"){
+            mainBookContainer.querySelector(".empty-text").classList.add("wiggle-effect");
+            setTimeout(()=>{
+                mainBookContainer.querySelector(".empty-text").classList.remove("wiggle-effect");
+            }, 400)
+            console.log(mainBookContainer.querySelector(".empty-text").classList)
+                
+    
+        }
+        else if( mainBookContainer.querySelector(".empty-text")){
+            mainBookContainer.querySelector(".empty-text").remove();
+         
+        }
+      
+    }
+}
 
 
 window.addEventListener("click", (e)=>{ //to test
@@ -184,6 +196,7 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Stats"){
         console.log(myLibrary)
+        checkIfEmpty("main");
     }
 })
 
@@ -195,14 +208,8 @@ window.addEventListener("keydown", (e)=>{
 
 
 
-
-
-
-
-
 // javascript form validation 
 function checkForm(e){
-
     let validityCheck = false;
     let invalidIndex;
     from=e.target.id;
@@ -234,6 +241,7 @@ function checkForm(e){
     }
 
     if(validityCheck === true && from ==="add-book"){
+        checkIfEmpty("main");
         addBookToLibrary()
     }
     else if (validityCheck === true && from ==="edit-book"){
@@ -340,8 +348,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
             readField = pagesRe;
         }
 
-       
-    
+
         //book cover
         bookCover.setAttribute("alt",`cover of ${titleField}`)
         if(imageField){ //if user inserts an image
@@ -372,12 +379,8 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         pageProgress.appendChild(arrowContainer);
         currentPage.textContent=readField;
         arrowContainer.appendChild(currentPage);
-    
 
         readField<totalField ? currentText.textContent="Current Page":currentText.textContent="Book Completed!"; 
-
-        
-   
 
         //arrows 
         arrowUp.setAttribute("src", "images/arrow-up-white.png");
@@ -411,9 +414,8 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         percentageComplete = (readField / totalField)*100;
         barProgress.style.cssText = `width: ${percentageComplete}%;`;
         if(percentageComplete===100) barProgress.style.background = 'rgb(27, 158, 34)';
-       
         arrowFunc(arrowUp,arrowDown, currentPage, totalField, barProgress, currentText); 
-
+        
     }
 
     if(!create){
@@ -533,8 +535,15 @@ function deleteBook(trashBtn, text){
     let interval;
 
     trashBtn.addEventListener("mouseover", ()=>{
-        text.style.display="block"
-        text.style.color="rgb(180, 92, 97)";
+        // text.style.display="block"
+        // text.style.color="rgb(180, 92, 97)";
+        text.style.cssText = 
+        `border: 0.5px solid rgba(180, 92, 97, 0.5); 
+        display: block;
+        color: rgb(180, 92, 97);
+        border-radius: 15px;
+        padding: 2px 5px;
+        `
     })
     trashBtn.addEventListener("mousedown", (e)=>{
         interval=setInterval(()=>{
@@ -555,6 +564,7 @@ function deleteBook(trashBtn, text){
                 myLibrary.splice(currentIndex,1);
                 e.target.parentNode.remove();
                 clearInterval(interval);
+                checkIfEmpty();
             }
         },1000)
     })
@@ -666,13 +676,12 @@ function searchBarFunc(){
 }
 
 
-
+//main drop down button
 let selectActive = false;
 let option = "title";
 let selectDropOption = document.querySelector(".option-2");
 let selectArrow = document.getElementById("down-select");
 let selectDrop = document.querySelector(".search-drop-down");
-//main drop down button
 selectDrop.addEventListener("click", ()=>{
     if (!selectActive){
         selectActive=true;
@@ -714,27 +723,37 @@ otherOption.addEventListener("click", ()=>{
     searchBar.focus();
 })
 
+
+
+
 //addBook hover effect bullshit
 window.onload = function addBookBtnEffects(){
     let plusSign = document.getElementById("plus-svg");
     let addBookText = document.getElementById("add-book-text");
-
-    addBoxBtn.addEventListener("mouseover", ()=>{
+addBoxBtn.addEventListener("mouseover", ()=>{
         plusSign.classList.add("plus-effect");
         plusSign.style.marginLeft='10px';
         addBookText.style.transform='scale(1.1)';
     })
-    addBoxBtn.addEventListener("mouseleave", ()=>{
+addBoxBtn.addEventListener("mouseleave", ()=>{
         plusSign.classList.remove("plus-effect");
         addBookText.style.transform= 'scale(1)';
         plusSign.style.marginLeft='0px';
     })
-    addBoxBtn.addEventListener("mousedown", ()=>{
+addBoxBtn.addEventListener("mousedown", ()=>{
         addBookText.style.transform= 'scale(1)';
         plusSign.style.marginLeft='0px';
    
     })
 }
+
+
+window.onload = function (){
+    
+    checkIfEmpty("main");
+}
+
+
 
 
 
@@ -758,7 +777,7 @@ function addDemoBooks(){
         createBook(true, demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
 
     }
-
+checkIfEmpty("main");
 }
 
 

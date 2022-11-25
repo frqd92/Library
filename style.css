@@ -335,6 +335,7 @@ nav h2{
     font-size: 1.4rem;
     margin-right: 5px;
     cursor: pointer;
+
 }
 .close-select-nav:hover{
     transform: scale(1.2);
@@ -668,7 +669,6 @@ form{
     --width: 50px;
     --height: calc(var(--width) / 2);
     width: 100%;
-
     display: flex;
     justify-content: center;
 }
@@ -717,6 +717,63 @@ form{
     display: none;
 
 }
+
+
+
+.empty-text{
+    align-self: center;
+    top:0;
+    left:0;
+   font-size: calc(0.5rem + 1.5vw);
+   font-family: 'Urbanist', sans-serif;
+   text-align: center;
+   color:rgb(160, 153, 182);
+   width: 80%;
+   line-height: 1.8em;
+   user-select: none;
+    text-shadow: 0px 0px 7px black ;
+  
+}
+.empty-text span{
+    color:#434b73;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+    border: 0.5px solid rgb(128, 128, 128, 0.3);
+    border-radius: 10px;
+    padding: 3px;
+  
+}
+
+.wiggle-effect{
+    animation:infinite ease-in-out 0.1s wiggle;
+}
+
+@keyframes wiggle {
+    0%{
+        color: red;
+        transform: translate(0px);
+    }
+    50%{
+        color: rgb(116, 21, 21);
+        transform: translate(-7px);
+    }
+    100%{
+        color:rgb(141, 50, 50);
+        transform:translate(7px)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -30,14 +30,15 @@ addBookBtn.addEventListener("click", checkForm);
 //select books 
 let navSelectBtn = document.querySelector(".nav-select");
 let selectNavMenu = document.querySelector(".select-nav-menu");
-let numItemsSelectedText = document.querySelector(".num-items-selected");
 let isSelect = false;
 navSelectBtn.addEventListener("click",navSelect);
-let numItemsSelected = 0;
 
+let numItemsSelected = 0;
 function navSelect(){
     let selectNavClose = document.querySelector(".close-select-nav");
     let allBooks = document.querySelectorAll(".book");
+    let numItemsSelectedText = document.querySelector(".num-items-selected");
+
     if(!isSelect){ //if select button is not selected hide add book nav and show select nav
         let index = 0;
         addBoxBtn.style.display="none";
@@ -76,29 +77,30 @@ function navSelect(){
     }
 
 
+
     function bookSelection(index, point){
         console.log(index)
         if(!allBooks[index].classList.contains("selected-book")){
             point.classList.remove("circle-point-shown");
-
             allBooks[index].classList.add("selected-book");
+            numItemsSelected++;
 
-        // console.log(allBooks[index].querySelector(".select-circle-point")!==null)
-        console.log("hello")
       }
       else{
 
-            // allBooks[index].removeChild(selectedPoints[index])
+  
             allBooks[index].classList.remove("selected-book");
             console.log("bye")
             point.classList.add("circle-point-shown");
-        // allBooks[index].removeChild(selectPoint);
-
-
-        // console.log(allBooks[index].querySelector(".select-circle-point"));
-       
+            numItemsSelected--;
       }
-      
+
+      switch(numItemsSelected){
+        case 0: numItemsSelectedText.textContent = "No items selected";break;
+        case 1: numItemsSelectedText.textContent = `${numItemsSelected} item selected`; break;
+        default: numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
+      }
+
     }
 
     function removeSelectMode(){
@@ -106,6 +108,7 @@ function navSelect(){
           if(element.querySelector(".select-container")){
             element.querySelector(".select-container").remove();
             element.querySelector(".select-circle").remove();
+
           }
 
            }
@@ -113,6 +116,7 @@ function navSelect(){
            selectNavMenu.style.display="none";
            selectNavClose.removeEventListener("click", removeSelectMode);
             isSelect=false;
+            numItemsSelected = 0
 
     }
 }

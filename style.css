@@ -273,14 +273,16 @@ nav h2{
     width:18px;
     height: 18px;
     position: absolute;
-    background: rgba(21, 71, 158, 0.536);
+    background: rgba(21, 71, 158, 0.336);
     border-radius: 50px;
+    border: none;
     top: -5px;
     left: -3px;
     box-shadow:
     0 0 40px 3px #fff,
-    0 0 80px 6px rgb(221, 217, 18), 
-    0 0 120px 9px rgb(27, 85, 191);
+    0 0 80px 6px rgb(221, 217, 18, 0.5), 
+    0 0 120px 9px rgb(27, 85, 191, 0.3);
+  
 }
 
 .circle-point-shown{

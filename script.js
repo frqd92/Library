@@ -60,14 +60,14 @@ function navSelect(){
             selectContainer.id=index;
             selectContainer.addEventListener("click", (e)=>{
                 bookSelection(e.target.id, selectPoint);
-                 
              })
 
             index++;
         }
+        selectAllBtn.addEventListener("click", selectAll);
+        deselectAllBtn.addEventListener("click", deselectAll);
         selectNavClose.addEventListener("click",removeSelectMode);
         window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
-
         isSelect=true;
     }
     else{
@@ -77,6 +77,27 @@ function navSelect(){
     }
 
 
+    function selectAll(){
+        let allBooks = document.querySelectorAll(".book");
+        for(let element of allBooks){
+        
+            if(!element.classList.contains("selected-book")){
+                element.classList.add("selected-book");
+            }
+            
+            if(element.querySelector(".circle-point-shown")!==null){
+                element.querySelector(".select-circle-point").classList.remove("circle-point-shown");
+                console.log(element.querySelector(".select-circle-point"));
+            }
+           
+        }
+        numItemsSelected=allBooks.length;
+        numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
+    }    
+    function deselectAll(){
+   
+        
+    }
 
     function bookSelection(index, point){
         if(!allBooks[index].classList.contains("selected-book")){
@@ -96,8 +117,8 @@ function navSelect(){
       }
     }
 
-    function removeSelectMode(all){
-        console.log(Boolean(all))
+    function removeSelectMode(){
+        console.log(Boolean())
         for(let element of allBooks){
             if(element.classList.contains("selected-book")){
                 element.classList.remove("selected-book")
@@ -114,60 +135,19 @@ function navSelect(){
          
             // console.log(element.querySelector(".circle-point-shown"))
         }
-        if(!all){
-            addBoxBtn.style.display="flex";
-            selectNavMenu.style.display="none";
-            selectNavClose.removeEventListener("click", removeSelectMode);
-            isSelect=false;
-            numItemsSelected = 0
-            numItemsSelectedText.textContent = "No items selected";
-        }
+        
+        addBoxBtn.style.display="flex";
+        selectNavMenu.style.display="none";
+        selectNavClose.removeEventListener("click", removeSelectMode);
+        isSelect=false;
+        numItemsSelected = 0
+        numItemsSelectedText.textContent = "No items selected";
+        
     }
 }
 
 
 
-// function navSelect(){
-//     let allBooks = document.querySelectorAll(".book");
-//     if(!isSelect){
-//         isSelect = true;
-//         addBoxBtn.style.display="none";
-//         selectNavMenu.style.display="flex";
-//         for(let element of allBooks){
-//             let selectContainer = document.createElement("div");
-//             let selectCircle = document.createElement("div");
-//             // let selectContainers = document.querySelectorAll(".select-container");
-//             // let selectedCircles = document.querySelectorAll(".select-circle");
-//             selectContainer.classList.add("select-container");
-//             selectCircle.classList.add("select-circle");
-//             element.appendChild(selectContainer);
-//             element.appendChild(selectCircle);
-//             selectContainer.addEventListener("click", ()=>{
-//                 bookSelection("bookSelect", element);
-//             })
-//         }
-
-//     }
-//     else{
-//         isSelect=false;
-//         numItemsSelected=0;
-//         addBoxBtn.style.display="flex";
-//         selectNavMenu.style.display="none";
-
-//         let selectedBooks = document.querySelectorAll(".selected-book");
-
-//         let selectedCirclePoints = document.querySelectorAll(".select-circle-points")
-
-//         for(let index = 0;index<selectContainers.length;index++){
-//             selectContainers[index].remove();
-//         }
-//         for(let index=0; index<selectedBooks.length;index++){
-//             selectedBooks[index].remove();
-//         }
-    
-//     }
-
-// }
 // selectAllBtn.addEventListener("click", ()=>{
 //     bookSelection("selectAll");
 //     // let allBooks = document.querySelectorAll(".book");

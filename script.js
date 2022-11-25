@@ -71,7 +71,33 @@ function navSelect(){
         selectAllBtn.addEventListener("click", selectAll);
         deselectAllBtn.addEventListener("click", deselectAll);
         deleteSelectionBtn.addEventListener("click", deleteSelected)
-        selectNavClose.addEventListener("click",removeSelectMode);
+     
+
+        function deleteSelected(){ //delete all selected books
+            let allBooks = document.querySelectorAll(".book");
+            let boxContainer = document.querySelector(".book-container")
+            let index=0;
+      
+            for(let element of allBooks){
+                if(element.classList.contains("selected-book")){
+                    element.remove();
+                    myLibrary.splice(index,1);
+                    index--;
+                };
+                index++;
+            }
+            index=0;
+            numItemsSelected=0;
+            numItemsSelectedText.textContent = `No items selected`;
+            if(boxContainer.querySelector(".book")===null){
+                removeSelectMode();
+                checkIfEmpty();
+                selectAllBtn.removeEventListener("click", selectAll);
+                deselectAllBtn.removeEventListener("click", deselectAll);
+                deleteSelectionBtn.removeEventListener("click", deleteSelected);
+                selectNavClose.removeEventListener("click",removeSelectMode);
+            }
+        }
 
         window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
         isSelect=true;
@@ -79,32 +105,14 @@ function navSelect(){
     else{
         deselectAllBtn.removeEventListener("click", deselectAll);
         selectAllBtn.removeEventListener("click", selectAll);
+        selectNavClose.removeEventListener("click", removeSelectMode); 
         removeSelectMode();
-        selectNavClose.removeEventListener("click", removeSelectMode);  
+
+        
     }
 
 
-    function deleteSelected(){ //delete all selected books
-        let allBooks = document.querySelectorAll(".book");
-        let boxContainer = document.querySelector(".book-container")
-        let index=0;
-  
-        for(let element of allBooks){
-            if(element.classList.contains("selected-book")){
-                element.remove();
-                myLibrary.splice(index,1);
-                index--;
-            };
-            index++;
-        }
-        index=0;
-        numItemsSelected=0;
-        numItemsSelectedText.textContent = `No items selected`;
-        if(boxContainer.querySelector(".book")===null){
-            removeSelectMode();
-            checkIfEmpty();
-        }
-    }
+
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");
         for(let element of allBooks){
@@ -200,7 +208,6 @@ function checkIfEmpty(from){ //checks if book area is empty, if so adds a text t
         }
         else if( mainBookContainer.querySelector(".empty-text")){
             mainBookContainer.querySelector(".empty-text").remove();
-         
         }
       
     }
@@ -743,10 +750,11 @@ otherOption.addEventListener("click", ()=>{
 
 
 //addBook hover effect bullshit
-window.onload = function addBookBtnEffects(){
+function addBookBtnEffects(){
     let plusSign = document.getElementById("plus-svg");
     let addBookText = document.getElementById("add-book-text");
 addBoxBtn.addEventListener("mouseover", ()=>{
+    console.log("hello")
         plusSign.classList.add("plus-effect");
         plusSign.style.marginLeft='10px';
         addBookText.style.transform='scale(1.1)';
@@ -765,7 +773,7 @@ addBoxBtn.addEventListener("mousedown", ()=>{
 
 
 window.onload = function (){
-    
+    addBookBtnEffects();
     checkIfEmpty("main");
 }
 

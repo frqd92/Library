@@ -39,39 +39,67 @@ function navSelect(){
     let selectNavClose = document.querySelector(".close-select-nav");
     let allBooks = document.querySelectorAll(".book");
     if(!isSelect){ //if select button is not selected hide add book nav and show select nav
+        let index = 0;
         addBoxBtn.style.display="none";
         selectNavMenu.style.display="flex";
         let selectAllBtn = document.getElementById("select-nav-all-btn");
         let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
-
-
         for(let element of allBooks){
+            let selectPoint = document.createElement("div");
             let selectContainer = document.createElement("div");
             let selectCircle = document.createElement("div");
+            selectCircle.classList.add("select-circle");
+            selectPoint.classList.add("select-circle-point")
+            selectPoint.classList.add("circle-point-shown");
             element.appendChild(selectContainer);
             element.appendChild(selectCircle);
+            element.appendChild(selectPoint);
             selectContainer.classList.add("select-container");
             selectCircle.classList.add("select-circle");
+            selectContainer.id=index;
+            selectContainer.addEventListener("click", (e)=>{
+                bookSelection(e.target.id, selectPoint);
+                 
+             })
 
+            index++;
         }
         selectNavClose.addEventListener("click",removeSelectMode);
+        window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
+
         isSelect=true;
     }
     else{
         removeSelectMode();
-        console.log("hello")
         selectNavClose.removeEventListener("click", removeSelectMode);
+        
     }
 
-    window.addEventListener("keyup", (e)=>{
-    if(e.key==="Escape"){
-        removeSelectMode();
+
+    function bookSelection(index, point){
+        console.log(index)
+        if(!allBooks[index].classList.contains("selected-book")){
+            point.classList.remove("circle-point-shown");
+
+            allBooks[index].classList.add("selected-book");
+
+        // console.log(allBooks[index].querySelector(".select-circle-point")!==null)
+        console.log("hello")
+      }
+      else{
+
+            // allBooks[index].removeChild(selectedPoints[index])
+            allBooks[index].classList.remove("selected-book");
+            console.log("bye")
+            point.classList.add("circle-point-shown");
+        // allBooks[index].removeChild(selectPoint);
+
+
+        // console.log(allBooks[index].querySelector(".select-circle-point"));
+       
+      }
+      
     }
-
-    
-
-    });
-
 
     function removeSelectMode(){
         for(let element of allBooks){

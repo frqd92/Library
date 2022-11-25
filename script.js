@@ -79,48 +79,49 @@ function navSelect(){
 
 
     function bookSelection(index, point){
-    
         if(!allBooks[index].classList.contains("selected-book")){
             point.classList.remove("circle-point-shown");
             allBooks[index].classList.add("selected-book");
             numItemsSelected++;
-
       }
-      else{
+        else{
             allBooks[index].classList.remove("selected-book");
             point.classList.add("circle-point-shown");
             numItemsSelected--;
       }
-
-      switch(numItemsSelected){
-        case 0: numItemsSelectedText.textContent = "No items selected";break;
-        case 1: numItemsSelectedText.textContent = `${numItemsSelected} item selected`; break;
-        default: numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
+        switch(numItemsSelected){
+            case 0: numItemsSelectedText.textContent = "No items selected";break;
+            case 1: numItemsSelectedText.textContent = `${numItemsSelected} item selected`; break;
+            default: numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
       }
-
     }
 
-    function removeSelectMode(){
-
+    function removeSelectMode(all){
+        console.log(Boolean(all))
         for(let element of allBooks){
             if(element.classList.contains("selected-book")){
                 element.classList.remove("selected-book")
                 element.querySelector(".select-circle-point").remove();
             }
-          if(element.querySelector(".select-container")){
-            element.querySelector(".select-container").remove();
-            element.querySelector(".select-circle").remove();
-          }
-     
-
-           }
-           addBoxBtn.style.display="flex";
-           selectNavMenu.style.display="none";
-           selectNavClose.removeEventListener("click", removeSelectMode);
+  
+            if(element.querySelector(".select-container")){
+                element.querySelector(".select-container").remove();
+                element.querySelector(".select-circle").remove();
+            }
+            if(element.querySelector(".select-circle-point")!==null){
+                element.querySelector(".select-circle-point").remove();
+            }
+         
+            // console.log(element.querySelector(".circle-point-shown"))
+        }
+        if(!all){
+            addBoxBtn.style.display="flex";
+            selectNavMenu.style.display="none";
+            selectNavClose.removeEventListener("click", removeSelectMode);
             isSelect=false;
             numItemsSelected = 0
             numItemsSelectedText.textContent = "No items selected";
-
+        }
     }
 }
 
@@ -582,8 +583,9 @@ function arrowFunc(up, down,page, total, barProgress, text){
     }   
     down.addEventListener("mousedown", decrementFunc);
     function decrementFunc(e){
-        let tar = e.target.id;
         getIndex();
+        let tar = e.target.id;
+
         if(page.textContent>0){
             page.textContent = page.textContent - 1;
             myLibrary[tar].pagesRead=page.textContent;
@@ -805,6 +807,7 @@ window.onload = function addBookBtnEffects(){
 
 function addDemoBooks(){
     let demoArray = [
+        {title: "Maen", author:"Qaddoura", url:'https://ambassadors.cert.gov.om/images/ambassadors/Mae6089272016.jpg', pagesTotal: 10, read: false, pagesRead: 10},
         {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
         {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
         {title: "Lullaby", author: "Chuck Palahniuk", url:'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg', pagesTotal: 272, read: false, pagesRead: 272},

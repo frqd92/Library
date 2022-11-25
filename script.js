@@ -38,13 +38,13 @@ function navSelect(){
     let selectNavClose = document.querySelector(".close-select-nav");
     let allBooks = document.querySelectorAll(".book");
     let numItemsSelectedText = document.querySelector(".num-items-selected");
-
+    let selectAllBtn = document.getElementById("select-nav-all-btn");
+    let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
     if(!isSelect){ //if select button is not selected hide add book nav and show select nav
         let index = 0;
         addBoxBtn.style.display="none";
         selectNavMenu.style.display="flex";
-        let selectAllBtn = document.getElementById("select-nav-all-btn");
-        let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
+
         for(let element of allBooks){
             let selectPoint = document.createElement("div");
             let selectContainer = document.createElement("div");
@@ -71,32 +71,41 @@ function navSelect(){
         isSelect=true;
     }
     else{
+        deselectAllBtn.removeEventListener("click", deselectAll);
+        selectAllBtn.removeEventListener("click", selectAll);
         removeSelectMode();
         selectNavClose.removeEventListener("click", removeSelectMode);
+
         
     }
-
 
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");
         for(let element of allBooks){
-        
             if(!element.classList.contains("selected-book")){
                 element.classList.add("selected-book");
             }
-            
             if(element.querySelector(".circle-point-shown")!==null){
                 element.querySelector(".select-circle-point").classList.remove("circle-point-shown");
-                console.log(element.querySelector(".select-circle-point"));
+              
             }
-           
+
         }
         numItemsSelected=allBooks.length;
         numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
     }    
     function deselectAll(){
-   
-        
+        let allBooks = document.querySelectorAll(".book");
+        for(let element of allBooks){
+            if(element.classList.contains("selected-book")){
+                element.classList.remove("selected-book");
+            }
+            if(element.querySelector(".circle-point-shown")===null){
+                element.querySelector(".select-circle-point").classList.add("circle-point-shown");
+            }
+        }
+        numItemsSelected=0;
+        numItemsSelectedText.textContent = `No items selected`;
     }
 
     function bookSelection(index, point){
@@ -118,7 +127,6 @@ function navSelect(){
     }
 
     function removeSelectMode(){
-        console.log(Boolean())
         for(let element of allBooks){
             if(element.classList.contains("selected-book")){
                 element.classList.remove("selected-book")
@@ -132,8 +140,6 @@ function navSelect(){
             if(element.querySelector(".select-circle-point")!==null){
                 element.querySelector(".select-circle-point").remove();
             }
-         
-            // console.log(element.querySelector(".circle-point-shown"))
         }
         
         addBoxBtn.style.display="flex";
@@ -141,78 +147,22 @@ function navSelect(){
         selectNavClose.removeEventListener("click", removeSelectMode);
         isSelect=false;
         numItemsSelected = 0
-        numItemsSelectedText.textContent = "No items selected";
-        
+        numItemsSelectedText.textContent = "No items selected"; 
     }
 }
 
 
 
-// selectAllBtn.addEventListener("click", ()=>{
-//     bookSelection("selectAll");
-//     // let allBooks = document.querySelectorAll(".book");
-//     // numItemsSelected=allBooks.length;
-//     // numItemsSelected===1?numItemsSelectedText.innerText=`${allBooks.length} item selected`:numItemsSelectedText.innerText=`${allBooks.length} items selected`;               
-// });
-// deselectAllBtn.addEventListener("click", ()=>{
-//     bookSelection("deselectAll");
-// })
 
-// function bookSelection(from, elem){
-//     let allBooks = document.querySelectorAll(".book");
 
-//     for(let element of allBooks){
 
-//         if(from==="selectAll"){
-//             console.log("selectAll")
-//             let selectPoint = document.createElement("div");
-//             selectPoint.classList.add("select-circle-point");
-//             if(element.querySelector(".select-circle-point") ===null){ //check if circle point is there or not
-//                 element.appendChild(selectPoint);
-//                 element.classList.add("selected-book");
-//             }
 
-//         }
-//         if(from==="deselectAll"){
-//             console.log("deselectAll")
-//             element.classList.remove("selected-book");
-//                 if(element.querySelector(".select-circle-point") !==null){
-//                     let circlePoints = document.querySelectorAll(".select-circle-point");
-//                     for(let x=0;x<circlePoints.length;x++){
-//                         circlePoints[x].remove();
-//                     }
 
-//                 }
-//         }
-        
-//     }
 
-//         if(from ==="bookSelect"){
-//             let selectPoint = document.createElement("div");
-//             if(!elem.classList.contains("selected-book")){
-//                 elem.classList.add("selected-book");
-//                 selectPoint.classList.add("select-circle-point");
-//                 elem.appendChild(selectPoint);
-    
 
-//                 console.log("has select")
 
-//             }
-//             else{
-//                 selectPoint.remove();
-//                 let point = document.querySelector(".select-circle-point");
-//                 if(elem.querySelector(".select-circle-point")!==null){
-//                    elem.classList.remove("selected-book");
-//                    selectPoint.classList.remove("select-circle-point");
-//                    point.remove();
 
-//                    console.log("no select")
-//                 }
-               
-//             }
-            
-//         }
-// }
+
 
 
 
@@ -234,20 +184,6 @@ window.addEventListener("keydown", (e)=>{
     let addBoxVis = addBox.style.display;
     if(e.key.match(/[a-z]/gi) && addBoxVis!=="block"){searchBar.focus();} //focusses search bar when users types letters
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

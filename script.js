@@ -245,6 +245,7 @@ function editBook(editBtn, currentPage, text){
     editBtn.addEventListener("mouseover", ()=>{text.style.display ="block";})
     editBtn.addEventListener("mouseleave", ()=>{text.style.display ="none";})
     editBtn.addEventListener("click", (e)=>{
+        toggleFunc();
        bgDiv.style.display="block";
        addBox.style.display="block";
        addBookBtn.style.display="none";
@@ -585,10 +586,19 @@ function clearInputs(){
 //add book box toggle
 let toggle = document.querySelector('input[type="checkbox"]');
 let pagesRead = document.querySelector(".pages-read");
+let movingText = document.querySelector(".moving-text-yes");
 toggle.addEventListener("change",toggleFunc)
 function toggleFunc (){
     toggle.checked ? pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
     toggle.checked ? textInputs[4].value ="":textInputs[4].value=textInputs[3].value ;
+    if(toggle.checked){
+        movingText.textContent="No";
+        movingText.classList.add("moving-text-no")
+    }
+    else{
+        movingText.textContent="Yes";
+        movingText.classList.remove("moving-text-no")
+    }
 }
 //validates pages read input with total pages if user has read or not
 textInputs[3].addEventListener("focusout", ()=>{if(!toggle.checked){textInputs[4].value = textInputs[3].value;}})

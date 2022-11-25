@@ -632,6 +632,10 @@ form{
     top:6px;
     left:310px;
 }
+
+.low-opacity{
+    opacity: 0.4;
+}
 .hold-delete-text, .hold-edit-text{
     position: absolute;
     font-family: 'Mulish', sans-serif;
@@ -667,6 +671,16 @@ form{
 
     display: flex;
     justify-content: center;
+}
+.moving-text-yes{
+    margin-right: 15px;
+    color:rgb(110, 119, 110);
+    transition: transform 0.3s;
+
+}
+
+.moving-text-no{
+    transform: translate(100px);
 }
 .toggle h4 {
     font-size: 1.2rem;

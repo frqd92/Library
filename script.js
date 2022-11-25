@@ -79,7 +79,7 @@ function navSelect(){
 
 
     function bookSelection(index, point){
-        console.log(index)
+    
         if(!allBooks[index].classList.contains("selected-book")){
             point.classList.remove("circle-point-shown");
             allBooks[index].classList.add("selected-book");
@@ -87,10 +87,7 @@ function navSelect(){
 
       }
       else{
-
-  
             allBooks[index].classList.remove("selected-book");
-            console.log("bye")
             point.classList.add("circle-point-shown");
             numItemsSelected--;
       }
@@ -104,12 +101,17 @@ function navSelect(){
     }
 
     function removeSelectMode(){
+
         for(let element of allBooks){
+            if(element.classList.contains("selected-book")){
+                element.classList.remove("selected-book")
+                element.querySelector(".select-circle-point").remove();
+            }
           if(element.querySelector(".select-container")){
             element.querySelector(".select-container").remove();
             element.querySelector(".select-circle").remove();
-
           }
+     
 
            }
            addBoxBtn.style.display="flex";
@@ -117,6 +119,7 @@ function navSelect(){
            selectNavClose.removeEventListener("click", removeSelectMode);
             isSelect=false;
             numItemsSelected = 0
+            numItemsSelectedText.textContent = "No items selected";
 
     }
 }

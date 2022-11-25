@@ -71,7 +71,7 @@ function navSelect(){
         selectAllBtn.addEventListener("click", selectAll);
         deselectAllBtn.addEventListener("click", deselectAll);
         deleteSelectionBtn.addEventListener("click", deleteSelected)
-     
+        selectNavClose.addEventListener("click", removeSelectMode )
 
         function deleteSelected(){ //delete all selected books
             let allBooks = document.querySelectorAll(".book");
@@ -95,7 +95,7 @@ function navSelect(){
                 selectAllBtn.removeEventListener("click", selectAll);
                 deselectAllBtn.removeEventListener("click", deselectAll);
                 deleteSelectionBtn.removeEventListener("click", deleteSelected);
-                selectNavClose.removeEventListener("click",removeSelectMode);
+            
             }
         }
 
@@ -341,7 +341,6 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
     let barProgressEdit = document.querySelectorAll(".bar-progress")
     let percentageEdit = (textInputs[4].value / textInputs[3].value) * 100;
     let arrowContainers = document.querySelectorAll(".arrow-container");
-
 
     if(create){
         book.classList.add("book");

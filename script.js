@@ -16,7 +16,7 @@ addBookBtn.addEventListener("click", checkForm);
 
 //DON'T FORGET:
 //When search bar is selected it should have a shiny outline thing 
-// fix bug: when select option is turned off the selected items are deleted(not from library)
+//fix when users use search bar and then click select all, selects files that are invisible also
 
 
 
@@ -413,8 +413,10 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         arrowUp.setAttribute("src", "images/arrow-up-white.png");
         arrowDown.setAttribute("src", "images/arrow-down-white.png");
         arrowUp.classList.add("arrow");
+        arrowUp.setAttribute("draggable", "false");
         arrowUp.classList.add("up");
         arrowDown.classList.add("arrow");
+        arrowUp.setAttribute("draggable", "false");
         arrowDown.classList.add("down");
         arrowContainer.appendChild(arrowUp);
         arrowContainer.appendChild(arrowDown);
@@ -475,6 +477,8 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         let newArrowDown = document.createElement("img");
         newArrowUp.setAttribute("src", "images/arrow-up-white.png");
         newArrowDown.setAttribute("src", "images/arrow-down-white.png");
+        newArrowUp.setAttribute("draggable", "false");
+        newArrowDown.setAttribute("draggable", "false");
         newArrowUp.classList.add("arrow");
         newArrowUp.classList.add("up");
         newArrowDown.classList.add("arrow");

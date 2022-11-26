@@ -24,14 +24,14 @@ nav {
     color: var( --font-color-white);
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding-right: 20px;
     font-family: 'Mulish', sans-serif;
-    width: 100%;
+    width: 100vw;
     user-select: none;
     position: fixed;
     z-index: 2;
     gap: 30px;
-  
+    height:72px;
 }
 
 nav h1 {
@@ -40,20 +40,54 @@ nav h1 {
     border-bottom:1px solid rgb(255, 255, 255);
    
 }
-.nav-btn{
-  position: relative;
-}
-.nav-select{
+.nav-options{
+    justify-self: center;
+    
+    align-items: center;
+    display: grid;
+    grid-template-columns: 85px 80px 85px;
+  
+    width: 270px;
+    cursor: pointer;
+    position: relative;
+
+    height: 71px;
+    padding: 0 10px;
     
 }
-.nav-options{
-   
+
+.nav-btn{
+  position: relative;
+  height: 100%;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn:hover{
+    background: #50506173;
+}
+.nav-btn:active{
+    background: #50506173;
+}
+.nav-select{
+
 
 }
-.nav-select:hover{
+.nav-stats{
+   
+  
+}
+
+.nav-settings{
+    
+
+}
+
+/* .nav-select:hover{
 
     width: 100%;
-}
+} */
 
 
 
@@ -161,14 +195,6 @@ nav h2{
     align-self: center;
 }
 
-.nav-options{
-    justify-self: end;
-    align-items: center;
-    display: flex;
-    gap: 3rem;
-    cursor: pointer;
-    display: relative;
-}
 
 .bg-div{ /* low opacity background behind add box container */
     position: fixed;
@@ -207,7 +233,7 @@ nav h2{
     background: rgb(20, 20, 20, 0.95);
     height: 40px;
     top: 67px;
-    z-index: 10;
+    z-index: 1;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 .add-box-container:active{
@@ -790,14 +816,14 @@ form{
     width: 300px;
     height: fit-content;
     padding: 10px;
-    background: rgba(7, 14, 91, 0.858);
+    background: rgba(13, 19, 83, 0.908);
     border-radius: 0px 0px 8px 8px;
     position: absolute;
     top:72px;
-    right:14px;
+    right:8px;
     cursor:default;
     display: none;
-    
+    z-index: 10;
 }
 .stats-shown{
    display: block;
@@ -814,14 +840,20 @@ form{
 .stats-div:last-child{
     border-bottom: none;
 }
-.stats-left{
-  color: rgb(196, 177, 177);
-  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.559);
-  
+.stats-left, .stats-left sup{
+  color: rgb(86, 85, 104);
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.859);
+  margin-bottom: 2px;
+}
+.stats-left sup{
+    color: #424b4c;
 }
 
 .stats-right{
     font-family: 'Rajdhani', sans-serif;
+    text-shadow: 0px 0px 10px rgba(151, 151, 164, 0.259);
+    color: rgb(86, 127, 142);
+    font-size: 1.1rem;
 }
 
 

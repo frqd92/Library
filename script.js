@@ -24,6 +24,17 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
+
+
+
+
+
+
+
+
+
+
+//Book stats Menu
 let statMenu = document.querySelector(".stats");//change to button
 let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
@@ -91,8 +102,8 @@ function calcStats(){
             case 1: left.textContent = "Finished Books"; break;
             case 2: left.textContent = "Unfinished Books"; break;
             case 3: left.textContent = "Total Pages"; break;
-            case 4: left.innerHTML = `Longest Book <sup>(${libraryCopy[libraryCopy.length-1].pagesTotal} pages)</sup>`; break;
-            case 5: left.innerHTML = `Shortest Book <sup>(${libraryCopy[0].pagesTotal} pages)</sup>`; break;
+            case 4: left.innerHTML = `Longest Book <sup>${libraryCopy[libraryCopy.length-1].pagesTotal} pages</sup>`; break;
+            case 5: left.innerHTML = `Shortest Book <sup>${libraryCopy[0].pagesTotal} pages</sup>`; break;
         }
         right.textContent=statArr[index];
 
@@ -101,15 +112,13 @@ function calcStats(){
 }
 document.addEventListener("mousedown", (e)=>{
     let tar= e.target;
-
-    if(e.target.textContent==="Stats"){return;}
-    if(!e.target.closest(".stats")){
+    console.log(tar.className)
+    if(tar.textContent==="Stats" || tar.className==="nav-btn nav-stats"){return;}
+    if(!tar.closest(".stats")){
        
         document.querySelector(".stats").classList.remove("stats-shown");
         statMode=false;
     }
-   
- 
 })
 
 
@@ -715,7 +724,6 @@ let pagesRead = document.querySelector(".pages-read");
 let movingText = document.querySelector(".moving-text-yes");
 toggle.addEventListener("change",toggleFunc)
 function toggleFunc (){
-
     if(toggle.checked){
         movingText.textContent="No";
         movingText.classList.add("moving-text-no")
@@ -747,12 +755,8 @@ textInputs[4].addEventListener("input", ()=>{
 
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
-
     if(e.target.closest(".add-box-container" )|| e.target.className==="edit-book"){return;}
-    if(!e.target.closest(".add-box")){
-        addBox.style.display="none"
-        bgDiv.style.display="none"
-    }
+    if(!e.target.closest(".add-box")){addBox.style.display="none"; bgDiv.style.display="none"}
 })
 
 

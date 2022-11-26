@@ -38,16 +38,63 @@ class ExportTable{
         document.body.appendChild(downloadLink);
         downloadLink.click();
     }
-
 }
-let table = document.getElementById("table");
+
 let exportSelectBtn = document.getElementById("export-select");
-
-let tableExporter = new ExportTable(table);
-
 exportSelectBtn.addEventListener("click", ()=>{
-    tableExporter.exportExcel()
+    // tableExporter.exportExcel();
 })
+
+
+
+
+
+
+
+createTable()
+function createTable(){
+    let table = document.createElement("table");
+    table.id="table";
+    table.setAttribute("border", "1");
+    let thead = document.createElement("thead");
+
+    let tr = document.createElement("tr");
+    let thTitle = document.createElement("th");
+    let thAuthor = document.createElement("th");
+    let thPages = document.createElement("th");
+    let thRead = document.createElement("th");
+    table.appendChild(thead);
+    thead.appendChild(tr);
+    tr.appendChild(thTitle);
+    tr.appendChild(thAuthor);
+    tr.appendChild(thPages);
+    tr.appendChild(thRead);
+    thTitle.textContent="Name";
+    thAuthor.textContent="Author";
+    thPages.textContent="Pages";
+    thRead.textContent="Read?";
+    
+
+    // let allBooks = document.querySelectorAll(".book");
+    // for(let index=0;index<allBooks.length;index++){
+    //     if(allBooks[index].classList.contains("selected-book")){
+    
+  
+    //         myLibrary[index].title;
+    //         myLibrary[index].author;
+    //         myLibrary[index].pagesTotal;
+    //         myLibrary[index].read;
+    //     }
+    // }
+    let tableExporter = new ExportTable(table);
+    tableExporter.exportExcel();
+
+ 
+}
+
+
+
+
 
 
 
@@ -721,45 +768,6 @@ window.addEventListener("click", (e)=>{
 
 
 
-//search bar functionality 
-let searchBar = document.getElementById("search-bar");
-searchBar.addEventListener("input", searchBarFunc);
-
-searchBar.addEventListener("focus",searchBarFunc);
-function searchBarFunc(){
-    let allBooks= document.querySelectorAll(".book");
-    let barText = searchBar.value;
-    let bookTitles = document.querySelectorAll(".book-title");
-    let bookAuthors = document.querySelectorAll(".book-author");
-
-    if(option==="title"){
-        searchBy(bookTitles);
-    }
-    else if(option==="author"){
-        searchBy(bookAuthors);
-    }
-    function searchBy(element){
-        if(barText){
-            for(let index in allBooks){
-                    if(element[index].textContent!==undefined){
-                        if(element[index].textContent.match(/[a-z!?]/gi).join("").toLowerCase().includes(barText.toLocaleLowerCase().replace(/\s/g, "").match(/[a-z!?]/gi).join(""))){
-                            allBooks[index].style.display="grid";
-                        }
-                        else{allBooks[index].style.display="none";}
-                    }
-            }
-            }
-            else{
-                    for(let index in allBooks){
-                        if(element[index].textContent!==undefined){
-                            allBooks[index].style.display="grid";
-                        }
-                    }
-                }
-    }
-
-}
-
 
 //main drop down button
 let selectActive = false;
@@ -867,3 +875,41 @@ checkIfEmpty("main");
 }
 
 
+//search bar functionality 
+let searchBar = document.getElementById("search-bar");
+searchBar.addEventListener("input", searchBarFunc);
+
+searchBar.addEventListener("focus",searchBarFunc);
+function searchBarFunc(){
+    let allBooks= document.querySelectorAll(".book");
+    let barText = searchBar.value;
+    let bookTitles = document.querySelectorAll(".book-title");
+    let bookAuthors = document.querySelectorAll(".book-author");
+
+    if(option==="title"){
+        searchBy(bookTitles);
+    }
+    else if(option==="author"){
+        searchBy(bookAuthors);
+    }
+    function searchBy(element){
+        if(barText){
+            for(let index in allBooks){
+                    if(element[index].textContent!==undefined){
+                        if(element[index].textContent.match(/[a-z\d!?]/gi).join("").toLowerCase().includes(barText.toLocaleLowerCase().replace(/\s/g, "").match(/[a-z\d!?]/gi).join(""))){
+                            allBooks[index].style.display="grid";
+                        }
+                        else{allBooks[index].style.display="none";}
+                    }
+            }
+            }
+            else{
+                    for(let index in allBooks){
+                        if(element[index].textContent!==undefined){
+                            allBooks[index].style.display="grid";
+                        }
+                    }
+                }
+    }
+
+}

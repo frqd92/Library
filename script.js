@@ -22,89 +22,6 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
-class ExportTable{
-    constructor(table) {
-        this.table = table;
-    }
-    exportExcel(){
-    let tableContent = this.table.outerHTML.replace(/\s/g, '%20');
-    let tableHTMLUrl = 'data:application/vnd.ms-excel;charset=utf-8,' + tableContent;
-    this.triggerDownload(tableHTMLUrl, "books.xls");
-    }
-    triggerDownload(url,filename){
-        let downloadLink = document.createElement("a");
-        downloadLink.href=url;
-        downloadLink.download = filename;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-    }
-}
-
-let exportSelectBtn = document.getElementById("export-select");
-exportSelectBtn.addEventListener("click", ()=>{
-    createTable()
-})
-
-
-
-
-
-
-
-
-function createTable(){
-    let table = document.createElement("table");
-    table.id="table";
-    table.setAttribute("border", "1");
-    let thead = document.createElement("thead");
-
-    let tr = document.createElement("tr");
-    let thTitle = document.createElement("th");
-    let thAuthor = document.createElement("th");
-    let thPages = document.createElement("th");
-    let thRead = document.createElement("th");
-    table.appendChild(thead);
-    thead.appendChild(tr);
-    tr.appendChild(thTitle);
-    tr.appendChild(thAuthor);
-    tr.appendChild(thPages);
-    tr.appendChild(thRead);
-    thTitle.textContent="Name";
-    thAuthor.textContent="Author";
-    thPages.textContent="Pages";
-    thRead.textContent="Read?";
-    
-    let tbody = document.createElement("tbody");
-
-    let allBooks = document.querySelectorAll(".book");
-    for(let index=0;index<allBooks.length;index++){
-        if(allBooks[index].classList.contains("selected-book")){
-            let tr = document.createElement("tr");
-            let tdTitle = document.createElement("td");
-            let tdAuthor = document.createElement("td");
-            let tdPages = document.createElement("td");
-            let tdRead = document.createElement("td");
-            tdTitle.textContent = myLibrary[index].title;
-            tdAuthor.textContent = myLibrary[index].author;
-            tdPages.textContent = myLibrary[index].pagesTotal;
-            myLibrary[index].read?tdRead.textContent = "No" : tdRead.textContent = "Yes";
-            tr.appendChild(tdTitle);
-            tr.appendChild(tdAuthor);
-            tr.appendChild(tdPages);
-            tr.appendChild(tdRead);
-            tbody.appendChild(tr);
-
-        }
-    }
-    table.appendChild(tbody);
-
-
-    let tableExporter = new ExportTable(table);
-    tableExporter.exportExcel();
-
- 
-}
-
 
 
 
@@ -923,4 +840,81 @@ function searchBarFunc(){
                 }
     }
 
+}
+
+
+
+//export table 
+class ExportTable{
+    constructor(table) {
+        this.table = table;
+    }
+    exportExcel(){
+    let tableContent = this.table.outerHTML.replace(/\s/g, '%20');
+    let tableHTMLUrl = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8,' + tableContent;
+  
+    this.triggerDownload(tableHTMLUrl, "books.xls");
+    }
+    triggerDownload(url,filename){
+        let downloadLink = document.createElement("a");
+        downloadLink.href=url;
+        downloadLink.download = filename;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+}
+
+let exportSelectBtn = document.getElementById("export-select");
+exportSelectBtn.addEventListener("click", ()=>{
+    createTable()
+})
+
+function createTable(){
+    let table = document.createElement("table");
+    table.id="table";
+    table.setAttribute("border", "1");
+    let thead = document.createElement("thead");
+
+    let tr = document.createElement("tr");
+    let thTitle = document.createElement("th");
+    let thAuthor = document.createElement("th");
+    let thPages = document.createElement("th");
+    let thRead = document.createElement("th");
+    table.appendChild(thead);
+    thead.appendChild(tr);
+    tr.appendChild(thTitle);
+    tr.appendChild(thAuthor);
+    tr.appendChild(thPages);
+    tr.appendChild(thRead);
+    thTitle.textContent="Name";
+    thAuthor.textContent="Author";
+    thPages.textContent="Pages";
+    thRead.textContent="Read?";
+    
+    let tbody = document.createElement("tbody");
+
+    let allBooks = document.querySelectorAll(".book");
+    for(let index=0;index<allBooks.length;index++){
+        if(allBooks[index].classList.contains("selected-book")){
+            let tr = document.createElement("tr");
+            let tdTitle = document.createElement("td");
+            let tdAuthor = document.createElement("td");
+            let tdPages = document.createElement("td");
+            let tdRead = document.createElement("td");
+            tdTitle.textContent = myLibrary[index].title;
+            tdAuthor.textContent = myLibrary[index].author;
+            tdPages.textContent = myLibrary[index].pagesTotal;
+            myLibrary[index].read?tdRead.textContent = "No" : tdRead.textContent = "Yes";
+            tr.appendChild(tdTitle);
+            tr.appendChild(tdAuthor);
+            tr.appendChild(tdPages);
+            tr.appendChild(tdRead);
+            tbody.appendChild(tr);
+        }
+    }
+    table.appendChild(tbody);
+
+
+    let tableExporter = new ExportTable(table);
+    tableExporter.exportExcel();
 }

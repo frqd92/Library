@@ -221,7 +221,7 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Stats"){
         console.log(myLibrary)
-        checkIfEmpty("main");
+       
     }
 })
 
@@ -348,8 +348,10 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         //trash and edit buttons
         trashBtn.setAttribute("src", "images/delete-white.png");
         trashBtn.setAttribute("class", "delete-book");
+        trashBtn.setAttribute("draggable", "false");
         editBtn.setAttribute("src", "images/application-edit-white.png");
         editBtn.setAttribute("class", "edit-book");
+        editBtn.setAttribute("draggable", "false");
         book.appendChild(trashBtn);
         book.appendChild(editBtn);
         holdDelText.classList.add("hold-delete-text");
@@ -375,6 +377,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
         //book cover
         bookCover.setAttribute("alt",`cover of ${titleField}`)
+        bookCover.setAttribute("draggable","false")
         if(imageField){ //if user inserts an image
             bookCover.setAttribute("src",`${imageField}`)
         }else{ //default image if none is inserted
@@ -563,8 +566,6 @@ function deleteBook(trashBtn, text){
         `border: 0.5px solid rgba(180, 92, 97, 0.5); 
         display: block;
         color: rgb(180, 92, 97);
-        border-radius: 15px;
-        padding: 2px 5px;
         `
     })
     trashBtn.addEventListener("mousedown", (e)=>{

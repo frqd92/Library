@@ -31,6 +31,7 @@ nav {
     position: fixed;
     z-index: 2;
     gap: 30px;
+    max-height: 70px;
 }
 
 nav h1 {
@@ -39,14 +40,27 @@ nav h1 {
     border-bottom:1px solid rgb(255, 255, 255);
    
 }
+.nav-btn{
+  
+}
+.nav-select{
+    
+}
+.nav-options{
+   
 
-
+}
+.nav-select:hover{
+    background: rgb(101, 101, 174);
+    width: 100%;
+}
 
 
 
 .search-bar-container{
    position: relative;
-  
+
+
 }
 
 .search-drop-down{
@@ -144,12 +158,16 @@ transition: transform 0.2s linear;
 }
 nav h2{
     cursor: pointer;
+    align-self: center;
 }
 
 .nav-options{
     justify-self: end;
+    align-items: center;
     display: flex;
     gap: 3rem;
+    cursor: pointer;
+
 }
 
 .bg-div{ /* low opacity background behind add box container */
@@ -454,9 +472,7 @@ form{
     outline: none;
     
 }
-#edit-book {
-   
-}
+
 .pages-read {
    visibility: hidden;
 }
@@ -615,6 +631,7 @@ form{
     position:absolute;
     cursor: pointer;
     transition: transform 0.1s linear;
+    
 }
 .book .delete-book{
     top:4px;
@@ -643,12 +660,15 @@ form{
     font-size: 12px;
     display: none;
     top: -23px;
+    border-radius: 15px;
+    border: 0.5px solid rgba(178, 171, 171, 0.5); 
+    padding: 2px 5px;
 }
 .hold-delete-text{
     right: -60px;
 }
 .hold-edit-text{
-    right:  50px;
+    right:  43px;
 
 }
 
@@ -665,7 +685,7 @@ form{
                                                                     /* switch button */
 
 .toggle{
-
+    padding-right: 35px;
     --width: 50px;
     --height: calc(var(--width) / 2);
     width: 100%;

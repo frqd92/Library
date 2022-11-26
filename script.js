@@ -42,7 +42,7 @@ class ExportTable{
 
 let exportSelectBtn = document.getElementById("export-select");
 exportSelectBtn.addEventListener("click", ()=>{
-    // tableExporter.exportExcel();
+    createTable()
 })
 
 
@@ -51,7 +51,7 @@ exportSelectBtn.addEventListener("click", ()=>{
 
 
 
-createTable()
+
 function createTable(){
     let table = document.createElement("table");
     table.id="table";
@@ -74,18 +74,31 @@ function createTable(){
     thPages.textContent="Pages";
     thRead.textContent="Read?";
     
+    let tbody = document.createElement("tbody");
 
-    // let allBooks = document.querySelectorAll(".book");
-    // for(let index=0;index<allBooks.length;index++){
-    //     if(allBooks[index].classList.contains("selected-book")){
-    
-  
-    //         myLibrary[index].title;
-    //         myLibrary[index].author;
-    //         myLibrary[index].pagesTotal;
-    //         myLibrary[index].read;
-    //     }
-    // }
+    let allBooks = document.querySelectorAll(".book");
+    for(let index=0;index<allBooks.length;index++){
+        if(allBooks[index].classList.contains("selected-book")){
+            let tr = document.createElement("tr");
+            let tdTitle = document.createElement("td");
+            let tdAuthor = document.createElement("td");
+            let tdPages = document.createElement("td");
+            let tdRead = document.createElement("td");
+            tdTitle.textContent = myLibrary[index].title;
+            tdAuthor.textContent = myLibrary[index].author;
+            tdPages.textContent = myLibrary[index].pagesTotal;
+            myLibrary[index].read?tdRead.textContent = "No" : tdRead.textContent = "Yes";
+            tr.appendChild(tdTitle);
+            tr.appendChild(tdAuthor);
+            tr.appendChild(tdPages);
+            tr.appendChild(tdRead);
+            tbody.appendChild(tr);
+
+        }
+    }
+    table.appendChild(tbody);
+
+
     let tableExporter = new ExportTable(table);
     tableExporter.exportExcel();
 
@@ -293,7 +306,6 @@ function checkIfEmpty(from){ //checks if book area is empty, if so adds a text t
             setTimeout(()=>{
                 mainBookContainer.querySelector(".empty-text").classList.remove("wiggle-effect");
             }, 400)
-            console.log(mainBookContainer.querySelector(".empty-text").classList)
                 
     
         }
@@ -824,7 +836,6 @@ function addBookBtnEffects(){
     let plusSign = document.getElementById("plus-svg");
     let addBookText = document.getElementById("add-book-text");
 addBoxBtn.addEventListener("mouseover", ()=>{
-    console.log("hello")
         plusSign.classList.add("plus-effect");
         plusSign.style.marginLeft='10px';
         addBookText.style.transform='scale(1.1)';

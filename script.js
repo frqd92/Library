@@ -26,16 +26,36 @@ addBookBtn.addEventListener("click", checkForm);
 
 let statMenu = document.querySelector(".stats");//change to button
 let statMenuBtn = document.querySelector(".nav-stats");
-
+let statMode = false;
 
 statMenuBtn.addEventListener("click", ()=>{
-    calcStats();
+    console.log();
+    if(!document.querySelector(".book")){
+        checkIfEmpty("select");
+    }
+    else{
+        if(!statMode){
+            statMenu.classList.add("stats-shown")
+            statMode=true;
+        }
+        else{
+            statMenu.classList.remove("stats-shown")
+            statMode=false;
+        }
+        calcStats();
+    }
+
 })
 
 
 
 function calcStats(){
     let allBooks = document.querySelectorAll(".book");
+
+   if(statMenu.childNodes!==0){
+    statMenu.innerHTML="";
+   }
+
     let totalPages = 0;
     let totalRead = 0;
     let totalLeft= 0;
@@ -71,15 +91,26 @@ function calcStats(){
             case 1: left.textContent = "Finished Books"; break;
             case 2: left.textContent = "Unfinished Books"; break;
             case 3: left.textContent = "Total Pages"; break;
-            case 4: left.textContent = `Longest Book (${libraryCopy[libraryCopy.length-1].pagesTotal} pages)`; break;
-            case 5: left.textContent = `Shortest Book (${libraryCopy[0].pagesTotal} pages)`; break;
+            case 4: left.innerHTML = `Longest Book <sup>(${libraryCopy[libraryCopy.length-1].pagesTotal} pages)</sup>`; break;
+            case 5: left.innerHTML = `Shortest Book <sup>(${libraryCopy[0].pagesTotal} pages)</sup>`; break;
         }
         right.textContent=statArr[index];
 
     }
 
 }
+document.addEventListener("mousedown", (e)=>{
+    let tar= e.target;
 
+    if(e.target.textContent==="Stats"){return;}
+    if(!e.target.closest(".stats")){
+       
+        document.querySelector(".stats").classList.remove("stats-shown");
+        statMode=false;
+    }
+   
+ 
+})
 
 
 //all the select option logic
@@ -716,14 +747,9 @@ textInputs[4].addEventListener("input", ()=>{
 
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
-    let tar = e.target.className;
-    if(
-        tar==="bg-div"||
-        tar ==="close-btn"||
-        tar ==="search"||
-        e.target.id==="search-bar"||
-        e.target.id==="selected-option"
-        ){
+
+    if(e.target.closest(".add-box-container" )|| e.target.className==="edit-book"){return;}
+    if(!e.target.closest(".add-box")){
         addBox.style.display="none"
         bgDiv.style.display="none"
     }

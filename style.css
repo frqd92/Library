@@ -796,9 +796,11 @@ form{
     top:72px;
     right:14px;
     cursor:default;
+    display: none;
+    
 }
-.stats-hidden{
-   
+.stats-shown{
+   display: block;
 }
 .stats-div{
     display: flex;

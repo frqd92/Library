@@ -41,7 +41,7 @@ nav h1 {
    
 }
 .nav-btn{
-  
+  position: relative;
 }
 .nav-select{
     
@@ -167,7 +167,7 @@ nav h2{
     display: flex;
     gap: 3rem;
     cursor: pointer;
-
+    display: relative;
 }
 
 .bg-div{ /* low opacity background behind add box container */
@@ -785,12 +785,42 @@ form{
 
 
 
-                                                                                        /* table */
+                                                                                        /* stats */
+.stats{
+    width: 300px;
+    height: fit-content;
+    padding: 10px;
+    background: rgba(7, 14, 91, 0.858);
+    border-radius: 0px 0px 8px 8px;
+    position: absolute;
+    top:72px;
+    right:14px;
+    cursor:default;
+}
+.stats-hidden{
+   
+}
+.stats-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 0.5px solid rgba(91, 88, 88, 0.661);
+    padding: 3px;
+}
+.stats-div:last-child{
+    border-bottom: none;
+}
+.stats-left{
+  color: rgb(196, 177, 177);
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.559);
+  
+}
 
-
-
-
-
+.stats-right{
+    font-family: 'Rajdhani', sans-serif;
+}
 
 
 

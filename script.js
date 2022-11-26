@@ -24,27 +24,61 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
+let statMenu = document.querySelector(".stats");//change to button
+let statMenuBtn = document.querySelector(".nav-stats");
+
+
+statMenuBtn.addEventListener("click", ()=>{
+    calcStats();
+})
 
 
 
+function calcStats(){
+    let allBooks = document.querySelectorAll(".book");
+    let totalPages = 0;
+    let totalRead = 0;
+    let totalLeft= 0;
+    //total books 
+    let totalBooks= allBooks.length;
 
+    for(let index = 0;index<allBooks.length;index++){
+        //total pages
+        totalPages +=Number(myLibrary[index].pagesTotal);
+        //total completed books
+        myLibrary[index].read===false?totalRead++:totalLeft++; 
+    }
 
+    //longest book  //shorted book
+    let libraryCopy = [...myLibrary];
+    libraryCopy.sort((a,b) => a.pagesTotal - b.pagesTotal);
+    let longestBook = libraryCopy[libraryCopy.length-1].title;
+    let shortestBook = libraryCopy[0].title;
+    let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
 
+    for(let index=0;index<6;index++){
+        let div = document.createElement("div");
+        let left = document.createElement("p");
+        let right = document.createElement("p");
+        div.appendChild(left);
+        div.appendChild(right);
+        div.classList.add("stats-div")
+        left.classList.add("stats-left");
+        right.classList.add("stats-right");
+        statMenu.appendChild(div);
+        switch(index){
+            case 0:left.textContent = "Total Books"; break;
+            case 1: left.textContent = "Finished Books"; break;
+            case 2: left.textContent = "Unfinished Books"; break;
+            case 3: left.textContent = "Total Pages"; break;
+            case 4: left.textContent = `Longest Book (${libraryCopy[libraryCopy.length-1].pagesTotal} pages)`; break;
+            case 5: left.textContent = `Shortest Book (${libraryCopy[0].pagesTotal} pages)`; break;
+        }
+        right.textContent=statArr[index];
 
-// function exportTable(that, tableData){
-//     console.log("Helfdsfslo")
-// let dataHtml = tableData.outerHTML;
-// let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(dataHtml);
+    }
 
-
-
-// that.setAttribute("href", url);
-// that.setAttribute("download", "book-list-xls");
-
-
-// }
-
-
+}
 
 
 
@@ -239,7 +273,7 @@ window.addEventListener("click", (e)=>{ //to test
     if(target==="Library Thing"){
         addDemoBooks();
     }
-    if(target==="Stats"){
+    if(target==="Settings"){
         console.log(myLibrary)
        
     }
@@ -323,7 +357,7 @@ function editBook(editBtn, currentPage, text){
 //adds book card after form check passes
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
-    myLibrary.push(bookObj);
+    myLibrary.unshift(bookObj); //changed from pop order check if theres bugs
     createBook(true);
 }
 
@@ -364,7 +398,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
     if(create){
         book.classList.add("book");
-        bookContainer.appendChild(book);
+        bookContainer.prepend(book); //changed from appendchild order check if there's bugs
         //trash and edit buttons
         trashBtn.setAttribute("src", "images/delete-white.png");
         trashBtn.setAttribute("class", "delete-book");
@@ -782,7 +816,6 @@ window.onload = function (){
 
 function addDemoBooks(){
     let demoArray = [
-        {title: "Maen", author:"Qaddoura", url:'https://ambassadors.cert.gov.om/images/ambassadors/Mae6089272016.jpg', pagesTotal: 10, read: false, pagesRead: 10},
         {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
         {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
         {title: "Lullaby", author: "Chuck Palahniuk", url:'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg', pagesTotal: 272, read: false, pagesRead: 272},
@@ -791,11 +824,12 @@ function addDemoBooks(){
         {title: "If on a Winter's Night a Traveler", author: "Italo Calvino", url: 'https://pictures.abebooks.com/isbn/9780749399238-us.jpg', pagesTotal: 260, read:true, pagesRead:34},
         {title: "A Scanner Darkly", author: "Philip K. Dick", url: 'https://upload.wikimedia.org/wikipedia/en/2/27/AScannerDarkly%281stEd%29.jpg', pagesTotal: 220 , read:false , pagesRead: 220},
         {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
-        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
+        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0},
+        {title: "Maen", author:"Qaddoura", url:'https://ambassadors.cert.gov.om/images/ambassadors/Mae6089272016.jpg', pagesTotal: 10, read: false, pagesRead: 10}
     ]
     for(let index in demoArray){
         let bookObj = new Book(demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
-        myLibrary.push(bookObj);
+        myLibrary.unshift(bookObj); //changed from pop check if there's bugs
         createBook(true, demoArray[index].title, demoArray[index].author, demoArray[index].url, demoArray[index].pagesTotal, demoArray[index].read, demoArray[index].pagesRead);
 
     }

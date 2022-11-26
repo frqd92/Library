@@ -612,10 +612,14 @@ function deleteBook(trashBtn, text){
 
 function clearInputs(){
     for (let index = 0; index<textInputs.length;index++){
+        textInputs[index].setCustomValidity("");
+        textInputs[index].style.borderBottom='1px solid rgba(238, 236, 236, 0.3)'
         textInputs[index].value=""
     }
     toggle.checked=false;
+    movingText.textContent="Yes";
     pagesRead.style.visibility="hidden";
+    movingText.classList.remove("moving-text-no")
 }
 
 

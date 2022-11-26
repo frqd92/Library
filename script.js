@@ -22,6 +22,50 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
+class ExportTable{
+    constructor(table) {
+        this.table = table;
+    }
+    exportExcel(){
+    let tableContent = this.table.outerHTML.replace(/\s/g, '%20');
+    let tableHTMLUrl = 'data:application/vnd.ms-excel;charset=utf-8,' + tableContent;
+    this.triggerDownload(tableHTMLUrl, "books.xls");
+    }
+    triggerDownload(url,filename){
+        let downloadLink = document.createElement("a");
+        downloadLink.href=url;
+        downloadLink.download = filename;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+
+}
+let table = document.getElementById("table");
+let exportSelectBtn = document.getElementById("export-select");
+
+let tableExporter = new ExportTable(table);
+
+exportSelectBtn.addEventListener("click", ()=>{
+    tableExporter.exportExcel()
+})
+
+
+
+
+
+
+// function exportTable(that, tableData){
+//     console.log("Helfdsfslo")
+// let dataHtml = tableData.outerHTML;
+// let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(dataHtml);
+
+
+
+// that.setAttribute("href", url);
+// that.setAttribute("download", "book-list-xls");
+
+
+// }
 
 
 

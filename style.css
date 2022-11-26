@@ -785,9 +785,29 @@ form{
 
 
 
+                                                                                        /* table */
 
+table{
+    border: 1px solid black;
+    background-color: white;
+    text-align: center;
+}
 
-
+thead{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   border-bottom: 1px solid black;
+   background-color: #7a858b6e;
+}
+tbody{
+    color:rgb(15, 13, 13);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+thead th{
+    padding:5px 40px;
+}
+tbody tr:nth-child(odd) {
+    background-color: #9191aa;
+  }
 
 
 

@@ -626,21 +626,31 @@ let pagesRead = document.querySelector(".pages-read");
 let movingText = document.querySelector(".moving-text-yes");
 toggle.addEventListener("change",toggleFunc)
 function toggleFunc (){
-    toggle.checked ? pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
-    toggle.checked ? textInputs[4].value ="":textInputs[4].value=textInputs[3].value ;
+
     if(toggle.checked){
         movingText.textContent="No";
         movingText.classList.add("moving-text-no")
+        pagesRead.style.visibility="visible"
+        textInputs[4].value =""
     }
     else{
+        pagesRead.style.visibility="hidden";
+        textInputs[4].value=textInputs[3].value ;
         movingText.textContent="Yes";
         movingText.classList.remove("moving-text-no")
     }
 }
 //validates pages read input with total pages if user has read or not
-textInputs[3].addEventListener("focusout", ()=>{if(!toggle.checked){textInputs[4].value = textInputs[3].value;}})
+textInputs[3].addEventListener("focusout", ()=>{
+    if(!toggle.checked){
+        textInputs[4].value = textInputs[3].value;
+
+    }
+})
 textInputs[4].addEventListener("input", ()=>{
     if(textInputs[4].value === textInputs[3].value){
+        movingText.textContent="Yes";
+        movingText.classList.remove("moving-text-no")
         toggle.checked = false;
         pagesRead.style.visibility="hidden"
     }

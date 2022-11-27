@@ -99,8 +99,8 @@ function calcStats(){
         statMenu.appendChild(div);
         switch(index){
             case 0:left.textContent = "Total Books"; break;
-            case 1: left.textContent = "Finished Books"; break;
-            case 2: left.textContent = "Unfinished Books"; break;
+            case 1: left.textContent = "Books Read"; break;
+            case 2: left.textContent = "Books Not Read"; break;
             case 3: left.textContent = "Total Pages"; break;
             case 4: left.innerHTML = `Longest Book <sup>${libraryCopy[libraryCopy.length-1].pagesTotal} pages</sup>`; break;
             case 5: left.innerHTML = `Shortest Book <sup>${libraryCopy[0].pagesTotal} pages</sup>`; break;
@@ -587,7 +587,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
         barProgressEdit[currentEditIndex].style.cssText = `width: ${percentageEdit}%;`;
         if(percentageEdit ===100) barProgressEdit[currentEditIndex].style.background = 'rgb(27, 158, 34)';
-        
+        textInputs[3].value===textInputs[4].value?myLibrary[currentEditIndex].read=false:myLibrary[currentEditIndex].read=true;
         arrowFunc(newArrowUp,newArrowDown, currentPages[currentEditIndex], textInputs[3].value, barProgressEdit[currentEditIndex], currentPageTexts[currentEditIndex]); 
 
 
@@ -633,8 +633,9 @@ function arrowFunc(up, down,page, total, barProgress, text){
 
         }
        
-        if(page.textContent===total && myLibrary[tar] !== undefined ){
+        if(page.textContent==total && myLibrary[tar] !== undefined ){
             myLibrary[tar].read=false;
+            console.log("hello")
         }
 
       
@@ -653,6 +654,7 @@ function arrowFunc(up, down,page, total, barProgress, text){
         }
         if(page.textContent<parseInt(total)){
             myLibrary[tar].read=true;
+            console.log("bye")
         }
         updateProgressBar(page.textContent, total, barProgress, text);
     }

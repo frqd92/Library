@@ -13,6 +13,15 @@ function Book(title,author,url, pagesTotal, read, pagesRead){
 }
 addBookBtn.addEventListener("click", checkForm);
 
+window.addEventListener("click", (e)=>{ //to test
+    let target = e.target.textContent;
+    if(target==="Library Thing"){
+        addDemoBooks();
+    }
+    if(target==="Settings"){
+        // console.log(myLibrary)
+    }
+})
 
 //DON'T FORGET:
 //When search bar is selected it should have a shiny outline thing 
@@ -23,6 +32,18 @@ addBookBtn.addEventListener("click", checkForm);
 
 
 
+
+//Grid Mode
+
+
+let navSettingsBtn = document.querySelector(".nav-settings");
+let bookTable = document.querySelector(".book-table");
+let settingsMode = false;
+
+navSettingsBtn.addEventListener("click", ()=>{
+
+    
+} )
 
 
 
@@ -315,16 +336,6 @@ function checkIfEmpty(from){ //checks if book area is empty, if so adds a text t
 }
 
 
-window.addEventListener("click", (e)=>{ //to test
-    let target = e.target.textContent;
-    if(target==="Library Thing"){
-        addDemoBooks();
-    }
-    if(target==="Settings"){
-        console.log(myLibrary)
-       
-    }
-})
 
 
 window.addEventListener("keydown", (e)=>{

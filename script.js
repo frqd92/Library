@@ -766,7 +766,7 @@ textInputs[4].addEventListener("input", ()=>{
 
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
-    console.log(e.target.className)
+
     if(e.target.closest(".add-box-container") || 
         e.target.className==="edit-book"){
             return;

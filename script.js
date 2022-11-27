@@ -17,7 +17,8 @@ addBookBtn.addEventListener("click", checkForm);
 //DON'T FORGET:
 //When search bar is selected it should have a shiny outline thing 
 //fix when users use search bar and then click select all, selects files that are invisible also
-
+//style select menu buttons
+//hover out effect thing on Select, Stats and Settings btn
 
 
 
@@ -339,7 +340,10 @@ function checkForm(e){
     let invalidIndex;
     from=e.target.id;
     for(let index=0;index<textInputs.length;index++){
-
+        if(Number(textInputs[3].value)>9999){
+            textInputs[3].value="";
+            textInputs[3].placeholder="Max 9999 pages";
+        }
         if(Number(textInputs[3].value)<Number(textInputs[4].value)){
             textInputs[4].setCustomValidity("Invalid");
             textInputs[4].value="";

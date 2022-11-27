@@ -815,16 +815,42 @@ form{
     height: fit-content;
     padding: 10px;
     background: rgba(13, 19, 83, 0.958);
-    border-radius: 0px 0px 8px 8px;
+
     position: absolute;
     top:71px;
     cursor:default;
     display: none;
-    z-index: 10;
+    animation: statAnimIn 0.2s ease-in-out;
 }
+
 .stats-shown{
    display: block;
 }
+
+@keyframes statAnimIn {
+    0%{
+        opacity: 0;
+        transform: translate(500px,0px);
+    }
+    100%{
+        opacity: 1;
+        transform: translate(0px,0px);
+    }
+}
+
+@keyframes statAnimOut {
+    0%{
+        transform: translate(0px,0px);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(500px,0px);
+        opacity: 0;
+    }
+}
+
+
+
 .stats-div{
     display: flex;
     flex-direction: column;

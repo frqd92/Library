@@ -46,13 +46,15 @@ statMenuBtn.addEventListener("click", ()=>{
     else{
         if(!statMode){
             document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
-            statMenu.classList.add("stats-shown")
+            statMenu.classList.add("stats-shown");   //for unnecessary animation
             statMode=true;
+            statMenu.style.cssText=``;
         }
         else{
+            statMenu.style.cssText=` animation: statAnimOut .4s ease-out;`;
             document.querySelector(".nav-stats").style.background="";
-            statMenu.classList.remove("stats-shown")
             statMode=false;
+            setTimeout(()=>{statMenu.classList.remove("stats-shown");},300)
         }
         calcStats();
     }
@@ -115,8 +117,9 @@ document.addEventListener("mousedown", (e)=>{
     let tar= e.target;
     if(tar.textContent==="Stats" || tar.className==="nav-btn nav-stats"){return;}
     if(!tar.closest(".stats")){
+        statMenu.style.cssText=` animation: statAnimOut .4s ease-out;`;
         document.querySelector(".nav-stats").style.background="";
-        document.querySelector(".stats").classList.remove("stats-shown");
+        setTimeout(()=>{document.querySelector(".stats").classList.remove("stats-shown");},300)
         statMode=false;
     }
 })

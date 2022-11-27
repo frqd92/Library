@@ -40,7 +40,7 @@ let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
 
 statMenuBtn.addEventListener("click", ()=>{
-    console.log();
+
     if(!document.querySelector(".book")){
         checkIfEmpty("select");
     }
@@ -112,7 +112,7 @@ function calcStats(){
 }
 document.addEventListener("mousedown", (e)=>{
     let tar= e.target;
-    console.log(tar.className)
+    // console.log(tar.className)
     if(tar.textContent==="Stats" || tar.className==="nav-btn nav-stats"){return;}
     if(!tar.closest(".stats")){
        
@@ -364,6 +364,7 @@ function checkForm(e){
         addBookToLibrary()
     }
     else if (validityCheck === true && from ==="edit-book"){
+        
         createBook(false);
     }
 }
@@ -629,8 +630,16 @@ function arrowFunc(up, down,page, total, barProgress, text){
             if(myLibrary[tar]){
                 myLibrary[tar].pagesRead=page.textContent;
             }
-       
+
         }
+       
+        if(page.textContent===total && myLibrary[tar] !== undefined ){
+            myLibrary[tar].read=false;
+        }
+
+      
+      
+        
         updateProgressBar(page.textContent,total, barProgress, text);
     }   
     down.addEventListener("mousedown", decrementFunc);
@@ -641,6 +650,9 @@ function arrowFunc(up, down,page, total, barProgress, text){
         if(page.textContent>0){
             page.textContent = page.textContent - 1;
             myLibrary[tar].pagesRead=page.textContent;
+        }
+        if(page.textContent<parseInt(total)){
+            myLibrary[tar].read=true;
         }
         updateProgressBar(page.textContent, total, barProgress, text);
     }

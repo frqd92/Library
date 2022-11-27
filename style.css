@@ -65,7 +65,7 @@ nav h1 {
   justify-content: center;
 }
 .nav-btn:hover{
-    background: #50506173;
+    background: rgba(80, 80, 97, 0.38);
 }
 
 .nav-select{
@@ -356,7 +356,7 @@ nav h2{
 
 .select-menu-items{
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 5fr 2fr 2fr 2fr 2fr 1fr;
  
     width: 100%;
     font-family: 'Mulish', sans-serif;
@@ -811,14 +811,13 @@ form{
 
                                                                                         /* stats */
 .stats{
-    width: 300px;
+    width: 270px;
     height: fit-content;
     padding: 10px;
-    background: rgba(13, 19, 83, 0.908);
+    background: rgba(13, 19, 83, 0.958);
     border-radius: 0px 0px 8px 8px;
     position: absolute;
-    top:72px;
-    right:8px;
+    top:71px;
     cursor:default;
     display: none;
     z-index: 10;

@@ -40,16 +40,17 @@ let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
 
 statMenuBtn.addEventListener("click", ()=>{
-
     if(!document.querySelector(".book")){
         checkIfEmpty("select");
     }
     else{
         if(!statMode){
+            document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
             statMenu.classList.add("stats-shown")
             statMode=true;
         }
         else{
+            document.querySelector(".nav-stats").style.background="";
             statMenu.classList.remove("stats-shown")
             statMode=false;
         }
@@ -112,10 +113,9 @@ function calcStats(){
 }
 document.addEventListener("mousedown", (e)=>{
     let tar= e.target;
-    // console.log(tar.className)
     if(tar.textContent==="Stats" || tar.className==="nav-btn nav-stats"){return;}
     if(!tar.closest(".stats")){
-       
+        document.querySelector(".nav-stats").style.background="";
         document.querySelector(".stats").classList.remove("stats-shown");
         statMode=false;
     }
@@ -136,11 +136,12 @@ function navSelect(){
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
     let deleteSelectionBtn = document.getElementById("delete-select");
     if(allBooks.length===0){checkIfEmpty("select")};
+    
     if(!isSelect && allBooks.length>0){ //if select button is not selected hide add book nav and show select nav
         let index = 0;
         addBoxBtn.style.display="none";
         selectNavMenu.style.display="flex";
-    
+        document.querySelector(".nav-select").style.background="rgba(80, 80, 97, 0.28)";
         for(let element of allBooks){
             let selectPoint = document.createElement("div");
             let selectContainer = document.createElement("div");
@@ -201,9 +202,7 @@ function navSelect(){
         deselectAllBtn.removeEventListener("click", deselectAll);
         selectAllBtn.removeEventListener("click", selectAll);
         selectNavClose.removeEventListener("click", removeSelectMode); 
-        removeSelectMode();
-
-        
+        removeSelectMode(); 
     }
 
 
@@ -211,6 +210,7 @@ function navSelect(){
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");
         for(let element of allBooks){
+            console.log(element.style.display!=="none");
             if(!element.classList.contains("selected-book")){
                 element.classList.add("selected-book");
             }
@@ -256,6 +256,7 @@ function navSelect(){
     }
 
     function removeSelectMode(){
+        document.querySelector(".nav-select").style.background="";
     for(let element of allBooks){
         if(element.classList.contains("selected-book")){
             element.classList.remove("selected-book")
@@ -632,15 +633,9 @@ function arrowFunc(up, down,page, total, barProgress, text){
             }
 
         }
-       
         if(page.textContent==total && myLibrary[tar] !== undefined ){
             myLibrary[tar].read=false;
-            console.log("hello")
         }
-
-      
-      
-        
         updateProgressBar(page.textContent,total, barProgress, text);
     }   
     down.addEventListener("mousedown", decrementFunc);
@@ -654,10 +649,10 @@ function arrowFunc(up, down,page, total, barProgress, text){
         }
         if(page.textContent<parseInt(total)){
             myLibrary[tar].read=true;
-            console.log("bye")
         }
         updateProgressBar(page.textContent, total, barProgress, text);
     }
+
     function updateProgressBar(currentPage, total, barProgress, text){
     let percentageComplete = (currentPage/total)*100;
     barProgress.style.cssText = `width: ${percentageComplete}%;`;

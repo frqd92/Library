@@ -209,16 +209,18 @@ function navSelect(){
 
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");
+
         for(let element of allBooks){
-            console.log(element.style.display!=="none");
+       
             if(!element.classList.contains("selected-book")){
                 element.classList.add("selected-book");
+            
             }
             if(element.querySelector(".circle-point-shown")!==null){
                 element.querySelector(".select-circle-point").classList.remove("circle-point-shown");
-            
             }
         }
+
         numItemsSelected=allBooks.length;
         numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
     }    
@@ -764,8 +766,15 @@ textInputs[4].addEventListener("input", ()=>{
 
 //closes the book box window if user clicks outside of it
 window.addEventListener("click", (e)=>{
-    if(e.target.closest(".add-box-container" )|| e.target.className==="edit-book"){return;}
-    if(!e.target.closest(".add-box")){addBox.style.display="none"; bgDiv.style.display="none"}
+    console.log(e.target.className)
+    if(e.target.closest(".add-box-container") || 
+        e.target.className==="edit-book"){
+            return;
+        }
+
+    if(!e.target.closest(".add-box") || e.target.className==="close-btn"){
+        addBox.style.display="none"; bgDiv.style.display="none"
+    }
 })
 
 
@@ -974,9 +983,12 @@ function createTable(){
             let tdAuthor = document.createElement("td");
             let tdPages = document.createElement("td");
             let tdRead = document.createElement("td");
+            tdTitle.setAttribute("style", "text-align: center");
             tdTitle.textContent = myLibrary[index].title;
             tdAuthor.textContent = myLibrary[index].author;
             tdPages.textContent = myLibrary[index].pagesTotal;
+            tdPages.setAttribute("style", "text-align: center");
+            tdRead.setAttribute("style", "text-align: center");
             myLibrary[index].read?tdRead.textContent = "No" : tdRead.textContent = "Yes";
             tr.appendChild(tdTitle);
             tr.appendChild(tdAuthor);

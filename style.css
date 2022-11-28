@@ -45,7 +45,6 @@ margin: -20px;
 
 }
 
-
 .header-field{
     text-shadow: 0px 0px 12px rgba(156, 162, 182, 0.361);
     font-family: 'Mulish', sans-serif;
@@ -57,11 +56,9 @@ margin: -20px;
     text-align: center;
     padding: 10px 0px;
     gap:2px;
-
 }
 .header-field-scroll{
     border-left: 0.5px solid rgba(248, 248, 248, 0.218);
-    
 }
 .header-field:first-child{
     background: none;

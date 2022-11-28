@@ -56,6 +56,7 @@ margin: -20px;
     font-size: 1.4rem;
     text-align: center;
     padding: 10px 0px;
+    gap:2px;
 
 }
 .header-field-scroll{
@@ -70,11 +71,14 @@ margin: -20px;
 }
 
 .header-border-scroll{
-
+    background: linear-gradient(to right, rgba(40, 40, 114, 0.682), rgba(65, 74, 136, 0.885), rgba(12, 21, 65, 0.892)); 
     border-bottom: var(--table-border);
 }
 
+.table-sort-arrow{
+    width: 20px;
 
+}
 .table-row{
   
     display: grid;

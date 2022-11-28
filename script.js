@@ -46,17 +46,16 @@ navSettingsBtn.addEventListener("click", ()=>{
 } )
 
 
-window.addEventListener("scroll", ()=>{
-    let tableHeader = document.querySelector(".table-header")
-    if(window.scrollY>70){
-       
-        tableHeader.classList.add("header-sticky-scroll")
+
+
+window.addEventListener('scroll',()=>{
+    if(window.scrollY>47){
+        document.querySelector(".table-header").classList.add("header-border-scroll");
     }
     else{
-        tableHeader.classList.remove("header-sticky-scroll")
+        document.querySelector(".table-header").classList.remove("header-border-scroll");
     }
 })
-
 
 
 

@@ -36,20 +36,35 @@ margin: -20px;
     position: sticky;
     top: 103px;
     z-index: 9999;
-
+  
     
 }
-.header-sticky-scroll{
 
-
-    background: linear-gradient(to right, rgba(23, 23, 60, 0.782), rgba(25, 33, 90, 0.775), rgba(12, 21, 65, 0.922)); 
-}
 .table-header{
  margin-bottom: 23px;
- padding: 5px 0px;
- 
+
+ background: linear-gradient(to right, rgba(23, 23, 60, 0.732), rgba(25, 33, 90, 0.835), rgba(12, 21, 65, 0.822)); 
 
 }
+
+
+.header-field{
+
+    font-family: 'Mulish', sans-serif;
+    color: rgb(153, 163, 192);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    text-align: center;
+   
+
+}
+.header-border-scroll{
+
+    border-bottom: 0.5px solid rgba(248, 248, 248, 0.318);
+}
+
 .table-row{
   
     display: grid;
@@ -73,19 +88,6 @@ margin: -20px;
     /* actual img */
 .table-book-img{ 
     width: 70px;
-
-}
-
-.header-field{
-
-    font-family: 'Mulish', sans-serif;
-    color: rgb(153, 163, 192);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.4rem;
-    text-align: center;
-
 
 }
 
@@ -114,9 +116,6 @@ margin: -20px;
     background: #383862a3;
 }
 
-.table-row .header-field, .table-row .body-field{
-
-}
 
 .table-pages-read{
     position: relative;

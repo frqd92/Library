@@ -28,7 +28,7 @@ window.addEventListener("click", (e)=>{ //to test
 //fix when users use search bar and then click select all, selects files that are invisible also
 //style select menu buttons
 //hover out effect thing on Select, Stats and Settings btn
-
+//yes no labels on toggle not working properly on edit windows
 
 
 
@@ -49,12 +49,34 @@ navSettingsBtn.addEventListener("click", ()=>{
 
 
 window.addEventListener('scroll',()=>{
-    if(window.scrollY>47){
-        document.querySelector(".table-header").classList.add("header-border-scroll");
+    let headerCell = document.querySelectorAll(".header-field");
+    let tableHeader = document.querySelector(".table-header");
+    let scroll = window.scrollY;
+console.log(tableHeader.style.height)
+    scroll>49?tableHeader.classList.add("header-border-scroll"):tableHeader.classList.remove("header-border-scroll");
+
+    if(scroll>85){
+        for(let element of headerCell){
+            element.classList.add("header-field-scroll");
+        }
     }
     else{
-        document.querySelector(".table-header").classList.remove("header-border-scroll");
+        for(let element of headerCell){
+            element.classList.remove("header-field-scroll");
+        }
     }
+    if(scroll>=50 && scroll<100){
+        let num = Math.abs((53-scroll) / 53).toFixed(3) ;
+        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, ${num}), rgba(65, 74, 136, ${num}), rgba(12, 21, 65, ${num})`
+    }
+    else if (scroll<50){
+        tableHeader.style.background = `none`
+    }
+    else if(scroll > 100){
+        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, 0.9), rgba(65, 74, 136,0.75), rgba(12, 21, 65, 0.9)`
+    }
+       
+    
 })
 
 

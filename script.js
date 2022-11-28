@@ -42,11 +42,20 @@ let settingsMode = false;
 
 navSettingsBtn.addEventListener("click", ()=>{
 
-    
+
 } )
 
 
-
+window.addEventListener("scroll", ()=>{
+    let tableHeader = document.querySelector(".table-header")
+    if(window.scrollY>70){
+       
+        tableHeader.classList.add("header-sticky-scroll")
+    }
+    else{
+        tableHeader.classList.remove("header-sticky-scroll")
+    }
+})
 
 
 

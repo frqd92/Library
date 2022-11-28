@@ -45,19 +45,20 @@ let gridMode = true;
 function tableMode(){
     let boxContainer = document.querySelector(".book-container")
     let books = document.querySelectorAll(".book");
+
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
-        boxContainer.innerHTML="";
+        bookTable.style.display="flex";
+        for(let element of books){
+            element.remove();
+        }
         navSettingsBtn.textContent="table mode" //temporary
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
-
-        for(let element of books){
-            element.style.display="none";
-        }
-        designTable();
+        designTable('https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg',"Lullaby", "Chuck P.", 272, 129, true);
     }
 
     else{
+        bookTable.style.display="none";
         navSettingsBtn.textContent="grid mode" //temporary
         gridMode=true;
         boxContainer.classList.remove("book-container-grid");
@@ -68,13 +69,91 @@ function tableMode(){
      
     }
 
-
     checkIfEmpty("main");
 
 }
 
 
-function designTable(){
+function designTable(url, title, author, totPages, readPages, read){
+    let bookTable = document.querySelector(".book-table");
+    let tableRow = document.createElement("div");
+    tableRow.classList.add("table-row")
+    bookTable.appendChild(tableRow)
+    for(let index = 0;index<7;index++){
+        let div = document.createElement("div");
+        div.classList.add("body-field");
+        switch(index){
+            case 0:
+                div.classList.add("table-image-cnt");
+                let img = document.createElement("img");
+                img.classList.add("table-book-img");
+                img.setAttribute("src", url)        //change this after
+                div.appendChild(img);
+                break;
+            case 1: 
+                div.classList.add("table-title");
+                div.textContent=title;
+                break;
+            case 2: 
+                div.classList.add("table-author");
+                div.textContent=author;
+                break;
+            case 3:
+                div.classList.add("table-pages");
+                div.textContent=totPages;
+                break;
+            case 4:
+                div.classList.add("table-pages-read");
+                div.textContent=readPages;
+                let arrowTable = document.createElement("div");
+                arrowTable.classList.add("arrows-table");
+                div.appendChild(arrowTable);
+                let arrowUp = document.createElement("img");
+                let arrowDown = document.createElement("img");
+                arrowUp.setAttribute("src", "images/arrow-up-white.png");
+                arrowDown.setAttribute("src", "images/arrow-down-white.png");
+                arrowTable.appendChild(arrowUp);
+                arrowTable.appendChild(arrowDown);
+                break;
+            case 5: 
+                div.classList.add("table-progress");
+                let progText = document.createElement("div")
+                progText.classList.add("progress-text-table");
+                progText.textContent = `${Math.round(parseInt(readPages)/parseInt(totPages)*100)}%`;
+                div.appendChild(progText);
+                let barContainer = document.createElement("div");
+                barContainer.classList.add("progress-bar-container-table");
+                div.appendChild(barContainer);
+                let barOut = document.createElement("div");
+                barOut.classList.add("bar-table");
+                barContainer.appendChild(barOut);
+                let barIn = document.createElement("div");
+                barIn.classList.add("bar-progress-table");
+                barOut.appendChild(barIn);
+                break;
+            case 6:
+                div.classList.add("table-other");
+                let imgDel = document.createElement("img");
+                imgDel.setAttribute("src","images/delete-white.png" )
+                imgDel.classList.add("table-delete");
+                let imgEdit = document.createElement("img");
+                imgEdit.setAttribute("src", "images/application-edit-white.png");
+                imgEdit.classList.add("table-edit");
+                div.appendChild(imgDel);
+                div.appendChild(imgEdit);
+            }
+            
+
+            
+            tableRow.appendChild(div)
+    }
+
+  
+}
+
+
+/*
+
 
     //header
     console.log(document.querySelector(".book-container").classList)
@@ -134,10 +213,7 @@ function designTable(){
         verticalArrs.classList.add("table-sort-arrow");
         headerField.appendChild(verticalArrs);
     }
-}
-
-
-
+*/
 
 
 

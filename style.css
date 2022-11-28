@@ -25,7 +25,8 @@ display: flex;
 height: 100%;
 }
 .book-table{
-display: flex;
+--table-border:  0.5px solid rgba(248, 248, 248, 0.318);
+display: none;
 flex-direction: column;
 width: 100vw;
 
@@ -36,9 +37,7 @@ margin: -20px;
     top: 103px;
     z-index: 9999;
 }
-.book-table{
-    --table-border:  0.5px solid rgba(248, 248, 248, 0.318);
-}
+
 .table-header{
  margin-bottom: 23px;
 
@@ -119,6 +118,7 @@ margin: -20px;
     border-right: none;
 }
 .table-other{
+    gap: 15px;
     display: flex;
     flex-direction: column;
 }

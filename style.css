@@ -80,7 +80,7 @@ margin: -20px;
 
 }
 .table-row{
-  
+    user-select: none;
     display: grid;
     grid-template-columns: 
     minmax(73px, 0.2fr) minmax(200px, 0.8fr) minmax(200px, 0.8fr) minmax(100px, 0.3fr) minmax(100px, 0.3fr)
@@ -103,6 +103,7 @@ margin: -20px;
     /* actual img */
 .table-book-img{ 
     width: 70px;
+    -webkit-user-drag: none;
 
 }
 

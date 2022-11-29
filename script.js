@@ -74,13 +74,15 @@ function tableMode(){
     }
     toggleEffectMode()
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
-        for(let index = 0; index<myLibrary.length;index++){
-            designTable(myLibrary[index].url, myLibrary[index].title, myLibrary[index].author, myLibrary[index].pagesTotal,myLibrary[index].pagesRead, myLibrary[index].read)
+        if(myLibrary.length>0){
+            for(let index = 0; index<myLibrary.length;index++){
+                designTable(myLibrary[index].url, myLibrary[index].title, myLibrary[index].author, myLibrary[index].pagesTotal,myLibrary[index].pagesRead, myLibrary[index].read)
+            }
         }
+
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
         if(bookTable.children.length>1){
-    
             bookTable.style.display="flex";
         }
     }
@@ -106,6 +108,7 @@ function tableMode(){
 
 
 function designTable(url, title, author, totPages, readPages, read, value){
+    
     let bookTable = document.querySelector(".book-table");
     let tableRow = document.createElement("div");
     tableRow.classList.add("table-row")
@@ -192,17 +195,16 @@ function designTable(url, title, author, totPages, readPages, read, value){
             }
             tableRow.appendChild(div)
     }
-
-
- let tableHeader = document.querySelector(".table-header");
-    
-        console.log(tableHeader)
+    if(value){
         bookTable.appendChild(tableRow);
         let topElement = document.querySelectorAll(".table-row")[1];
         let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
         let parent = topElement.parentNode;
         parent.insertBefore(bottomElement, topElement);
-        
+    }
+    else{
+        bookTable.appendChild(tableRow)
+    }
 
 
     
@@ -601,9 +603,8 @@ function navSelect(){
 function checkIfEmpty(from){
     let main = document.querySelector("main");
     let allBooks = document.querySelectorAll(".book");
- 
+    let allRows = document.querySelectorAll(".table-row");
     if(gridMode){
-
         if(!allBooks.length){
             createText(true);
             if(from){wiggleText()}
@@ -613,22 +614,29 @@ function checkIfEmpty(from){
             createText(false);
         }
    
+    }
+    else{
+        if(allRows.length>0){
+            createText(false);
+            
+            bookTable.style.display="flex";
         }
+    }
 
-        function createText(is){
-            if(is){
-                let emptyText = document.createElement("div");
-                emptyText.classList.add("empty-text");
-                main.appendChild(emptyText);
-                emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
-              
-            }
-            else{
-                if(document.querySelector(".empty-text")!==null){
-                    document.querySelector(".empty-text").remove()
-                }      
-            }
+    function createText(is){
+        if(is){
+            let emptyText = document.createElement("div");
+            emptyText.classList.add("empty-text");
+            main.appendChild(emptyText);
+            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
+            
         }
+        else{
+            if(document.querySelector(".empty-text")!==null){
+                document.querySelector(".empty-text").remove()
+            }      
+        }
+    }
         function wiggleText(){
             let text = main.querySelector(".empty-text");
             text.classList.add("wiggle-effect");
@@ -785,6 +793,7 @@ function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.unshift(bookObj); //changed from push order check if theres bugs
     gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, true);
+    
    
 }
 

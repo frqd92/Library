@@ -38,7 +38,7 @@ margin: -20px;
 .header-sticky{
     position: sticky;
     top: 103px;
-    z-index: 8;
+    z-index: 7;
 }
 
 .table-header{
@@ -203,6 +203,9 @@ width: 70%;
     left: 80px;
     z-index: 7;
     border-radius: 5px;
+
+    box-shadow: rgba(98, 94, 94, 0.35) 0px 50px 52px, rgba(0, 0, 0, 0.12) 0px -10px 27px, rgba(0, 0, 0, 0.33) 0px 4px 6px, rgba(0, 0, 0, 0.2) 0px 12px 13px, rgba(0, 0, 0, 0.1) 0px -3px 5px;
+
 }
 
 
@@ -310,7 +313,7 @@ nav {
     position: fixed;
     z-index: 12;
     gap: 10px;
-    height:72px;
+ 
 }
 
 nav h1 {

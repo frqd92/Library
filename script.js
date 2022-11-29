@@ -342,23 +342,32 @@ let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
 
 statMenuBtn.addEventListener("click", ()=>{
-    if(!document.querySelector(".book")){
-        checkIfEmpty("navBtn");
-    }
-    else{
-        if(!statMode){
-            document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
-            statMenu.classList.add("stats-shown");   //for unnecessary animation
-            statMode=true;
-            statMenu.style.cssText=``;
+    if(gridMode){
+        if(!document.querySelector(".book")){
+            checkIfEmpty("nav");
         }
         else{
-            statMenu.style.cssText=` animation: statAnimOut .4s ease-out;`;
-            document.querySelector(".nav-stats").style.background="";
-            statMode=false;
-            setTimeout(()=>{statMenu.classList.remove("stats-shown");},300)
+            if(!statMode){
+                document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
+                statMenu.classList.add("stats-shown");   //for unnecessary animation
+                statMode=true;
+                statMenu.style.cssText=``;
+            }
+            else{
+                statMenu.style.cssText=` animation: statAnimOut .4s ease-out;`;
+                document.querySelector(".nav-stats").style.background="";
+                statMode=false;
+                setTimeout(()=>{statMenu.classList.remove("stats-shown");},300)
+            }
+            calcStats();
         }
-        calcStats();
+        console.log("test")
+    }
+
+    else{
+        if(document.querySelectorAll(".table-row").length<2){
+           checkIfEmpty("table");
+        }
     }
 
 })
@@ -616,11 +625,15 @@ function checkIfEmpty(from){
    
     }
     else{
-        if(allRows.length>0){
+        if(allRows.length>0 && !from){
             createText(false);
-            
             bookTable.style.display="flex";
         }
+        else{
+            wiggleText()
+        }
+    
+     
     }
 
     function createText(is){

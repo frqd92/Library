@@ -51,6 +51,7 @@ function tableMode(){
         element.remove();
     }
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
+
         for(let index = 0; index<myLibrary.length;index++){
             designTable(myLibrary[index].url, myLibrary[index].title, myLibrary[index].author, myLibrary[index].pagesTotal,myLibrary[index].pagesRead, myLibrary[index].read)
         }
@@ -59,6 +60,7 @@ function tableMode(){
         navSettingsBtn.textContent="table mode" //temporary
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
+
     }
 
     else{
@@ -82,11 +84,12 @@ function tableMode(){
 }
 
 
-function designTable(url, title, author, totPages, readPages, read){
+function designTable(url, title, author, totPages, readPages, read, value){
     let bookTable = document.querySelector(".book-table");
     let tableRow = document.createElement("div");
     let barProgress = document.querySelector(".bar-progress-table");
     tableRow.classList.add("table-row")
+    tableRow.classList.add("table-body")
 
     for(let index = 0;index<7;index++){
         let div = document.createElement("div");
@@ -167,16 +170,20 @@ function designTable(url, title, author, totPages, readPages, read){
     }
 
     
-    let tableHeader = document.querySelector(".table-header");
-    // console.log(bookTable.children[0])
+   
+    console.log(bookTable.childNodes.length)
     // console.log(tableHeader)
- 
-
-    bookTable.appendChild(tableRow)
-    
-
-        
-
+    // tableHeader.appendChild(tableRow);
+    if(value){
+        let tableHeader = document.querySelector(".table-header");
+        tableHeader.after(tableRow)
+    }
+    else{
+        console.log("shiggy")
+        bookTable.insertAdjacentElement("beforeend", tableRow) 
+     
+    }
+   
   
 }
 
@@ -630,7 +637,7 @@ function editBook(editBtn, currentPage, text){
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.unshift(bookObj); //changed from push order check if theres bugs
-    gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked);
+    gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, true);
    
 }
 

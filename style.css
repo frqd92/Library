@@ -17,6 +17,9 @@ body{
 
 background: linear-gradient(to right, #17173c, #19215a, #0c1541); 
 }
+main{
+    position: relative;
+}
 
  
                                                                     /* table mode */
@@ -35,7 +38,7 @@ margin: -20px;
 .header-sticky{
     position: sticky;
     top: 103px;
-   
+    z-index: 8;
 }
 
 .table-header{
@@ -55,6 +58,7 @@ margin: -20px;
     text-align: center;
     padding: 10px 0px;
     gap:2px;
+    z-index: 6;
 }
 .header-field-scroll{
     border-left: 0.5px solid rgba(248, 248, 248, 0.218);
@@ -79,7 +83,7 @@ margin: -20px;
   
     display: grid;
     grid-template-columns: 
-    minmax(80px, 0.2fr) minmax(200px, 0.8fr) minmax(200px, 0.8fr) minmax(100px, 0.3fr) minmax(100px, 0.3fr)
+    minmax(73px, 0.2fr) minmax(200px, 0.8fr) minmax(200px, 0.8fr) minmax(100px, 0.3fr) minmax(100px, 0.3fr)
     minmax(200px, 0.4fr) minmax(70px, 0.1fr);
     position: relative;
 
@@ -93,6 +97,7 @@ margin: -20px;
 .table-image-cnt{
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
     /* actual img */
@@ -138,6 +143,12 @@ margin: -20px;
     display: flex;
     flex-direction: column;
     gap: 28px;
+    margin-bottom: 0px;
+}
+
+.up-table, .down-table{
+    width: 25px;
+
 }
 
 
@@ -185,6 +196,96 @@ width: 70%;
 }
 
 
+.hover-img-table{
+    position: absolute;
+    width: 180px;
+    left: 80px;
+    z-index: 7;
+    border-radius: 5px;
+}
+
+
+                                                                    /* grid table toggle */
+
+/* 
+                <label for="book-read" class="toggle"><label class="moving-text-yes" for="book-read">Yes</label>
+                <input type="checkbox" class="toggle-input" id="book-read">
+                <div class="toggle-fill"></div>
+
+*/
+
+
+
+/* 
+   
+        <label for="mode-toggle" class="toggle-out">
+        <label class="moving-text-mode-yes" for="book-read">Grid Mode</label>
+        <input type="checkbox" class="toggle-in" id="mode-toggle">
+        <div class="toggle-fill-mode"></div>
+        </label>
+    
+*/
+.mode-toggle-container{
+    border: 1px solid white;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    
+
+}
+
+.toggle-out{
+    --width: 45px;
+    --height: calc(var(--width) / 2);
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    padding: 15px;
+  
+}
+
+.toggle-fill-mode{
+    position: relative;
+    width:var(--width);
+    height: var(--height);
+    box-shadow: 0 0 12px rgba(16, 233, 248, 0.5);
+    background: rgb(88, 179, 88);
+    transition: background 0.2s;
+    border-radius: 50px;
+ 
+}
+.toggle-fill-mode::after{
+    content: "";
+    font-size: 1.1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--height);
+    width:var(--height);
+    background: rgb(0, 0, 0, 0.6);
+    border-radius: 50px;
+    transition: transform 0.2s;
+}
+
+.toggle-in:checked ~.toggle-fill-mode{
+    background: rgb(172, 77, 77);
+}
+.toggle-in:checked ~.toggle-fill-mode::after{
+    transform: translateX(var(--height));
+}
+.toggle-in{
+display: none;
+}
+
+.moving-text-mode-yes{
+    margin-right: 15px;
+    color:rgb(110, 119, 110);
+    transition: transform 0.3s;
+}
+
+.moving-text-mode-no{
+    transform: translate(100px);
+}
 
 
 
@@ -194,7 +295,7 @@ width: 70%;
                                                                     /* Nav Stuff */
 nav {
     display: grid;
-    grid-template-columns: 4fr 3fr 1fr;
+    grid-template-columns: 4fr 3fr 2fr 1fr;
     background-color: var(--nav-bg);
     color: var( --font-color-white);
     justify-content: center;
@@ -204,8 +305,8 @@ nav {
     width: 100vw;
     user-select: none;
     position: fixed;
-    z-index: 2;
-    gap: 30px;
+    z-index: 12;
+    gap: 10px;
     height:72px;
 }
 
@@ -257,10 +358,7 @@ nav h1 {
 
 }
 
-/* .nav-select:hover{
 
-    width: 100%;
-} */
 
 
 
@@ -381,7 +479,6 @@ nav h2{
 
 
 
-
                                                                 /* add a box nav button */
 .add-box-container{/* add a box button nav */
     width: 100%;
@@ -399,7 +496,7 @@ nav h2{
     align-content: center;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     height: 33px;
-
+    z-index: 10;
 }
 
 .add-box-container:hover{
@@ -604,7 +701,7 @@ sup{
     background: white;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    z-index: 2;
+    z-index: 100;
     background: var(--add-box);
     color: rgb(203, 192, 192);
     font-family: 'Rajdhani', sans-serif;
@@ -688,7 +785,6 @@ form{
 
 
 .book-container{
-
     padding: 150px 30px 20px 30px;
     max-height: 100%;
     width: 100%;
@@ -941,21 +1037,22 @@ form{
 
 .empty-text{
     align-self: center;
-    top:0;
-    left:0;
-   font-size: calc(0.5rem + 1.5vw);
+    position: absolute;
+    top: calc(20vw + 60px); 
+    left:10vw;
+   font-size: calc(1rem + 1.2vw);
    font-family: 'Urbanist', sans-serif;
    text-align: center;
    color:rgb(160, 153, 182);
    width: 80%;
    line-height: 1.8em;
    user-select: none;
-    text-shadow: 0px 0px 7px black ;
-  
+    text-shadow: 0px 0px 3px black ;
+
 }
 .empty-text span{
-    color:#434b73;
-    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+    color:#3c4eab;
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5);
     border: 0.5px solid rgb(128, 128, 128, 0.3);
     border-radius: 10px;
     padding: 3px;

@@ -28,7 +28,12 @@
         </div>
         <input type="text" id="search-bar"  placeholder="Search by title">
     </div>
-
+    <div class="mode-toggle-container">
+        <label for="mode-toggle" class="toggle-out"><label class="moving-text-mode-yes" for="mode-toggle">Grid Mode</label>
+        <input type="checkbox" class="toggle-in" id="mode-toggle">
+        <div class="toggle-fill-mode"></div>
+        </label>
+    </div>
 
     <div class="nav-options">
         <div class="nav-btn nav-select">
@@ -84,7 +89,8 @@
                 <input type="text" id="book-pages" required pattern="[0-9]{1,4}" placeholder="0-9999" autocomplete="off" class="form-input">
             </div>
             <div class="input-container">
-                <label for="book-read"><h4>Book Completed?</h4></label>
+          
+            <label for="book-read"><h4>Book Completed?</h4></label>
                 <label for="book-read" class="toggle"><label class="moving-text-yes" for="book-read">Yes</label>
                 <input type="checkbox" class="toggle-input" id="book-read">
                 <div class="toggle-fill"></div>
@@ -100,33 +106,35 @@
     </div>
 
     <div class="book-container">
-
         <div class="book-table">  
-            <div class="header-sticky">
-                <div class="table-row table-header">
-                    <div class="header-field"></div>
-                    <div class="header-field" >
-                        <p>Title</p> 
-                        <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow"> 
-                    </div> 
-                    <div class="header-field">
-                        <p>Author</p> 
-                        <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow"> 
-                    </div>
-                    <div class="header-field">
-                        <p>Total Pages</p> 
-                        <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow">
-                    </div>
-                    <div class="header-field">
-                        <p>Pages Read</p>
-                    </div>
-                    <div class="header-field">
-                        <p>Progress</p> 
-                        <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow">
-                    </div>
-                    <div class="header-field"></div>
-                </div>
+
+
+
+    <div class="header-sticky">
+        <div class="table-row table-header">
+            <div class="header-field"></div>
+            <div class="header-field" >
+                <p>Title</p> 
+                <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow"> 
+            </div> 
+            <div class="header-field">
+                <p>Author</p> 
+                <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow"> 
             </div>
+            <div class="header-field">
+                <p>Total Pages</p> 
+                <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow">
+            </div>
+            <div class="header-field">
+                <p>Pages Read</p>
+            </div>
+            <div class="header-field">
+                <p>Progress</p> 
+                <img src="images/arrows-vertical.svg" alt="" class="table-sort-arrow">
+            </div>
+            <div class="header-field"></div>
+        </div>
+    </div>
 
 
         

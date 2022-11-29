@@ -20,6 +20,9 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Title"){
         console.log(myLibrary)
+        // let mainBookContainer = document.querySelector(".book-container");
+        // console.log(mainBookContainer.children.length)
+        checkIfEmpty();
     }
 })
 
@@ -33,8 +36,16 @@ window.addEventListener("click", (e)=>{ //to test
 
 
 
-//Table Mode
+//bullshit mode toggle effect
+let modeToggle = document.querySelector(".")
 
+
+
+
+
+
+
+//Table Mode
 let navSettingsBtn = document.querySelector(".nav-settings");
 let bookTable = document.querySelector(".book-table");
 
@@ -47,20 +58,21 @@ function tableMode(){
     let books = document.querySelectorAll(".book");
     let rows = document.querySelectorAll(".table-row");
     for(let element of books){
-         
         element.remove();
     }
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
-
         for(let index = 0; index<myLibrary.length;index++){
             designTable(myLibrary[index].url, myLibrary[index].title, myLibrary[index].author, myLibrary[index].pagesTotal,myLibrary[index].pagesRead, myLibrary[index].read)
         }
-        bookTable.style.display="flex";
 
         navSettingsBtn.textContent="table mode" //temporary
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
 
+        if(myLibrary.length>0){
+            bookTable.style.display="flex";
+            console.log("hello")
+        }
     }
 
     else{
@@ -79,7 +91,7 @@ function tableMode(){
         }
      
     }
-    checkIfEmpty("main");
+    // checkIfEmpty();
 
 }
 
@@ -87,10 +99,9 @@ function tableMode(){
 function designTable(url, title, author, totPages, readPages, read, value){
     let bookTable = document.querySelector(".book-table");
     let tableRow = document.createElement("div");
-    let barProgress = document.querySelector(".bar-progress-table");
     tableRow.classList.add("table-row")
     tableRow.classList.add("table-body")
-
+    let barProgress = document.querySelector(".bar-progress-table")
     for(let index = 0;index<7;index++){
         let div = document.createElement("div");
         div.classList.add("body-field");
@@ -105,6 +116,7 @@ function designTable(url, title, author, totPages, readPages, read, value){
                 else{
                     img.setAttribute("src", "images/book-cover.png")  
                 }
+                img.addEventListener("mouseover", (e)=>{imageHover(e)})
                 div.appendChild(img);
                 break;
             case 1: 
@@ -142,7 +154,8 @@ function designTable(url, title, author, totPages, readPages, read, value){
                 div.classList.add("table-progress");
                 let progText = document.createElement("div")
                 progText.classList.add("progress-text-table");
-                progText.textContent = `${Math.round(parseInt(readPages)/parseInt(totPages)*100)}%`;
+                let percentage = Math.floor(parseInt(readPages)/parseInt(totPages)*100)
+                progText.textContent = `${percentage}%`;
                 div.appendChild(progText);
                 let barContainer = document.createElement("div");
                 barContainer.classList.add("progress-bar-container-table");
@@ -153,6 +166,8 @@ function designTable(url, title, author, totPages, readPages, read, value){
                 let barIn = document.createElement("div");
                 barIn.classList.add("bar-progress-table");
                 barOut.appendChild(barIn);
+                barIn.style.cssText = `width: ${percentage}%;`;
+                percentage===100 ? barIn.style.background = 'rgba(151, 240, 179, 0.604)' : barIn.style.background = 'rgb(107, 122, 209);';
                 break;
             case 6:
                 div.classList.add("table-other");
@@ -169,25 +184,34 @@ function designTable(url, title, author, totPages, readPages, read, value){
             tableRow.appendChild(div)
     }
 
-    
-   
-    console.log(bookTable.childNodes.length)
-    // console.log(tableHeader)
-    // tableHeader.appendChild(tableRow);
+
     if(value){
         let tableHeader = document.querySelector(".table-header");
         tableHeader.after(tableRow)
     }
-    else{
-        console.log("shiggy")
-        bookTable.insertAdjacentElement("beforeend", tableRow) 
-     
-    }
-   
-  
+    else{bookTable.insertAdjacentElement("beforeend", tableRow)}
+
 }
 
-function arrowFuncTable(up, down, current, total, bar, text ){
+function imageHover(e){
+    let images = document.querySelectorAll(".table-book-img");
+    for(let index=0;index<images.length;index++){
+        images[index].id=index;
+    }
+    let tar = e.target.id;
+    let imageContainer = document.querySelectorAll(".table-image-cnt");
+    let hoverImg = document.createElement("img");
+    hoverImg.classList.add("hover-img-table");
+    hoverImg.setAttribute("src", `${myLibrary[tar].url}`)
+    imageContainer[tar].appendChild(hoverImg);
+    
+    images[tar].addEventListener("mouseleave", ()=>{
+        hoverImg.remove();
+    })
+
+}
+
+function arrowFuncTable(up, down, current, total){
     // console.log(up, down, current, total);
 
     up.addEventListener("mousedown", (e)=>{
@@ -203,6 +227,7 @@ function arrowFuncTable(up, down, current, total, bar, text ){
         if(current.textContent==total && myLibrary[tar] !== undefined ){
             myLibrary[tar].read=false;
         }
+        progressBarTable(tar)
     })
 
     down.addEventListener("mousedown", (e)=>{
@@ -216,22 +241,28 @@ function arrowFuncTable(up, down, current, total, bar, text ){
         if(crntPage<parseInt(total)){
             myLibrary[tar].read=true;
         }
+        progressBarTable(tar)
     })
+    function progressBarTable(tar){
+        let read = parseInt(document.querySelectorAll(".read-table-text-fuck")[tar].textContent)
+        let total = parseInt(document.querySelectorAll(".table-pages")[tar].textContent)
+        let text = document.querySelectorAll(".progress-text-table")[tar];
+        let percentage = (read/total) * 100;
+        if(percentage!==100){
+            text.textContent=`${Math.floor(percentage)}%`;
+        }
+        else{
+            text.textContent=`Book Complete!`;
+        }
+       
+     
+        let barProgress = document.querySelectorAll(".bar-progress-table")[tar];
+        barProgress.style.cssText = `width: ${percentage}%;`;
+        percentage===100 ? barProgress.style.background = 'rgba(151, 240, 179, 0.604)' : barProgress.style.background = 'rgb(107, 122, 209);';
+
+    }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -281,7 +312,7 @@ let statMode = false;
 
 statMenuBtn.addEventListener("click", ()=>{
     if(!document.querySelector(".book")){
-        checkIfEmpty("select");
+        checkIfEmpty("navBtn");
     }
     else{
         if(!statMode){
@@ -305,52 +336,60 @@ statMenuBtn.addEventListener("click", ()=>{
 
 function calcStats(){
     let allBooks = document.querySelectorAll(".book");
-
-   if(statMenu.childNodes!==0){
+    let allBooksTab = document.querySelectorAll(".table-row")
+     if(statMenu.childNodes!==0){
     statMenu.innerHTML="";
    }
 
-    let totalPages = 0;
-    let totalRead = 0;
-    let totalLeft= 0;
-    //total books 
-    let totalBooks= allBooks.length;
+    gridMode?statMode(allBooks):statMode(allBooksTab);
 
-    for(let index = 0;index<allBooks.length;index++){
-        //total pages
-        totalPages +=Number(myLibrary[index].pagesTotal);
-        //total completed books
-        myLibrary[index].read===false?totalRead++:totalLeft++; 
-    }
+    function statMode(books){
 
-    //longest book  //shorted book
-    let libraryCopy = [...myLibrary];
-    libraryCopy.sort((a,b) => a.pagesTotal - b.pagesTotal);
-    let longestBook = libraryCopy[libraryCopy.length-1].title;
-    let shortestBook = libraryCopy[0].title;
-    let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
+        let totalPages = 0;
+        let totalRead = 0;
+        let totalLeft= 0;
+        let totalBooks= books.length;
 
-    for(let index=0;index<6;index++){
-        let div = document.createElement("div");
-        let left = document.createElement("p");
-        let right = document.createElement("p");
-        div.appendChild(left);
-        div.appendChild(right);
-        div.classList.add("stats-div")
-        left.classList.add("stats-left");
-        right.classList.add("stats-right");
-        statMenu.appendChild(div);
-        switch(index){
-            case 0:left.textContent = "Total Books"; break;
-            case 1: left.textContent = "Books Read"; break;
-            case 2: left.textContent = "Books Not Read"; break;
-            case 3: left.textContent = "Total Pages"; break;
-            case 4: left.innerHTML = `Longest Book <sup>${libraryCopy[libraryCopy.length-1].pagesTotal} pages</sup>`; break;
-            case 5: left.innerHTML = `Shortest Book <sup>${libraryCopy[0].pagesTotal} pages</sup>`; break;
+        for(let index = 0;index<allBooks.length;index++){
+            if(!gridMode && index===0){//skip header row
+                continue;
+            }
+            //total pages
+            totalPages +=Number(myLibrary[index].pagesTotal);
+            //total completed books
+            myLibrary[index].read===false?totalRead++:totalLeft++; 
         }
-        right.textContent=statArr[index];
-
+    
+        //longest book  //shorted book
+        let libraryCopy = [...myLibrary]; //need to use spread not to mess with original
+        libraryCopy.sort((a,b) => a.pagesTotal - b.pagesTotal);
+        let longestBook = libraryCopy[libraryCopy.length-1].title;
+        let shortestBook = libraryCopy[0].title;
+        let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
+    
+        for(let index=0;index<6;index++){
+            let div = document.createElement("div");
+            let left = document.createElement("p");
+            let right = document.createElement("p");
+            div.appendChild(left);
+            div.appendChild(right);
+            div.classList.add("stats-div")
+            left.classList.add("stats-left");
+            right.classList.add("stats-right");
+            statMenu.appendChild(div);
+            switch(index){
+                case 0:left.textContent = "Total Books"; break;
+                case 1: left.textContent = "Books Read"; break;
+                case 2: left.textContent = "Books Not Read"; break;
+                case 3: left.textContent = "Total Pages"; break;
+                case 4: left.innerHTML = `Longest Book <sup>${libraryCopy[libraryCopy.length-1].pagesTotal} pages</sup>`; break;
+                case 5: left.innerHTML = `Shortest Book <sup>${libraryCopy[0].pagesTotal} pages</sup>`; break;
+            }
+            right.textContent=statArr[index];
+    
+        }
     }
+
 
 }
 document.addEventListener("mousedown", (e)=>{
@@ -378,7 +417,7 @@ function navSelect(){
     let selectAllBtn = document.getElementById("select-nav-all-btn");
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
     let deleteSelectionBtn = document.getElementById("delete-select");
-    if(allBooks.length===0){checkIfEmpty("select")};
+    if(allBooks.length===0){checkIfEmpty("navBtn")};
     
     if(!isSelect && allBooks.length>0){ //if select button is not selected hide add book nav and show select nav
         let index = 0;
@@ -528,26 +567,103 @@ function navSelect(){
     numItemsSelectedText.textContent = "No items selected"; 
     }
 }
-function checkIfEmpty(from){ //checks if book area is empty, if so adds a text telling user how to add content
-    let mainBookContainer = document.querySelector(".book-container");
+
+
+function checkIfEmpty(from){
+    let main = document.querySelector("main");
+    let allBooks = document.querySelectorAll(".book");
+ 
+    if(gridMode){
+
+        if(!allBooks.length){
+            createText(true);
+            if(from){wiggleText()}
+        }
+
+        else{
+            createText(false);
+        }
+   
+        }
+
+        function createText(is){
+            if(is){
+                let emptyText = document.createElement("div");
+                emptyText.classList.add("empty-text");
+                main.appendChild(emptyText);
+                emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
+              
+            }
+            else{
+                if(document.querySelector(".empty-text")!==null){
+                    document.querySelector(".empty-text").remove()
+                }      
+            }
+        }
+        function wiggleText(){
+            let text = main.querySelector(".empty-text");
+            text.classList.add("wiggle-effect");
+            setTimeout(()=>{
+                text.classList.remove("wiggle-effect");
+            }, 400)  
+        }
+        
+    }
+
+
+
+
+
+
+
+
+
+
+function checkIfEmptyz(from){ //checks if book area is empty, if so adds a text telling user how to add content
+    let bookTable = document.querySelector(".book-table");
     let emptyText = document.createElement("div");
-    if(!mainBookContainer.children.length){
-        emptyText.classList.add("empty-text");
-        mainBookContainer.appendChild(emptyText);
-        emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
+  
+    function emptyMain(){
+        if(!mainBookContainer.querySelector(".empty-text")){
+            emptyText.classList.add("empty-text");
+            mainBookContainer.appendChild(emptyText);
+            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
+
+        }
+        else{
+      
+         
+        }
 
     }
+
+    console.log(document.querySelector(".book-table").style.display)
+
+    if(!gridMode && bookTable.children.length>1){
+        bookTable.style.display="flex";
+
+    }
+
+
+    if( (mainBookContainer.children.length===1 && gridMode) || (mainBookContainer.children.length===1 && !gridMode)){
+        emptyMain();
+
+    }
+
     else{
         if(from==="select"){
             mainBookContainer.querySelector(".empty-text").classList.add("wiggle-effect");
             setTimeout(()=>{
                 mainBookContainer.querySelector(".empty-text").classList.remove("wiggle-effect");
-            }, 400)
-                
-    
+            }, 400)    
         }
-        else if( mainBookContainer.querySelector(".empty-text")){
-            mainBookContainer.querySelector(".empty-text").remove();
+        else{
+            if(mainBookContainer.querySelector(".empty-text") && gridMode==true){
+                document.querySelector(".empty-text").remove();
+            }
+        
+            console.log("bass")
+            
         }
       
     }
@@ -555,10 +671,10 @@ function checkIfEmpty(from){ //checks if book area is empty, if so adds a text t
 
 
 
-
+//focusses search bar when users types letters
 window.addEventListener("keydown", (e)=>{
     let addBoxVis = addBox.style.display;
-    if(e.key.match(/[a-z]/gi) && addBoxVis!=="block"){searchBar.focus();} //focusses search bar when users types letters
+    if(e.key.match(/[a-z]/gi) && addBoxVis!=="block"){searchBar.focus();} 
     })
 
 
@@ -599,12 +715,13 @@ function checkForm(e){
     }
 
     if(validityCheck === true && from ==="add-book"){
-        checkIfEmpty("main");
+        // checkIfEmpty("main");
         addBookToLibrary()
     }
     else if (validityCheck === true && from ==="edit-book" && gridMode===true){
         createBook(false);
     }
+    checkIfEmpty();
 }
 
 function editBook(editBtn, currentPage, text){
@@ -836,6 +953,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
     if(create){clearInputs();}
     if(!create){bgDiv.style.display="none"; addBox.style.display="none"}
+    checkIfEmpty();
 }
 
 //Make the add book box appear and disappear
@@ -940,6 +1058,7 @@ function deleteBook(trashBtn, text){
                 e.target.parentNode.remove();
                 clearInterval(interval);
                 checkIfEmpty();
+        
             }
         },1000)
     })
@@ -956,6 +1075,7 @@ function deleteBook(trashBtn, text){
         timer =0;
         counter=2;
     })
+
 }
 
 function clearInputs(){
@@ -973,7 +1093,7 @@ function clearInputs(){
 
 
 //add book box toggle
-let toggle = document.querySelector('input[type="checkbox"]');
+let toggle = document.querySelector('.toggle-input');
 let pagesRead = document.querySelector(".pages-read");
 let movingText = document.querySelector(".moving-text-yes");
 toggle.addEventListener("change",toggleFunc)
@@ -1097,7 +1217,7 @@ addBoxBtn.addEventListener("mousedown", ()=>{
 
 window.onload = function (){
     addBookBtnEffects();
-    checkIfEmpty("main");
+    checkIfEmpty();
 }
 
 
@@ -1106,6 +1226,7 @@ window.onload = function (){
 
 
 function addDemoBooks(){
+    checkIfEmpty();
     let demoArray = [
         {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
         {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
@@ -1121,14 +1242,23 @@ function addDemoBooks(){
     injectBooks(demoArray);
 
     function injectBooks(arr){
-        for(let index in arr){
+        if(gridMode){
+            for(let index in arr){
                 let bookObj = new Book(arr[index].title, arr[index].author, arr[index].url, arr[index].pagesTotal, arr[index].read, arr[index].pagesRead);
                 myLibrary.unshift(bookObj); //changed from push check if there's bugs
                 createBook(true, arr[index].title, arr[index].author, arr[index].url, arr[index].pagesTotal, arr[index].read, arr[index].pagesRead);
+            }
         }
-    }
+        else{
+            for(let index in arr){
+                let bookObj = new Book(arr[index].title, arr[index].author, arr[index].url, arr[index].pagesTotal, arr[index].read, arr[index].pagesRead);
+                myLibrary.unshift(bookObj); 
+                designTable(arr[index].url, arr[index].title, arr[index].author, arr[index].pagesTotal, arr[index].pagesRead, arr[index].read);
+            }
 
-checkIfEmpty("main");
+    }
+    }
+ 
 }
 
 

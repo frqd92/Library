@@ -37,7 +37,7 @@ window.addEventListener("click", (e)=>{ //to test
 
 let navSettingsBtn = document.querySelector(".nav-settings");
 let bookTable = document.querySelector(".book-table");
-let settingsMode = false;
+
 
 navSettingsBtn.addEventListener("click",tableMode)
 
@@ -45,16 +45,20 @@ let gridMode = true;
 function tableMode(){
     let boxContainer = document.querySelector(".book-container")
     let books = document.querySelectorAll(".book");
-
+    let rows = document.querySelectorAll(".table-row");
+    for(let element of books){
+         
+        element.remove();
+    }
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
-        bookTable.style.display="flex";
-        for(let element of books){
-            element.remove();
+        for(let index = 0; index<myLibrary.length;index++){
+            designTable(myLibrary[index].url, myLibrary[index].title, myLibrary[index].author, myLibrary[index].pagesTotal,myLibrary[index].pagesRead, myLibrary[index].read)
         }
+        bookTable.style.display="flex";
+
         navSettingsBtn.textContent="table mode" //temporary
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
-        designTable('https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Lullabycvr.jpg/220px-Lullabycvr.jpg',"Lullaby", "Chuck P.", 272, 129, true);
     }
 
     else{
@@ -62,13 +66,17 @@ function tableMode(){
         navSettingsBtn.textContent="grid mode" //temporary
         gridMode=true;
         boxContainer.classList.remove("book-container-grid");
-        
+        for(let index=0;index<rows.length;index++){
+            if(index!==0){
+                rows[index].remove();
+            }
+         
+        }
         for(let index = myLibrary.length-1; index>=0;index--){
             createBook(true, myLibrary[index].title, myLibrary[index].author, myLibrary[index].url, myLibrary[index].pagesTotal, myLibrary[index].read, myLibrary[index].pagesRead )
         }
      
     }
-
     checkIfEmpty("main");
 
 }
@@ -77,8 +85,9 @@ function tableMode(){
 function designTable(url, title, author, totPages, readPages, read){
     let bookTable = document.querySelector(".book-table");
     let tableRow = document.createElement("div");
+    let barProgress = document.querySelector(".bar-progress-table");
     tableRow.classList.add("table-row")
-    bookTable.appendChild(tableRow)
+
     for(let index = 0;index<7;index++){
         let div = document.createElement("div");
         div.classList.add("body-field");
@@ -87,7 +96,12 @@ function designTable(url, title, author, totPages, readPages, read){
                 div.classList.add("table-image-cnt");
                 let img = document.createElement("img");
                 img.classList.add("table-book-img");
-                img.setAttribute("src", url)        //change this after
+                if(url){
+                    img.setAttribute("src", url)      
+                }
+                else{
+                    img.setAttribute("src", "images/book-cover.png")  
+                }
                 div.appendChild(img);
                 break;
             case 1: 
@@ -104,16 +118,22 @@ function designTable(url, title, author, totPages, readPages, read){
                 break;
             case 4:
                 div.classList.add("table-pages-read");
-                div.textContent=readPages;
                 let arrowTable = document.createElement("div");
                 arrowTable.classList.add("arrows-table");
                 div.appendChild(arrowTable);
+                let p = document.createElement("p");
+                div.appendChild(p);
+                p.classList.add("read-table-text-fuck")
+                p.textContent=readPages;
                 let arrowUp = document.createElement("img");
                 let arrowDown = document.createElement("img");
                 arrowUp.setAttribute("src", "images/arrow-up-white.png");
+                arrowUp.classList.add("up-table")
                 arrowDown.setAttribute("src", "images/arrow-down-white.png");
+                arrowDown.classList.add("down-table")
                 arrowTable.appendChild(arrowUp);
                 arrowTable.appendChild(arrowDown);
+                arrowFuncTable(arrowUp, arrowDown, p, totPages,barProgress,  true);
                 break;
             case 5: 
                 div.classList.add("table-progress");
@@ -139,127 +159,106 @@ function designTable(url, title, author, totPages, readPages, read){
                 let imgEdit = document.createElement("img");
                 imgEdit.setAttribute("src", "images/application-edit-white.png");
                 imgEdit.classList.add("table-edit");
-                div.appendChild(imgDel);
                 div.appendChild(imgEdit);
+                div.appendChild(imgDel);
+                break;
             }
-            
-
-            
             tableRow.appendChild(div)
     }
+
+    
+    let tableHeader = document.querySelector(".table-header");
+    // console.log(bookTable.children[0])
+    // console.log(tableHeader)
+ 
+
+    bookTable.appendChild(tableRow)
+    
+
+        
 
   
 }
 
+function arrowFuncTable(up, down, current, total, bar, text ){
+    // console.log(up, down, current, total);
 
-/*
-
-
-    //header
-    console.log(document.querySelector(".book-container").classList)
-    let boxContainer = document.querySelector(".book-container")
-    let bookTable = document.createElement("div");
-    bookTable.classList=("book-table");
-    boxContainer.appendChild(bookTable);
-
-    let headerSticky = document.createElement("div");
-    headerSticky.classList.add("header-sticky");
-    bookTable.appendChild(headerSticky);
-
-    let tableRow = document.createElement("div");
-    tableRow.classList.add("table-row");
-    tableRow.classList.add("table-header");
-    headerSticky.appendChild(tableRow);
-
-
-
-    for(let index = 0; index < 7 ; index++){
-        let headerField = document.createElement("div");
-        headerField.classList.add("header-field");
-        tableRow.appendChild(headerField);
-        let headerText= document.createElement("p");
-        switch(index){
-            case 0: break;
-            case 1: 
-            headerText.textContent="Title";
-            headerField.appendChild(headerText);
-            createVerticalArrws(headerField);
-            break;
-            case 2: 
-            headerText.textContent="Author"
-            headerField.appendChild(headerText);
-            createVerticalArrws(headerField);
-            break;
-            case 3: 
-            headerText.textContent="Total Pages"
-            headerField.appendChild(headerText);
-            createVerticalArrws(headerField);
-            break;
-            case 4:
-            headerText.textContent="Pages Read"
-            headerField.appendChild(headerText);
-            break;
-            case 5:
-            headerText.textContent="Progress"
-            headerField.appendChild(headerText);
-            createVerticalArrws(headerField);
+    up.addEventListener("mousedown", (e)=>{
+        getIndex("table");
+        let tar = e.target.id;
+        let crntPage= parseInt(current.textContent);
+        if(crntPage<total){
+           current.textContent= crntPage + 1;
+           if(myLibrary[tar]){
+            myLibrary[tar].pagesRead=current.textContent;
         }
+        }
+        if(current.textContent==total && myLibrary[tar] !== undefined ){
+            myLibrary[tar].read=false;
+        }
+    })
 
+    down.addEventListener("mousedown", (e)=>{
+        getIndex("table");
+        let tar = e.target.id;
+        let crntPage= parseInt(current.textContent);
+        if(crntPage>0){
+            current.textContent = crntPage - 1;
+            myLibrary[tar].pagesRead=current.textContent;
+        }
+        if(crntPage<parseInt(total)){
+            myLibrary[tar].read=true;
+        }
+    })
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//table header scroll effect thing
+window.addEventListener('scroll',()=>{
+    let headerCell = document.querySelectorAll(".header-field");
+    let tableHeader = document.querySelector(".table-header");
+    let scroll = window.scrollY;
+    scroll>49?tableHeader.classList.add("header-border-scroll"):tableHeader.classList.remove("header-border-scroll");
+
+    if(scroll>=50 && scroll<100){
+        let numBg = Math.abs((53-scroll) / 53).toFixed(3) ;
+        let numBr = numBg / 2.32;
+        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, ${numBg}), rgba(65, 74, 136, ${numBg}), rgba(12, 21, 65, ${numBg})`
+        for(element of headerCell){
+            element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, ${numBr})`
+        }
     }
-
-    function createVerticalArrws(headerField){
-        let verticalArrs = document.createElement("img");
-        verticalArrs.setAttribute("src", "images/arrows-vertical.svg");
-        verticalArrs.classList.add("table-sort-arrow");
-        headerField.appendChild(verticalArrs);
+    else if (scroll<50){
+        tableHeader.style.background = `none`
+        for(element of headerCell){
+            element.style.borderLeft = ` none`
+        }
     }
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// table header scroll effect thing
-// window.addEventListener('scroll',()=>{
-//     let headerCell = document.querySelectorAll(".header-field");
-//     let tableHeader = document.querySelector(".table-header");
-//     let scroll = window.scrollY;
-//     scroll>49?tableHeader.classList.add("header-border-scroll"):tableHeader.classList.remove("header-border-scroll");
-
-//     if(scroll>=50 && scroll<100){
-//         let numBg = Math.abs((53-scroll) / 53).toFixed(3) ;
-//         let numBr = numBg / 2.32;
-//         tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, ${numBg}), rgba(65, 74, 136, ${numBg}), rgba(12, 21, 65, ${numBg})`
-//         for(element of headerCell){
-//             element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, ${numBr})`
-//         }
-//     }
-//     else if (scroll<50){
-//         tableHeader.style.background = `none`
-//         for(element of headerCell){
-//             element.style.borderLeft = ` none`
-//         }
-//     }
-//     else if(scroll > 100){
-//         tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, 0.92), rgba(65, 74, 136,0.85), rgba(12, 21, 65, 0.92)`
-//         for(element of headerCell){
-//             element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, 0.37)`
-//         }
-//     }
-// })
+    else if(scroll > 100){
+        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, 0.92), rgba(65, 74, 136,0.85), rgba(12, 21, 65, 0.92)`
+        for(element of headerCell){
+            element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, 0.37)`
+        }
+    }
+})
 
 
 
@@ -596,8 +595,7 @@ function checkForm(e){
         checkIfEmpty("main");
         addBookToLibrary()
     }
-    else if (validityCheck === true && from ==="edit-book"){
-        
+    else if (validityCheck === true && from ==="edit-book" && gridMode===true){
         createBook(false);
     }
 }
@@ -632,7 +630,8 @@ function editBook(editBtn, currentPage, text){
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.unshift(bookObj); //changed from push order check if theres bugs
-    createBook(true);
+    gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked);
+   
 }
 
 
@@ -841,19 +840,26 @@ addBoxBtn.addEventListener("click", ()=>{
     editBookBtn.style.display="none";
 })
 
-
-
-function arrowFunc(up, down,page, total, barProgress, text){
-   function getIndex(){
-   //to update pages read changes from arrows to the library
-    let allArrowsUp = document.querySelectorAll(".up");
-    let allArrowsDown = document.querySelectorAll(".down")
-    for(let x=0;x<allArrowsUp.length;x++){
-        allArrowsUp[x].id=`${x}`;
-        allArrowsDown[x].id=`${x}`;
+function getIndex(table){
+    //to update pages read changes from arrows to the library
+    let allArrowsUp, allArrowsDown;
+    if(!table){
+         allArrowsUp = document.querySelectorAll(".up");
+         allArrowsDown = document.querySelectorAll(".down")
     }
-    
-   }
+    else{
+         allArrowsUp = document.querySelectorAll(".up-table");
+         allArrowsDown = document.querySelectorAll(".down-table")
+    }
+     for(let x=0;x<allArrowsUp.length;x++){
+         allArrowsUp[x].id=`${x}`;
+         allArrowsDown[x].id=`${x}`;
+     }
+     
+    }
+
+function arrowFunc(up, down,page, total, barProgress, text, table){
+
     up.addEventListener("mousedown", incrementFunc);
     function incrementFunc(e){
         let tar = e.target.id;
@@ -884,7 +890,7 @@ function arrowFunc(up, down,page, total, barProgress, text){
         }
         updateProgressBar(page.textContent, total, barProgress, text);
     }
-
+    
     function updateProgressBar(currentPage, total, barProgress, text){
     let percentageComplete = (currentPage/total)*100;
     barProgress.style.cssText = `width: ${percentageComplete}%;`;

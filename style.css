@@ -35,7 +35,7 @@ margin: -20px;
 .header-sticky{
     position: sticky;
     top: 103px;
-    z-index: 9999;
+   
 }
 
 .table-header{

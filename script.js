@@ -37,9 +37,21 @@ window.addEventListener("click", (e)=>{ //to test
 
 
 //bullshit mode toggle effect
-let modeToggle = document.querySelector(".")
+let modeToggle = document.querySelector(".toggle-in");
 
+modeToggle.addEventListener("change", tableMode);
 
+function toggleEffectMode(){
+    let movingTextMode = document.querySelector(".moving-text-mode-yes");
+    if(modeToggle.checked){
+        movingTextMode.textContent="Table"
+        movingTextMode.classList.add("moving-text-mode-no");
+    }
+    else{
+        movingTextMode.textContent="Grid";
+        movingTextMode.classList.remove("moving-text-mode-no");
+    }
+}
 
 
 
@@ -50,7 +62,7 @@ let navSettingsBtn = document.querySelector(".nav-settings");
 let bookTable = document.querySelector(".book-table");
 
 
-navSettingsBtn.addEventListener("click",tableMode)
+// navSettingsBtn.addEventListener("click",tableMode)
 
 let gridMode = true;
 function tableMode(){
@@ -60,24 +72,21 @@ function tableMode(){
     for(let element of books){
         element.remove();
     }
+    toggleEffectMode()
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
         for(let index = 0; index<myLibrary.length;index++){
             designTable(myLibrary[index].url, myLibrary[index].title, myLibrary[index].author, myLibrary[index].pagesTotal,myLibrary[index].pagesRead, myLibrary[index].read)
         }
-
-        navSettingsBtn.textContent="table mode" //temporary
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
-
-        if(myLibrary.length>0){
+        if(bookTable.children.length>1){
+    
             bookTable.style.display="flex";
-            console.log("hello")
         }
     }
 
     else{
         bookTable.style.display="none";
-        navSettingsBtn.textContent="grid mode" //temporary
         gridMode=true;
         boxContainer.classList.remove("book-container-grid");
         for(let index=0;index<rows.length;index++){
@@ -89,7 +98,7 @@ function tableMode(){
         for(let index = myLibrary.length-1; index>=0;index--){
             createBook(true, myLibrary[index].title, myLibrary[index].author, myLibrary[index].url, myLibrary[index].pagesTotal, myLibrary[index].read, myLibrary[index].pagesRead )
         }
-     
+       
     }
     // checkIfEmpty();
 
@@ -185,13 +194,33 @@ function designTable(url, title, author, totPages, readPages, read, value){
     }
 
 
-    if(value){
-        let tableHeader = document.querySelector(".table-header");
-        tableHeader.after(tableRow)
-    }
-    else{bookTable.insertAdjacentElement("beforeend", tableRow)}
+ let tableHeader = document.querySelector(".table-header");
+    
+        console.log(tableHeader)
+        bookTable.appendChild(tableRow);
+        let topElement = document.querySelectorAll(".table-row")[1];
+        let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
+        let parent = topElement.parentNode;
+        parent.insertBefore(bottomElement, topElement);
+        
+
+
+    
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function imageHover(e){
     let images = document.querySelectorAll(".table-book-img");
@@ -717,6 +746,7 @@ function checkForm(e){
     if(validityCheck === true && from ==="add-book"){
         // checkIfEmpty("main");
         addBookToLibrary()
+        clearInputs();
     }
     else if (validityCheck === true && from ==="edit-book" && gridMode===true){
         createBook(false);

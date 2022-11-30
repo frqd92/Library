@@ -319,7 +319,6 @@ window.addEventListener('scroll',()=>{
     let headerCell = document.querySelectorAll(".header-field");
     let tableHeader = document.querySelector(".table-header");
     let scroll = window.scrollY;
-    console.log(scroll)
     scroll>51?tableHeader.classList.add("header-border-scroll"):tableHeader.classList.remove("header-border-scroll");
 
     if(scroll>=50 && scroll<100){

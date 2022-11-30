@@ -418,10 +418,11 @@ nav h1 {
 .search-drop-down{
 position: absolute;
 width: 90px;
-height: 28px;
+height: 26px;
 background: rgb(36, 30, 96);
 border-radius: 20px 0 0 20px;
-top: 4px;
+top: 5px;
+left: 1px;
 display: grid;
 align-items: center;
 padding-left: 8px;
@@ -437,7 +438,7 @@ border: 0.5px solid rgb(0, 0, 0, 0.2);
     justify-content: center;
     align-items: center;
     margin-top: 2px;
-    padding-top: 2px;
+    padding-top: 1px;
     position: absolute;
     font-size: 0.8rem;
 }
@@ -499,8 +500,9 @@ transition: transform 0.2s linear;
     height: 28px;
     font-family: 'Rajdhani', sans-serif;
     font-size: 1.2rem;
-    background: #ffffff46;
+    background: #7c88c48b;
     color: rgb(13, 14, 15);
+    border: 1px solid rgba(0, 0, 0, 0.542);
 }
 
 #search-bar::placeholder{
@@ -512,7 +514,10 @@ nav h2{
     cursor: pointer;
     align-self: center;
 }
-
+#search-bar:focus{
+    border: 1px solid rgba(150, 160, 225, 0.414);
+    box-shadow: 0px 0px 10px rgba(32, 32, 210, 0.786);
+}s
 
 .bg-div{ /* low opacity background behind add box container */
     position: fixed;

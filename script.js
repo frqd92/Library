@@ -240,7 +240,6 @@ function imageHover(e){
     for(let index=0;index<images.length;index++){
         images[index].id=index;
     }
-    console.log("hello")
     let tar = e.target.id;
     let imageContainer = document.querySelectorAll(".table-image-cnt");
     let hoverImg = document.createElement("img");
@@ -261,7 +260,9 @@ function arrowFuncTable(up, down, current, total){
     up.addEventListener("mousedown", (e)=>{
         getIndex("table");
         let tar = e.target.id;
+        // console.log(current)
         let crntPage= parseInt(current.textContent);
+        // console.log(crntPage)
         if(crntPage<total){
            current.textContent= crntPage + 1;
            if(myLibrary[tar]){
@@ -277,15 +278,22 @@ function arrowFuncTable(up, down, current, total){
     down.addEventListener("mousedown", (e)=>{
         getIndex("table");
         let tar = e.target.id;
-        let crntPage= parseInt(current.textContent);
+
+        let crntPage= current.textContent;
         if(crntPage>0){
-            current.textContent = crntPage - 1;
+            current.textContent = current.textContent - 1;
+            console.log(current.textContent);
             myLibrary[tar].pagesRead=current.textContent;
+            console.log(myLibrary[tar].pagesRead);
         }
-        if(crntPage<parseInt(total)){
+        if(crntPage<(parseInt(total)+1)){ //+1 because of fucking header row, next time make header separate fuuuuck
             myLibrary[tar].read=true;
         }
+        else{
+            myLibrary[tar].read=false;
+        }
         progressBarTable(tar)
+
     })
     function progressBarTable(tar){
         let read = parseInt(document.querySelectorAll(".read-table-text-fuck")[tar].textContent)
@@ -298,8 +306,6 @@ function arrowFuncTable(up, down, current, total){
         else{
             text.textContent=`Book Complete!`;
         }
-       
-     
         let barProgress = document.querySelectorAll(".bar-progress-table")[tar];
         barProgress.style.cssText = `width: ${percentage}%;`;
         percentage===100 ? barProgress.style.background = 'rgba(151, 240, 179, 0.604)' : barProgress.style.background = 'rgb(107, 122, 209);';
@@ -345,10 +351,6 @@ window.addEventListener('scroll',()=>{
 
 
 
-
-
-
-
 //Book stats Menu
 let statMenu = document.querySelector(".stats");//change to button
 let statMenuBtn = document.querySelector(".nav-stats");
@@ -356,15 +358,12 @@ let statMode = false;
 statMenuBtn.addEventListener("click", ()=>{
     let allBooks = document.querySelectorAll(".book");
     let allBooksTab = document.querySelectorAll(".table-row")
-
     if(gridMode && !document.querySelector(".book") ){
         checkIfEmpty("nav");
     }
-
     else if(document.querySelectorAll(".table-row").length<2){     
         checkIfEmpty("table");
     }
-
     if(allBooks.length>0 || allBooksTab.length>1){
         if(!statMode){
             document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
@@ -377,26 +376,24 @@ statMenuBtn.addEventListener("click", ()=>{
             document.querySelector(".nav-stats").style.background="";
             statMode=false;
             setTimeout(()=>{statMenu.classList.remove("stats-shown");},300)
+            statMenu.innerHTML="";
         }
         calcStats();
     }
 
-
     function calcStats(){
-
          if(statMenu.childNodes!==0){
-        statMenu.innerHTML="";
+            statMenu.innerHTML="";
        }
       
         gridMode?statMode(allBooks):statMode(allBooksTab);
-    
         function statMode(books){
             let totalPages = 0;
             let totalRead = 0;
             let totalLeft= 0;
             let totalBooks= books.length;
             if(!gridMode){totalBooks-=1} //minus the header row
-    
+
             for(let index = 0;index<totalBooks;index++){       
                 //total pages
                 totalPages +=Number(myLibrary[index].pagesTotal);
@@ -410,6 +407,7 @@ statMenuBtn.addEventListener("click", ()=>{
             let longestBook = libraryCopy[libraryCopy.length-1].title;
             let shortestBook = libraryCopy[0].title;
             let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
+            console.log(statArr)
             for(let index=0;index<6;index++){
                 let div = document.createElement("div");
                 let left = document.createElement("p");
@@ -435,7 +433,6 @@ statMenuBtn.addEventListener("click", ()=>{
     
 
 })
-
 
 
 
@@ -668,63 +665,6 @@ function checkIfEmpty(from){
     }
 
 
-
-
-
-
-
-
-
-
-function checkIfEmptyz(from){ //checks if book area is empty, if so adds a text telling user how to add content
-    let bookTable = document.querySelector(".book-table");
-    let emptyText = document.createElement("div");
-  
-    function emptyMain(){
-        if(!mainBookContainer.querySelector(".empty-text")){
-            emptyText.classList.add("empty-text");
-            mainBookContainer.appendChild(emptyText);
-            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
-
-        }
-        else{
-      
-         
-        }
-
-    }
-
-
-
-    if(!gridMode && bookTable.children.length>1){
-        bookTable.style.display="flex";
-
-    }
-
-
-    if( (mainBookContainer.children.length===1 && gridMode) || (mainBookContainer.children.length===1 && !gridMode)){
-        emptyMain();
-
-    }
-
-    else{
-        if(from==="select"){
-            mainBookContainer.querySelector(".empty-text").classList.add("wiggle-effect");
-            setTimeout(()=>{
-                mainBookContainer.querySelector(".empty-text").classList.remove("wiggle-effect");
-            }, 400)    
-        }
-        else{
-            if(mainBookContainer.querySelector(".empty-text") && gridMode==true){
-                document.querySelector(".empty-text").remove();
-            }
-        
-        
-            
-        }
-      
-    }
-}
 
 
 
@@ -1054,8 +994,8 @@ function arrowFunc(up, down,page, total, barProgress, text, table){
 
     up.addEventListener("mousedown", incrementFunc);
     function incrementFunc(e){
-        let tar = e.target.id;
         getIndex();
+        let tar = e.target.id;
         if(page.textContent<parseInt(total)){
             page.textContent = Number(page.textContent) + 1;
             if(myLibrary[tar]){
@@ -1072,10 +1012,10 @@ function arrowFunc(up, down,page, total, barProgress, text, table){
     function decrementFunc(e){
         getIndex();
         let tar = e.target.id;
-
         if(page.textContent>0){
             page.textContent = page.textContent - 1;
             myLibrary[tar].pagesRead=page.textContent;
+            console.log(myLibrary[tar].pagesRead)
         }
         if(page.textContent<parseInt(total)){
             myLibrary[tar].read=true;
@@ -1289,9 +1229,6 @@ window.onload = function (){
 
 
 
-
-
-
 function addDemoBooks(){
     checkIfEmpty();
     let demoArray = [
@@ -1329,7 +1266,6 @@ function addDemoBooks(){
     }
  
 }
-
 
 //search bar functionality 
 let searchBar = document.getElementById("search-bar");
@@ -1369,7 +1305,6 @@ function searchBarFunc(){
     }
 
 }
-
 
 
 //export table 

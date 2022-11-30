@@ -188,11 +188,18 @@ function designTable(url, title, author, totPages, readPages, read, value){
                 imgEdit.classList.add("table-edit");
                 div.appendChild(imgEdit);
                 div.appendChild(imgDel);
-                let holdDelTextTable = document.createElement("p");
-                holdDelTextTable.classList.add("table-delete-text");
-                holdDelTextTable.textContent = `Hold 3 seconds to delete`;
-                div.appendChild(holdDelTextTable);
-                deleteBook(imgDel, holdDelTextTable);
+                //del and edit hover text
+                let delTextTable = document.createElement("p");
+                delTextTable.classList.add("table-delete-text");
+                delTextTable.textContent = `Hold 3 seconds to delete`;
+                div.appendChild(delTextTable);
+                deleteBook(imgDel, delTextTable);
+                //edit
+                let editTextTable = document.createElement("p");
+                editTextTable.classList.add("table-edit-text");
+                editTextTable.textContent="Edit";
+                div.appendChild(editTextTable);
+                editBook(imgEdit, readPages, editTextTable);
                 break;
             }
             tableRow.appendChild(div)
@@ -208,12 +215,23 @@ function designTable(url, title, author, totPages, readPages, read, value){
     }
     else{
         bookTable.appendChild(tableRow)
-       
     }
 
-    
 
 }
+
+function editTableMode(url, title, author, total, pagesRead, read ){
+    console.log(url, title, author, total, pagesRead, read);
+    console.log(currentEditIndex)
+    myLibrary[currentEditIndex].title = textInputs[0].value;
+    myLibrary[currentEditIndex].author = textInputs[1].value;
+    myLibrary[currentEditIndex].url = textInputs[2].value;
+    myLibrary[currentEditIndex].checked = toggle.checked;
+    myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
+    myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
+}
+
+
 
 
 function changeOrder(){
@@ -671,6 +689,7 @@ window.addEventListener("keydown", (e)=>{
 
 // javascript form validation 
 function checkForm(e){
+    console.log("formcheck")
     let validityCheck = false;
     let invalidIndex;
     from=e.target.id;
@@ -712,6 +731,9 @@ function checkForm(e){
     else if (validityCheck === true && from ==="edit-book" && gridMode===true){
         createBook(false);
     }
+    else if (validityCheck === true && from==="edit-book" && gridMode===false){
+        editTableMode(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, "edit")
+    }
     checkIfEmpty();
 }
 
@@ -719,12 +741,15 @@ function editBook(editBtn, currentPage, text){
     editBtn.addEventListener("mouseover", ()=>{text.style.display ="block";})
     editBtn.addEventListener("mouseleave", ()=>{text.style.display ="none";})
     editBtn.addEventListener("click", (e)=>{
-        toggleFunc();
        bgDiv.style.display="block";
        addBox.style.display="block";
        addBookBtn.style.display="none";
        editBookBtn.style.display="block";
        let editBtns = document.querySelectorAll(".edit-book");
+       if(!gridMode){
+        editBtns = document.querySelectorAll(".table-edit")
+       }
+  
        for(let index=0;index<editBtns.length; index++){ 
            editBtns[index].id=index;
        }
@@ -733,10 +758,11 @@ function editBook(editBtn, currentPage, text){
        textInputs[1].value = myLibrary[currentIndex].author;
        textInputs[2].value = myLibrary[currentIndex].url;
        textInputs[3].value = myLibrary[currentIndex].pagesTotal;
-       textInputs[4].value = currentPage.textContent;
+       gridMode?textInputs[4].value = currentPage.textContent:textInputs[4].value = currentPage;
        textInputs[4].value === textInputs[3].value ? toggle.checked = false:toggle.checked = true;
        toggle.checked?pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
        currentEditIndex = currentIndex;
+       toggleFunc();
        editBookBtn.addEventListener("click", checkForm);
     })
    }
@@ -745,9 +771,7 @@ function editBook(editBtn, currentPage, text){
 function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.unshift(bookObj); //changed from push order check if theres bugs
-    gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, true);
-    
-   
+    gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, "add");
 }
 
 
@@ -944,7 +968,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
     deleteBook(trashBtn, holdDelText);
 
     if(create){clearInputs();}
-    if(!create){bgDiv.style.display="none"; addBox.style.display="none"}
+    if(!create){bgDiv.style.display="none"; addBox.style.display="none";}
     checkIfEmpty();
 }
 
@@ -1119,7 +1143,10 @@ function toggleFunc (){
         movingText.textContent="No";
         movingText.classList.add("moving-text-no")
         pagesRead.style.visibility="visible"
-        textInputs[4].value =""
+        if(addBookBtn.style.display==="block"){
+            textInputs[4].value =""
+        }
+    
     }
     else{
         pagesRead.style.visibility="hidden";
@@ -1148,12 +1175,14 @@ textInputs[4].addEventListener("input", ()=>{
 window.addEventListener("click", (e)=>{
 
     if(e.target.closest(".add-box-container") || 
-        e.target.className==="edit-book"){
+        e.target.className==="edit-book"||
+        e.target.className==="table-edit")
+        {
             return;
         }
 
     if(!e.target.closest(".add-box") || e.target.className==="close-btn"){
-        addBox.style.display="none"; bgDiv.style.display="none"
+        addBox.style.display="none"; bgDiv.style.display="none";
     }
 })
 

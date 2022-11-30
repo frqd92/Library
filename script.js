@@ -20,6 +20,30 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Title"){
         console.log(myLibrary)
+        console.log(currentEditIndex)
+        let curr = document.querySelectorAll(".read-table-text-fuck")[0] //change 0
+        let total = document.querySelectorAll(".table-pages")[0]
+        let arrowContainers = document.querySelectorAll(".arrows-table");
+        let arrowsUpDel = document.querySelectorAll(".up-table");
+        let arrowsDownDel = document.querySelectorAll(".down-table");
+        
+        arrowsUpDel[currentEditIndex].remove();
+        arrowsDownDel[currentEditIndex].remove();
+        let newArrowUp = document.createElement("img");
+        let newArrowDown = document.createElement("img");
+        newArrowUp.setAttribute("src", "images/arrow-up-white.png");
+        newArrowDown.setAttribute("src", "images/arrow-down-white.png");
+        newArrowUp.classList.add("up-table");
+        newArrowDown.classList.add("down-table");
+
+
+        arrowContainers[currentEditIndex].appendChild(newArrowUp);
+        arrowContainers[currentEditIndex].appendChild(newArrowDown);
+        console.log(currentEditIndex)
+        console.log(curr)
+        console.log(total)
+        arrowFuncTable(newArrowUp, newArrowDown, curr, parseInt(total.textContent));
+        currentEditIndex--;
     }
 })
 
@@ -231,41 +255,51 @@ function changeOrder(){
 
     
 function editTableMode(url, title, author, total, pagesRead, read ){
-    console.log(currentEditIndex)
+
     myLibrary[currentEditIndex].title = textInputs[0].value;
     myLibrary[currentEditIndex].author = textInputs[1].value;
     myLibrary[currentEditIndex].url = textInputs[2].value;
     myLibrary[currentEditIndex].checked = toggle.checked;
     myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
     myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
-    let bookCovers = document.querySelectorAll(".table-book-img");
 
+    let bookCovers = document.querySelectorAll(".table-book-img");
+ 
     if(textInputs[2].value){ 
         bookCovers[currentEditIndex].setAttribute("src",`${textInputs[2].value}`)
     }
     else{ 
         bookCovers[currentEditIndex].setAttribute("src","images/book-cover.png") 
     }
-    
+
     document.querySelectorAll(".table-title")[currentEditIndex].textContent = textInputs[0].value; 
     document.querySelectorAll(".table-author")[currentEditIndex].textContent = textInputs[1].value; 
     document.querySelectorAll(".table-pages")[currentEditIndex].textContent = textInputs[3].value; 
-    document.querySelectorAll(".table-pages-read")[currentEditIndex].textContent = textInputs[4].value;
+    document.querySelectorAll(".read-table-text-fuck")[currentEditIndex].textContent = textInputs[4].value;
+
+    let curr = document.querySelectorAll(".read-table-text-fuck")[currentEditIndex]; //change 0
+    let tot = document.querySelectorAll(".table-pages")[currentEditIndex];
+    let arrowContainers = document.querySelectorAll(".arrows-table");
 
     let arrowsUpDel = document.querySelectorAll(".up-table");
     let arrowsDownDel = document.querySelectorAll(".down-table");
+
+
     arrowsUpDel[currentEditIndex].remove();
     arrowsDownDel[currentEditIndex].remove();
-
     let newArrowUp = document.createElement("img");
     let newArrowDown = document.createElement("img");
     newArrowUp.setAttribute("src", "images/arrow-up-white.png");
     newArrowDown.setAttribute("src", "images/arrow-down-white.png");
     newArrowUp.classList.add("up-table");
     newArrowDown.classList.add("down-table");
-    let arrowContainers = document.querySelectorAll(".arrows-table");
+
+
     arrowContainers[currentEditIndex].appendChild(newArrowUp);
     arrowContainers[currentEditIndex].appendChild(newArrowDown);
+    console.log(currentEditIndex)
+
+    arrowFuncTable(newArrowUp, newArrowDown, curr, parseInt(tot.textContent));
 
 
     }
@@ -305,6 +339,8 @@ function imageHover(e){
 }
 
 function arrowFuncTable(up, down, current, total){
+console.log(current)
+console.log(total)
 
     up.addEventListener("mousedown", (e)=>{
         getIndex("table");
@@ -344,12 +380,10 @@ function arrowFuncTable(up, down, current, total){
         let total = parseInt(document.querySelectorAll(".table-pages")[tar].textContent)
         let text = document.querySelectorAll(".progress-text-table")[tar];
         let percentage = (read/total) * 100;
-        if(percentage!==100){
-            text.textContent=`${Math.floor(percentage)}%`;
-        }
-        else{
-            text.textContent=`Book Complete!`;
-        }
+        
+        text.textContent=`${Math.floor(percentage)}%`;
+        
+ 
         let barProgress = document.querySelectorAll(".bar-progress-table")[tar];
         barProgress.style.cssText = `width: ${percentage}%;`;
         percentage===100 ? barProgress.style.background = 'rgba(151, 240, 179, 0.604)' : barProgress.style.background = 'rgb(107, 122, 209);';
@@ -762,7 +796,9 @@ function checkForm(e){
         createBook(false);
     }
     else if (validityCheck === true && from==="edit-book" && gridMode===false){
+
         editTableMode(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, "edit")
+      
     }
     checkIfEmpty();
 }
@@ -788,7 +824,12 @@ function editBook(editBtn, currentPage, text){
        textInputs[1].value = myLibrary[currentIndex].author;
        textInputs[2].value = myLibrary[currentIndex].url;
        textInputs[3].value = myLibrary[currentIndex].pagesTotal;
-       gridMode?textInputs[4].value = currentPage.textContent:textInputs[4].value = currentPage;
+       let crntP;
+       if(!gridMode){
+        crntP = document.querySelectorAll(".read-table-text-fuck")[currentIndex].textContent;
+       }
+
+       gridMode?textInputs[4].value = currentPage.textContent:textInputs[4].value = crntP;
        textInputs[4].value === textInputs[3].value ? toggle.checked = false:toggle.checked = true;
        toggle.checked?pagesRead.style.visibility="visible":pagesRead.style.visibility="hidden";
        currentEditIndex = currentIndex;
@@ -945,6 +986,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
     }
 
     if(!create){
+   
         myLibrary[currentEditIndex].title = textInputs[0].value;
         myLibrary[currentEditIndex].author = textInputs[1].value;
         myLibrary[currentEditIndex].url = textInputs[2].value;
@@ -969,7 +1011,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         let arrowsDownDel = document.querySelectorAll(".down");
         arrowsUpDel[currentEditIndex].remove();
         arrowsDownDel[currentEditIndex].remove();
-
+      
         
         let newArrowUp = document.createElement("img");
         let newArrowDown = document.createElement("img");
@@ -1017,18 +1059,27 @@ addBoxBtn.addEventListener("click", ()=>{
 function getIndex(from){
     //to update pages read changes from arrows to the library
     let allArrowsUp, allArrowsDown;
+    let allImages = document.querySelectorAll(".table-book-image")
     if(!from){
          allArrowsUp = document.querySelectorAll(".up");
          allArrowsDown = document.querySelectorAll(".down")
+         for(let x=0;x<allArrowsUp.length;x++){
+            allArrowsUp[x].id=`${x}`;
+            allArrowsDown[x].id=`${x}`;
+        }
     }
     else if(from==="table"){
          allArrowsUp = document.querySelectorAll(".up-table");
          allArrowsDown = document.querySelectorAll(".down-table")
-    }
-    if(from!=="image"){
-        for(let x=0;x<allArrowsUp.length;x++){
+         for(let x=0;x<allArrowsUp.length;x++){
             allArrowsUp[x].id=`${x}`;
             allArrowsDown[x].id=`${x}`;
+        }
+    }
+    if(from!=="image"){
+        for(let x=0;x<allImages.length;x++){
+            allImages[x].id=`${x}`;
+            allImages[x].id=`${x}`;
         }
     }
     else{
@@ -1071,13 +1122,15 @@ function arrowFunc(up, down,page, total, barProgress, text, table){
         }
         updateProgressBar(page.textContent, total, barProgress, text);
     }
-    
-    function updateProgressBar(currentPage, total, barProgress, text){
-    let percentageComplete = (currentPage/total)*100;
-    barProgress.style.cssText = `width: ${percentageComplete}%;`;
-    percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
-    percentageComplete<100 ? text.textContent = "Current Page" : text.textContent="Book Completed!";
+    if(gridMode){ //temporary for testing
+        function updateProgressBar(currentPage, total, barProgress, text){
+            let percentageComplete = (currentPage/total)*100;
+            barProgress.style.cssText = `width: ${percentageComplete}%;`;
+            percentageComplete===100 ? barProgress.style.background = 'rgb(27, 158, 34)' : barProgress.style.background = 'rgb(107, 122, 209)';
+            percentageComplete<100 ? text.textContent = "Current Page" : text.textContent="Book Completed!";
+            }
     }
+
 }
 
 function deleteBook(trashBtn, text){

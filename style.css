@@ -189,12 +189,6 @@ width: 70%;
     font-size: 1.2rem;
 }
 
-.table-delete{
-    width: 30px;
-}
-.table-edit{
-    width: 24px;
-}
 
 
 .hover-img-table{
@@ -207,6 +201,53 @@ width: 70%;
     box-shadow: rgba(98, 94, 94, 0.35) 0px 50px 52px, rgba(0, 0, 0, 0.12) 0px -10px 27px, rgba(0, 0, 0, 0.33) 0px 4px 6px, rgba(0, 0, 0, 0.2) 0px 12px 13px, rgba(0, 0, 0, 0.1) 0px -3px 5px;
 
 }
+
+
+/* table edit/delete */
+.table-delete{
+    width: 30px;
+}
+.table-edit{
+    width: 24px;
+}
+
+.table-delete, .table-edit{
+    transition: transform 0.1s linear;
+    cursor: pointer;
+    -webkit-user-drag: none;
+    position: relative;
+}
+
+.table-delete:hover, .table-edit:hover{
+    transform: scale(1.2);
+}
+.table-delete:active, .table-edit:active{
+    transform: scale(1);
+}
+.table-delete-text, .table-edit-text{
+    position: absolute;
+    font-family: 'Mulish', sans-serif;
+    font-size: 12px;
+    display: none;
+    border-radius: 15px;
+    border: 0.5px solid rgba(178, 171, 171, 0.5); 
+    padding: 2px 5px;
+    left:-135px;
+    top: 50px;
+    background-color: rgba(0, 0, 0, 0.697);
+
+}
+
+/* .hold-delete-text-table{
+    right: -60px;
+}
+.hold-edit-text-table{
+    right:  43px;
+} */
+
+
+
+
 
 
                                                                     /* grid table toggle */
@@ -960,6 +1001,10 @@ form{
 .low-opacity{
     opacity: 0.4;
 }
+
+.table-other{
+    position: relative;
+}
 .hold-delete-text, .hold-edit-text{
     position: absolute;
     font-family: 'Mulish', sans-serif;
@@ -1098,7 +1143,7 @@ form{
     height: fit-content;
     padding: 10px;
     background: rgba(13, 19, 83, 0.958);
-    z-index: -9999 !important;
+  
     position: absolute;
     top:71px;
     cursor:default;

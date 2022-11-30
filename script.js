@@ -20,9 +20,6 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Title"){
         console.log(myLibrary)
-        // let mainBookContainer = document.querySelector(".book-container");
-        // console.log(mainBookContainer.children.length)
-        console.log(statMode)
     }
 })
 
@@ -191,6 +188,11 @@ function designTable(url, title, author, totPages, readPages, read, value){
                 imgEdit.classList.add("table-edit");
                 div.appendChild(imgEdit);
                 div.appendChild(imgDel);
+                let holdDelTextTable = document.createElement("p");
+                holdDelTextTable.classList.add("table-delete-text");
+                holdDelTextTable.textContent = `Hold 3 seconds to delete`;
+                div.appendChild(holdDelTextTable);
+                deleteBook(imgDel, holdDelTextTable);
                 break;
             }
             tableRow.appendChild(div)
@@ -208,7 +210,6 @@ function designTable(url, title, author, totPages, readPages, read, value){
         bookTable.appendChild(tableRow)
        
     }
-
 
     
 
@@ -255,14 +256,11 @@ function imageHover(e){
 }
 
 function arrowFuncTable(up, down, current, total){
-    // console.log(up, down, current, total);
 
     up.addEventListener("mousedown", (e)=>{
         getIndex("table");
         let tar = e.target.id;
-        // console.log(current)
         let crntPage= parseInt(current.textContent);
-        // console.log(crntPage)
         if(crntPage<total){
            current.textContent= crntPage + 1;
            if(myLibrary[tar]){
@@ -278,13 +276,10 @@ function arrowFuncTable(up, down, current, total){
     down.addEventListener("mousedown", (e)=>{
         getIndex("table");
         let tar = e.target.id;
-
         let crntPage= current.textContent;
         if(crntPage>0){
             current.textContent = current.textContent - 1;
-            console.log(current.textContent);
             myLibrary[tar].pagesRead=current.textContent;
-            console.log(myLibrary[tar].pagesRead);
         }
         if(crntPage<(parseInt(total)+1)){ //+1 because of fucking header row, next time make header separate fuuuuck
             myLibrary[tar].read=true;
@@ -324,7 +319,8 @@ window.addEventListener('scroll',()=>{
     let headerCell = document.querySelectorAll(".header-field");
     let tableHeader = document.querySelector(".table-header");
     let scroll = window.scrollY;
-    scroll>49?tableHeader.classList.add("header-border-scroll"):tableHeader.classList.remove("header-border-scroll");
+    console.log(scroll)
+    scroll>51?tableHeader.classList.add("header-border-scroll"):tableHeader.classList.remove("header-border-scroll");
 
     if(scroll>=50 && scroll<100){
         let numBg = Math.abs((53-scroll) / 53).toFixed(3) ;
@@ -399,7 +395,6 @@ statMenuBtn.addEventListener("click", ()=>{
                 totalPages +=Number(myLibrary[index].pagesTotal);
                 //total completed books
                 myLibrary[index].read===false?totalRead++:totalLeft++; 
-                // console.log("test",myLibrary[index].pagesTotal);
             }
             //longest book  //shortest book
             let libraryCopy = [...myLibrary]; //need to use spread not to mess with original
@@ -407,7 +402,6 @@ statMenuBtn.addEventListener("click", ()=>{
             let longestBook = libraryCopy[libraryCopy.length-1].title;
             let shortestBook = libraryCopy[0].title;
             let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
-            console.log(statArr)
             for(let index=0;index<6;index++){
                 let div = document.createElement("div");
                 let left = document.createElement("p");
@@ -1015,7 +1009,6 @@ function arrowFunc(up, down,page, total, barProgress, text, table){
         if(page.textContent>0){
             page.textContent = page.textContent - 1;
             myLibrary[tar].pagesRead=page.textContent;
-            console.log(myLibrary[tar].pagesRead)
         }
         if(page.textContent<parseInt(total)){
             myLibrary[tar].read=true;
@@ -1056,13 +1049,31 @@ function deleteBook(trashBtn, text){
                 case 2: text.style.color="red"; break;
             }
             if(timer===3){
+
             let deleteBtns = document.querySelectorAll(".delete-book");
-                for(let index=0;index<deleteBtns.length; index++){ //gets the index of each trash can and ultimately each book
-                    deleteBtns[index].id=index;
+            let deleteBtnsTable = document.querySelectorAll(".table-delete");
+            gridMode?getTrashIndex(deleteBtns):getTrashIndex(deleteBtnsTable);
+            function getTrashIndex(trashBtns){
+                for(let index=0;index<trashBtns.length; index++){ //gets the index of each trash can and ultimately each book
+                    trashBtns[index].id=index;
                 }
+            }
                 let currentIndex = e.target.id;
+
+                if(!gridMode){
+                    console.log(currentIndex)
+                    console.log("hello")
+                }
                 myLibrary.splice(currentIndex,1);
-                e.target.parentNode.remove();
+                if(gridMode){
+                    e.target.parentNode.remove() 
+                }
+                else{
+                    let parent = e.target.parentNode;
+                    parent.parentNode.remove();
+                }
+              
+        
                 clearInterval(interval);
                 checkIfEmpty();
         

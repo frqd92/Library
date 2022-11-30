@@ -20,30 +20,7 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Title"){
         console.log(myLibrary)
-        console.log(currentEditIndex)
-        let curr = document.querySelectorAll(".read-table-text-fuck")[0] //change 0
-        let total = document.querySelectorAll(".table-pages")[0]
-        let arrowContainers = document.querySelectorAll(".arrows-table");
-        let arrowsUpDel = document.querySelectorAll(".up-table");
-        let arrowsDownDel = document.querySelectorAll(".down-table");
-        
-        arrowsUpDel[currentEditIndex].remove();
-        arrowsDownDel[currentEditIndex].remove();
-        let newArrowUp = document.createElement("img");
-        let newArrowDown = document.createElement("img");
-        newArrowUp.setAttribute("src", "images/arrow-up-white.png");
-        newArrowDown.setAttribute("src", "images/arrow-down-white.png");
-        newArrowUp.classList.add("up-table");
-        newArrowDown.classList.add("down-table");
 
-
-        arrowContainers[currentEditIndex].appendChild(newArrowUp);
-        arrowContainers[currentEditIndex].appendChild(newArrowDown);
-        console.log(currentEditIndex)
-        console.log(curr)
-        console.log(total)
-        arrowFuncTable(newArrowUp, newArrowDown, curr, parseInt(total.textContent));
-        currentEditIndex--;
     }
 })
 
@@ -60,7 +37,6 @@ window.addEventListener("click", (e)=>{ //to test
 let modeToggle = document.querySelector(".toggle-in");
 
 modeToggle.addEventListener("change", tableMode);
-
 function toggleEffectMode(){
     let movingTextMode = document.querySelector(".moving-text-mode-yes");
     if(modeToggle.checked){
@@ -81,6 +57,10 @@ function toggleEffectMode(){
 //Table Mode
 let navSettingsBtn = document.querySelector(".nav-settings");
 let bookTable = document.querySelector(".book-table");
+
+
+
+
 
 
 // navSettingsBtn.addEventListener("click",tableMode)
@@ -297,7 +277,7 @@ function editTableMode(url, title, author, total, pagesRead, read ){
 
     arrowContainers[currentEditIndex].appendChild(newArrowUp);
     arrowContainers[currentEditIndex].appendChild(newArrowDown);
-    console.log(currentEditIndex)
+   
 
     arrowFuncTable(newArrowUp, newArrowDown, curr, parseInt(tot.textContent));
     progressBarTable(currentEditIndex);
@@ -305,20 +285,7 @@ function editTableMode(url, title, author, total, pagesRead, read ){
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-function imageHover(e){
+function imageHover(e){ //incomplete
     getIndex("image")//everytime mouse leaves image and you added a book the index would change and hovered image order would be fucked
     let images = document.querySelectorAll(".table-book-img");
     for(let index=0;index<images.length;index++){
@@ -339,8 +306,6 @@ function imageHover(e){
 }
 
 function arrowFuncTable(up, down, current, total){
-console.log(current)
-console.log(total)
 
     up.addEventListener("mousedown", (e)=>{
         getIndex("table");
@@ -392,9 +357,6 @@ function progressBarTable(tar){
     percentage===100 ? barProgress.style.background = 'rgba(151, 240, 179, 0.604)' : barProgress.style.background = 'rgb(107, 122, 209);';
 
 }
-
-
-
 
 
 //table header scroll effect thing
@@ -523,6 +485,24 @@ document.addEventListener("mousedown", (e)=>{
     }
 })
 
+function bookSelectionTable(index){
+    let allRows = document.querySelectorAll(".table-body");
+
+    let numItemsSelectedText = document.querySelector(".num-items-selected");
+    if(!allRows[index].classList.contains("selected-book-table")){
+        allRows[index].classList.add("selected-book-table");
+        numItemsSelected++;
+    }
+    else{
+        allRows[index].classList.remove("selected-book-table");
+        numItemsSelected--;
+    }
+    switch(numItemsSelected){
+        case 0: numItemsSelectedText.textContent = "No items selected";break;
+        case 1: numItemsSelectedText.textContent = `${numItemsSelected} item selected`; break;
+        default: numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
+        }
+}
 
 //all the select option logic
 let navSelectBtn = document.querySelector(".nav-select");
@@ -532,82 +512,112 @@ let numItemsSelected = 0;
 navSelectBtn.addEventListener("click",navSelect);
 function navSelect(){
     let selectNavClose = document.querySelector(".close-select-nav");
-    let allBooks = document.querySelectorAll(".book");
     let numItemsSelectedText = document.querySelector(".num-items-selected");
     let selectAllBtn = document.getElementById("select-nav-all-btn");
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
     let deleteSelectionBtn = document.getElementById("delete-select");
-    if(allBooks.length===0){checkIfEmpty("navBtn")};
-    
-    if(!isSelect && allBooks.length>0){ //if select button is not selected hide add book nav and show select nav
-        let index = 0;
-        addBoxBtn.style.display="none";
-        selectNavMenu.style.display="flex";
-        document.querySelector(".nav-select").style.background="rgba(80, 80, 97, 0.28)";
-        for(let element of allBooks){
-            let selectPoint = document.createElement("div");
-            let selectContainer = document.createElement("div");
-            let selectCircle = document.createElement("div");
-            selectCircle.classList.add("select-circle");
-            selectPoint.classList.add("select-circle-point")
-            selectPoint.classList.add("circle-point-shown");
-            element.appendChild(selectContainer);
-            element.appendChild(selectCircle);
-            element.appendChild(selectPoint);
-            selectContainer.classList.add("select-container");
-            selectCircle.classList.add("select-circle");
-            selectContainer.id=index;
-            selectContainer.addEventListener("click", (e)=>{
-                bookSelection(e.target.id, selectPoint);
-             })
-             element.querySelector(".delete-book").style.opacity="0.2";
-             element.querySelector(".edit-book").style.opacity="0.2";
-             element.querySelector(".book-image").style.opacity="0.6";
-          
-            index++;
-        }
-        selectAllBtn.addEventListener("click", selectAll);
-        deselectAllBtn.addEventListener("click", deselectAll);
-        deleteSelectionBtn.addEventListener("click", deleteSelected)
-        selectNavClose.addEventListener("click", removeSelectMode )
+    let allBooks = document.querySelectorAll(".book");
+    if(!gridMode){
+        allBooks = document.querySelectorAll(".table-body");
+    }
+    if(allBooks.length===0){
+        checkIfEmpty("navBtn")
+    };
 
-        function deleteSelected(){ //delete all selected books
-            let allBooks = document.querySelectorAll(".book");
-            let boxContainer = document.querySelector(".book-container")
-            let index=0;
-      
+
+    if(gridMode){
+        if(!isSelect && allBooks.length>0 ){ //if select button is not selected hide add book nav and show select nav
+            let index = 0;
+            addBoxBtn.style.display="none";
+            selectNavMenu.style.display="flex";
+            document.querySelector(".nav-select").style.background="rgba(80, 80, 97, 0.28)";
             for(let element of allBooks){
-                if(element.classList.contains("selected-book")){
-                    element.remove();
-                    myLibrary.splice(index,1);
-                    index--;
-                };
+                let selectPoint = document.createElement("div");
+                let selectContainer = document.createElement("div");
+                let selectCircle = document.createElement("div");
+                selectCircle.classList.add("select-circle");
+                selectPoint.classList.add("select-circle-point")
+                selectPoint.classList.add("circle-point-shown");
+                element.appendChild(selectContainer);
+                element.appendChild(selectCircle);
+                element.appendChild(selectPoint);
+                selectContainer.classList.add("select-container");
+                selectContainer.id=index;
+                selectContainer.addEventListener("click", (e)=>{
+                    bookSelection(e.target.id, selectPoint);
+                 })
+                 element.querySelector(".delete-book").style.opacity="0.2";
+                 element.querySelector(".edit-book").style.opacity="0.2";
+                 element.querySelector(".book-image").style.opacity="0.6";
+              
                 index++;
             }
-            index=0;
-            numItemsSelected=0;
-            numItemsSelectedText.textContent = `No items selected`;
-            if(boxContainer.querySelector(".book")===null){
-                removeSelectMode();
-                checkIfEmpty();
-                selectAllBtn.removeEventListener("click", selectAll);
-                deselectAllBtn.removeEventListener("click", deselectAll);
-                deleteSelectionBtn.removeEventListener("click", deleteSelected);
-            
+            selectAllBtn.addEventListener("click", selectAll);
+            deselectAllBtn.addEventListener("click", deselectAll);
+            deleteSelectionBtn.addEventListener("click", deleteSelected)
+            selectNavClose.addEventListener("click", removeSelectMode )
+    
+            function deleteSelected(){ //delete all selected books
+                let allBooks = document.querySelectorAll(".book");
+                let boxContainer = document.querySelector(".book-container")
+                let index=0;
+          
+                for(let element of allBooks){
+                    if(element.classList.contains("selected-book")){
+                        element.remove();
+                        myLibrary.splice(index,1);
+                        index--;
+                    };
+                    index++;
+                }
+                index=0;
+                numItemsSelected=0;
+                numItemsSelectedText.textContent = `No items selected`;
+                if(boxContainer.querySelector(".book")===null){
+                    removeSelectMode();
+                    checkIfEmpty();
+                    selectAllBtn.removeEventListener("click", selectAll);
+                    deselectAllBtn.removeEventListener("click", deselectAll);
+                    deleteSelectionBtn.removeEventListener("click", deleteSelected);
+                
+                }
             }
-        }
-
-        window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
-        isSelect=true;
-        }
+    
+            window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
+            isSelect=true;
+            }
+               
     else{
         deselectAllBtn.removeEventListener("click", deselectAll);
         selectAllBtn.removeEventListener("click", selectAll);
         selectNavClose.removeEventListener("click", removeSelectMode); 
         removeSelectMode(); 
     }
-
-
+    }
+    else{ //table mode
+        if(!isSelect && allBooks.length>0){
+            console.log("hello")
+            let index=0;
+            addBoxBtn.style.display="none";
+            selectNavMenu.style.display="flex";
+            document.querySelector(".nav-select").style.background="rgba(80, 80, 97, 0.28)"
+            for(let element of allBooks){
+                let selectContainer = document.createElement("div");
+                selectContainer.classList.add("select-table"); //where you left off, select color for book select mode
+                element.appendChild(selectContainer)
+                selectContainer.id=index;
+                element.classList.add("table-body-select-mode");
+                selectContainer.addEventListener("click", (e)=>{
+                    bookSelectionTable(e.target.id);
+                 })
+                console.log("bass")
+                element.querySelector(".table-edit").style.opacity="0.2";
+                element.querySelector(".table-delete").style.opacity="0.2";
+                element.querySelector(".table-book-img").style.opacity="0.6";
+                index++;
+            }
+        }
+    }
 
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");

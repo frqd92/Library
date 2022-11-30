@@ -86,7 +86,6 @@ margin: -20px;
     minmax(73px, 0.2fr) minmax(200px, 0.8fr) minmax(200px, 0.8fr) minmax(100px, 0.3fr) minmax(100px, 0.3fr)
     minmax(200px, 0.4fr) minmax(70px, 0.1fr);
     position: relative;
-
 }
 .table-row:nth-child(2){
     border-top: var(--table-border);
@@ -246,13 +245,6 @@ width: 70%;
     left:-20px;
     background-color: rgba(0, 0, 0, 0.557);
 }
-/* .hold-delete-text-table{
-    right: -60px;
-}
-.hold-edit-text-table{
-    right:  43px;
-} */
-
 
 
 
@@ -260,24 +252,7 @@ width: 70%;
 
                                                                     /* grid table toggle */
 
-/* 
-                <label for="book-read" class="toggle"><label class="moving-text-yes" for="book-read">Yes</label>
-                <input type="checkbox" class="toggle-input" id="book-read">
-                <div class="toggle-fill"></div>
 
-*/
-
-
-
-/* 
-   
-        <label for="mode-toggle" class="toggle-out">
-        <label class="moving-text-mode-yes" for="book-read">Grid Mode</label>
-        <input type="checkbox" class="toggle-in" id="mode-toggle">
-        <div class="toggle-fill-mode"></div>
-        </label>
-    
-*/
 .mode-toggle-container{
 
     height: 30px;
@@ -342,6 +317,30 @@ display: none;
     transform: translate(112px);
 }
 
+                                                                            /* select table mode */
+
+.select-table{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(32, 120, 168, 0.14);
+   top:0;
+   left:0;
+   box-shadow: 2px 0px 20px rgb(22, 22, 24);
+   border: 2px solid rgba(0, 0, 0, 0.2);
+}
+.table-body{
+    transition: margin 800ms;
+}
+.table-body-select-mode{
+    margin-bottom: 20px;
+   
+}
+
+.selected-book-table{
+    background:rgba(0, 0, 0, 0.429) !important;
+   box-shadow: 0px 0px 20px rgb(187, 187, 187);;
+}
 
 
 
@@ -668,7 +667,7 @@ nav h2{
 .select-nav-menu{
     position: fixed;
     width: 100%;
-    max-height: 30px;
+    height: 33px;
     background: var(--select-nav);
     z-index: 1;
     top:70px;

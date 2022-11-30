@@ -22,7 +22,7 @@ window.addEventListener("click", (e)=>{ //to test
         console.log(myLibrary)
         // let mainBookContainer = document.querySelector(".book-container");
         // console.log(mainBookContainer.children.length)
-        checkIfEmpty();
+        console.log(statMode)
     }
 })
 
@@ -30,7 +30,6 @@ window.addEventListener("click", (e)=>{ //to test
 //When search bar is selected it should have a shiny outline thing 
 //fix when users use search bar and then click select all, selects files that are invisible also
 //style select menu buttons
-//hover out effect thing on Select, Stats and Settings btn
 //yes no labels on toggle not working properly on edit windows
 
 
@@ -46,6 +45,7 @@ function toggleEffectMode(){
     if(modeToggle.checked){
         movingTextMode.textContent="Table"
         movingTextMode.classList.add("moving-text-mode-no");
+     
     }
     else{
         movingTextMode.textContent="Grid";
@@ -196,18 +196,31 @@ function designTable(url, title, author, totPages, readPages, read, value){
             tableRow.appendChild(div)
     }
     if(value){
-        bookTable.appendChild(tableRow);
-        let topElement = document.querySelectorAll(".table-row")[1];
-        let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
-        let parent = topElement.parentNode;
-        parent.insertBefore(bottomElement, topElement);
+        bookTable.appendChild(tableRow)
+        changeOrder();
+        // bookTable.appendChild(tableRow);
+        // let topElement = document.querySelectorAll(".table-row")[1];
+        // let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
+        // let parent = topElement.parentNode;
+        // parent.insertBefore(bottomElement, topElement);
     }
     else{
         bookTable.appendChild(tableRow)
+       
     }
 
 
     
+
+}
+
+
+function changeOrder(){
+;
+    let topElement = document.querySelectorAll(".table-row")[1];
+    let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
+    let parent = topElement.parentNode;
+    parent.insertBefore(bottomElement, topElement);
 
 }
 
@@ -221,14 +234,13 @@ function designTable(url, title, author, totPages, readPages, read, value){
 
 
 
-
-
-
 function imageHover(e){
+    getIndex("image")//everytime mouse leaves image and you added a book the index would change and hovered image order would be fucked
     let images = document.querySelectorAll(".table-book-img");
     for(let index=0;index<images.length;index++){
         images[index].id=index;
     }
+    console.log("hello")
     let tar = e.target.id;
     let imageContainer = document.querySelectorAll(".table-image-cnt");
     let hoverImg = document.createElement("img");
@@ -238,6 +250,7 @@ function imageHover(e){
     
     images[tar].addEventListener("mouseleave", ()=>{
         hoverImg.remove();
+        getIndex("image")
     })
 
 }
@@ -310,7 +323,7 @@ window.addEventListener('scroll',()=>{
     if(scroll>=50 && scroll<100){
         let numBg = Math.abs((53-scroll) / 53).toFixed(3) ;
         let numBr = numBg / 2.32;
-        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, ${numBg}), rgba(65, 74, 136, ${numBg}), rgba(12, 21, 65, ${numBg})`
+        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, ${numBg}), rgba(42, 45, 140, ${numBg}), rgba(12, 21, 65, ${numBg})`
         for(element of headerCell){
             element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, ${numBr})`
         }
@@ -322,7 +335,7 @@ window.addEventListener('scroll',()=>{
         }
     }
     else if(scroll > 100){
-        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, 0.92), rgba(65, 74, 136,0.85), rgba(12, 21, 65, 0.92)`
+        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, 0.92), rgba(42, 45, 140,0.85), rgba(12, 21, 65, 0.92)`
         for(element of headerCell){
             element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, 0.37)`
         }
@@ -340,98 +353,92 @@ window.addEventListener('scroll',()=>{
 let statMenu = document.querySelector(".stats");//change to button
 let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
-
 statMenuBtn.addEventListener("click", ()=>{
-    if(gridMode){
-        if(!document.querySelector(".book")){
-            checkIfEmpty("nav");
+    let allBooks = document.querySelectorAll(".book");
+    let allBooksTab = document.querySelectorAll(".table-row")
+
+    if(gridMode && !document.querySelector(".book") ){
+        checkIfEmpty("nav");
+    }
+
+    else if(document.querySelectorAll(".table-row").length<2){     
+        checkIfEmpty("table");
+    }
+
+    if(allBooks.length>0 || allBooksTab.length>1){
+        if(!statMode){
+            document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
+            statMenu.classList.add("stats-shown");   //for unnecessary animation
+            statMode=true;
+            statMenu.style.cssText=``;
         }
         else{
-            if(!statMode){
-                document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
-                statMenu.classList.add("stats-shown");   //for unnecessary animation
-                statMode=true;
-                statMenu.style.cssText=``;
-            }
-            else{
-                statMenu.style.cssText=` animation: statAnimOut .4s ease-out;`;
-                document.querySelector(".nav-stats").style.background="";
-                statMode=false;
-                setTimeout(()=>{statMenu.classList.remove("stats-shown");},300)
-            }
-            calcStats();
+            statMenu.style.cssText=` animation: statAnimOut .4s ease-out;`;
+            document.querySelector(".nav-stats").style.background="";
+            statMode=false;
+            setTimeout(()=>{statMenu.classList.remove("stats-shown");},300)
         }
-        console.log("test")
+        calcStats();
     }
 
-    else{
-        if(document.querySelectorAll(".table-row").length<2){
-           checkIfEmpty("table");
+
+    function calcStats(){
+
+         if(statMenu.childNodes!==0){
+        statMenu.innerHTML="";
+       }
+      
+        gridMode?statMode(allBooks):statMode(allBooksTab);
+    
+        function statMode(books){
+            let totalPages = 0;
+            let totalRead = 0;
+            let totalLeft= 0;
+            let totalBooks= books.length;
+            if(!gridMode){totalBooks-=1} //minus the header row
+    
+            for(let index = 0;index<totalBooks;index++){       
+                //total pages
+                totalPages +=Number(myLibrary[index].pagesTotal);
+                //total completed books
+                myLibrary[index].read===false?totalRead++:totalLeft++; 
+                // console.log("test",myLibrary[index].pagesTotal);
+            }
+            //longest book  //shortest book
+            let libraryCopy = [...myLibrary]; //need to use spread not to mess with original
+            libraryCopy.sort((a,b) => a.pagesTotal - b.pagesTotal);
+            let longestBook = libraryCopy[libraryCopy.length-1].title;
+            let shortestBook = libraryCopy[0].title;
+            let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
+            for(let index=0;index<6;index++){
+                let div = document.createElement("div");
+                let left = document.createElement("p");
+                let right = document.createElement("p");
+                div.appendChild(left);
+                div.appendChild(right);
+                div.classList.add("stats-div")
+                left.classList.add("stats-left");
+                right.classList.add("stats-right");
+                statMenu.appendChild(div);
+                switch(index){
+                    case 0:left.textContent = "Total Books"; break;
+                    case 1: left.textContent = "Books Read"; break;
+                    case 2: left.textContent = "Books Not Read"; break;
+                    case 3: left.textContent = "Total Pages"; break;
+                    case 4: left.innerHTML = `Longest Book <sup>${libraryCopy[libraryCopy.length-1].pagesTotal} pages</sup>`; break;
+                    case 5: left.innerHTML = `Shortest Book <sup>${libraryCopy[0].pagesTotal} pages</sup>`; break;
+                }
+                right.textContent=statArr[index];
+            }
         }
     }
+    
 
 })
 
 
 
-function calcStats(){
-    let allBooks = document.querySelectorAll(".book");
-    let allBooksTab = document.querySelectorAll(".table-row")
-     if(statMenu.childNodes!==0){
-    statMenu.innerHTML="";
-   }
 
-    gridMode?statMode(allBooks):statMode(allBooksTab);
-
-    function statMode(books){
-
-        let totalPages = 0;
-        let totalRead = 0;
-        let totalLeft= 0;
-        let totalBooks= books.length;
-
-        for(let index = 0;index<allBooks.length;index++){
-            if(!gridMode && index===0){//skip header row
-                continue;
-            }
-            //total pages
-            totalPages +=Number(myLibrary[index].pagesTotal);
-            //total completed books
-            myLibrary[index].read===false?totalRead++:totalLeft++; 
-        }
-    
-        //longest book  //shorted book
-        let libraryCopy = [...myLibrary]; //need to use spread not to mess with original
-        libraryCopy.sort((a,b) => a.pagesTotal - b.pagesTotal);
-        let longestBook = libraryCopy[libraryCopy.length-1].title;
-        let shortestBook = libraryCopy[0].title;
-        let statArr = [totalBooks, totalRead, totalLeft,totalPages, longestBook, shortestBook];
-    
-        for(let index=0;index<6;index++){
-            let div = document.createElement("div");
-            let left = document.createElement("p");
-            let right = document.createElement("p");
-            div.appendChild(left);
-            div.appendChild(right);
-            div.classList.add("stats-div")
-            left.classList.add("stats-left");
-            right.classList.add("stats-right");
-            statMenu.appendChild(div);
-            switch(index){
-                case 0:left.textContent = "Total Books"; break;
-                case 1: left.textContent = "Books Read"; break;
-                case 2: left.textContent = "Books Not Read"; break;
-                case 3: left.textContent = "Total Pages"; break;
-                case 4: left.innerHTML = `Longest Book <sup>${libraryCopy[libraryCopy.length-1].pagesTotal} pages</sup>`; break;
-                case 5: left.innerHTML = `Shortest Book <sup>${libraryCopy[0].pagesTotal} pages</sup>`; break;
-            }
-            right.textContent=statArr[index];
-    
-        }
-    }
-
-
-}
 document.addEventListener("mousedown", (e)=>{
     let tar= e.target;
     if(tar.textContent==="Stats" || tar.className==="nav-btn nav-stats"){return;}
@@ -687,7 +694,7 @@ function checkIfEmptyz(from){ //checks if book area is empty, if so adds a text 
 
     }
 
-    console.log(document.querySelector(".book-table").style.display)
+
 
     if(!gridMode && bookTable.children.length>1){
         bookTable.style.display="flex";
@@ -712,7 +719,7 @@ function checkIfEmptyz(from){ //checks if book area is empty, if so adds a text 
                 document.querySelector(".empty-text").remove();
             }
         
-            console.log("bass")
+        
             
         }
       
@@ -1017,22 +1024,30 @@ addBoxBtn.addEventListener("click", ()=>{
     editBookBtn.style.display="none";
 })
 
-function getIndex(table){
+function getIndex(from){
     //to update pages read changes from arrows to the library
     let allArrowsUp, allArrowsDown;
-    if(!table){
+    if(!from){
          allArrowsUp = document.querySelectorAll(".up");
          allArrowsDown = document.querySelectorAll(".down")
     }
-    else{
+    else if(from==="table"){
          allArrowsUp = document.querySelectorAll(".up-table");
          allArrowsDown = document.querySelectorAll(".down-table")
     }
-     for(let x=0;x<allArrowsUp.length;x++){
-         allArrowsUp[x].id=`${x}`;
-         allArrowsDown[x].id=`${x}`;
-     }
-     
+    if(from!=="image"){
+        for(let x=0;x<allArrowsUp.length;x++){
+            allArrowsUp[x].id=`${x}`;
+            allArrowsDown[x].id=`${x}`;
+        }
+    }
+    else{
+        let images = document.querySelectorAll(".table-book-img");
+        for(let index=0;index<images.length;index++){
+            images[index].id="";
+            images[index].id=index;
+        }
+    }
     }
 
 function arrowFunc(up, down,page, total, barProgress, text, table){
@@ -1291,6 +1306,7 @@ function addDemoBooks(){
         {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0},
         {title: "Maen", author:"Qaddoura", url:'https://ambassadors.cert.gov.om/images/ambassadors/Mae6089272016.jpg', pagesTotal: 10, read: false, pagesRead: 10}
     ]
+    
     injectBooks(demoArray);
 
     function injectBooks(arr){
@@ -1302,13 +1318,14 @@ function addDemoBooks(){
             }
         }
         else{
-            for(let index in arr){
+            for(let index=arr.length-1;index>=0;index--){
                 let bookObj = new Book(arr[index].title, arr[index].author, arr[index].url, arr[index].pagesTotal, arr[index].read, arr[index].pagesRead);
                 myLibrary.unshift(bookObj); 
                 designTable(arr[index].url, arr[index].title, arr[index].author, arr[index].pagesTotal, arr[index].pagesRead, arr[index].read);
             }
-
+            getIndex("image")
     }
+
     }
  
 }

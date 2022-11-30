@@ -300,7 +300,7 @@ function editTableMode(url, title, author, total, pagesRead, read ){
     console.log(currentEditIndex)
 
     arrowFuncTable(newArrowUp, newArrowDown, curr, parseInt(tot.textContent));
-
+    progressBarTable(currentEditIndex);
 
     }
 
@@ -375,23 +375,23 @@ console.log(total)
         progressBarTable(tar)
 
     })
-    function progressBarTable(tar){
-        let read = parseInt(document.querySelectorAll(".read-table-text-fuck")[tar].textContent)
-        let total = parseInt(document.querySelectorAll(".table-pages")[tar].textContent)
-        let text = document.querySelectorAll(".progress-text-table")[tar];
-        let percentage = (read/total) * 100;
-        
-        text.textContent=`${Math.floor(percentage)}%`;
-        
- 
-        let barProgress = document.querySelectorAll(".bar-progress-table")[tar];
-        barProgress.style.cssText = `width: ${percentage}%;`;
-        percentage===100 ? barProgress.style.background = 'rgba(151, 240, 179, 0.604)' : barProgress.style.background = 'rgb(107, 122, 209);';
 
-    }
 
 }
+function progressBarTable(tar){
+    let read = parseInt(document.querySelectorAll(".read-table-text-fuck")[tar].textContent)
+    let total = parseInt(document.querySelectorAll(".table-pages")[tar].textContent)
+    let text = document.querySelectorAll(".progress-text-table")[tar];
+    let percentage = (read/total) * 100;
+    
+    text.textContent=`${Math.floor(percentage)}%`;
+    
 
+    let barProgress = document.querySelectorAll(".bar-progress-table")[tar];
+    barProgress.style.cssText = `width: ${percentage}%;`;
+    percentage===100 ? barProgress.style.background = 'rgba(151, 240, 179, 0.604)' : barProgress.style.background = 'rgb(107, 122, 209);';
+
+}
 
 
 

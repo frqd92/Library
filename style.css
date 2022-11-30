@@ -525,7 +525,7 @@ nav h2{
 #search-bar:focus{
     border: 1px solid rgba(150, 160, 225, 0.414);
     box-shadow: 0px 0px 10px rgba(32, 32, 210, 0.786);
-}s
+}
 
 .bg-div{ /* low opacity background behind add box container */
     position: fixed;
@@ -534,7 +534,7 @@ nav h2{
     background-color: rgb(0, 0, 0);
     opacity: 0.4;
     display: none;
-    z-index: 2;
+   z-index: 99;
 }
 
 

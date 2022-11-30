@@ -220,8 +220,17 @@ function designTable(url, title, author, totPages, readPages, read, value){
 
 }
 
+function changeOrder(){
+    ;
+        let topElement = document.querySelectorAll(".table-row")[1];
+        let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
+        let parent = topElement.parentNode;
+        parent.insertBefore(bottomElement, topElement);
+    
+    }
+
+    
 function editTableMode(url, title, author, total, pagesRead, read ){
-    console.log(url, title, author, total, pagesRead, read);
     console.log(currentEditIndex)
     myLibrary[currentEditIndex].title = textInputs[0].value;
     myLibrary[currentEditIndex].author = textInputs[1].value;
@@ -229,19 +238,41 @@ function editTableMode(url, title, author, total, pagesRead, read ){
     myLibrary[currentEditIndex].checked = toggle.checked;
     myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
     myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
-}
+    let bookCovers = document.querySelectorAll(".table-book-img");
+
+    if(textInputs[2].value){ 
+        bookCovers[currentEditIndex].setAttribute("src",`${textInputs[2].value}`)
+    }
+    else{ 
+        bookCovers[currentEditIndex].setAttribute("src","images/book-cover.png") 
+    }
+    
+    document.querySelectorAll(".table-title")[currentEditIndex].textContent = textInputs[0].value; 
+    document.querySelectorAll(".table-author")[currentEditIndex].textContent = textInputs[1].value; 
+    document.querySelectorAll(".table-pages")[currentEditIndex].textContent = textInputs[3].value; 
+    document.querySelectorAll(".table-pages-read")[currentEditIndex].textContent = textInputs[4].value;
+
+    let arrowsUpDel = document.querySelectorAll(".up-table");
+    let arrowsDownDel = document.querySelectorAll(".down-table");
+    arrowsUpDel[currentEditIndex].remove();
+    arrowsDownDel[currentEditIndex].remove();
+
+    let newArrowUp = document.createElement("img");
+    let newArrowDown = document.createElement("img");
+    newArrowUp.setAttribute("src", "images/arrow-up-white.png");
+    newArrowDown.setAttribute("src", "images/arrow-down-white.png");
+    newArrowUp.classList.add("up-table");
+    newArrowDown.classList.add("down-table");
+    let arrowContainers = document.querySelectorAll(".arrows-table");
+    arrowContainers[currentEditIndex].appendChild(newArrowUp);
+    arrowContainers[currentEditIndex].appendChild(newArrowDown);
+
+
+    }
 
 
 
 
-function changeOrder(){
-;
-    let topElement = document.querySelectorAll(".table-row")[1];
-    let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
-    let parent = topElement.parentNode;
-    parent.insertBefore(bottomElement, topElement);
-
-}
 
 
 
@@ -689,7 +720,6 @@ window.addEventListener("keydown", (e)=>{
 
 // javascript form validation 
 function checkForm(e){
-    console.log("formcheck")
     let validityCheck = false;
     let invalidIndex;
     from=e.target.id;
@@ -940,6 +970,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         arrowsUpDel[currentEditIndex].remove();
         arrowsDownDel[currentEditIndex].remove();
 
+        
         let newArrowUp = document.createElement("img");
         let newArrowDown = document.createElement("img");
         newArrowUp.setAttribute("src", "images/arrow-up-white.png");
@@ -952,7 +983,9 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
         newArrowDown.classList.add("down");
         arrowContainers[currentEditIndex].appendChild(newArrowUp);
         arrowContainers[currentEditIndex].appendChild(newArrowDown);
+        
 
+                
         currentPages[currentEditIndex].textContent = parseInt(textInputs[4].value);
         totalPagesEdit[currentEditIndex].textContent = parseInt(textInputs[3].value);
         
@@ -1083,10 +1116,6 @@ function deleteBook(trashBtn, text){
             }
                 let currentIndex = e.target.id;
 
-                if(!gridMode){
-                    console.log(currentIndex)
-                    console.log("hello")
-                }
                 myLibrary.splice(currentIndex,1);
                 if(gridMode){
                     e.target.parentNode.remove() 

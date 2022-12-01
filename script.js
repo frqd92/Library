@@ -38,7 +38,9 @@ let modeToggle = document.querySelector(".toggle-in");
 modeToggle.addEventListener("change", tableMode);
 function toggleEffectMode(){
     document.getElementById("search-bar").value="";
-    document.querySelector(".search-no-results").remove();
+    if(document.querySelector(".search-no-results")!==null){
+        document.querySelector(".search-no-results").remove();
+    }
     let movingTextMode = document.querySelector(".moving-text-mode-yes");
     if(modeToggle.checked){
         movingTextMode.textContent="Table"
@@ -517,24 +519,23 @@ function bookSelectionTable(index){
 function selectAllTable(){
     let allRows = document.querySelectorAll(".table-body");
     for(let element of allRows){
-        if(!element.classList.contains("selected-book-table")){
+        if(!element.classList.contains("selected-book-table") && element.style.display!=="none"){
             element.classList.add("selected-book-table");
+            numItemsSelected++;
         }
     }
-    numItemsSelected=allRows.length;
     numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
 }
 
 function deselectAllTable(){
     let allRows = document.querySelectorAll(".table-body");
-
       for(let element of allRows){
-        if(element.classList.contains("selected-book-table")){
+        if(element.classList.contains("selected-book-table") && element.style.display!=="none"){
             element.classList.remove("selected-book-table");
+            numItemsSelected--;
         }
     }
-    numItemsSelected=0;
-    numItemsSelectedText.textContent = `No items selected`;
+    numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
 }
 
 
@@ -675,12 +676,13 @@ function navSelect(from){
             selectNavClose.addEventListener("click", removeSelectModeTable);
 
             function deleteSelectedTable(){
+                document.getElementById("search-bar").value="";
                 let allRows = document.querySelectorAll(".table-body");
                 let selectTables = document.querySelectorAll(".select-table");
                 let boxContainer = document.querySelector(".book-container-grid");
                 let index = 0;
                 for(let element of allRows){
-           
+                    element.style.display="grid"
                     if(element.classList.contains("selected-book-table")){
                         console.log(index)
                         element.remove();
@@ -754,32 +756,32 @@ function navSelect(from){
         let allBooks = document.querySelectorAll(".book");
 
         for(let element of allBooks){
-       
-            if(!element.classList.contains("selected-book")){
+            if(!element.classList.contains("selected-book") && element.style.display!=="none"){
                 element.classList.add("selected-book");
-            
+                numItemsSelected++;
+                if(element.querySelector(".circle-point-shown")!==null){
+                    element.querySelector(".select-circle-point").classList.remove("circle-point-shown");
+                }
             }
-            if(element.querySelector(".circle-point-shown")!==null){
-                element.querySelector(".select-circle-point").classList.remove("circle-point-shown");
-            }
+
         }
 
-        numItemsSelected=allBooks.length;
         numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
     }    
 
     function deselectAll(){
         let allBooks = document.querySelectorAll(".book");
         for(let element of allBooks){
-            if(element.classList.contains("selected-book")){
+            if(element.classList.contains("selected-book") && element.style.display!=="none"){
                 element.classList.remove("selected-book");
+                numItemsSelected--;
+                if(element.querySelector(".circle-point-shown")===null){
+                    element.querySelector(".select-circle-point").classList.add("circle-point-shown");
+                }
             }
-            if(element.querySelector(".circle-point-shown")===null){
-                element.querySelector(".select-circle-point").classList.add("circle-point-shown");
-            }
+
         }
-    numItemsSelected=0;
-    numItemsSelectedText.textContent = `No items selected`;
+        numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
     }
 
     function bookSelection(index, point){
@@ -1556,6 +1558,11 @@ function searchBarFunc(){
         allBooks= document.querySelectorAll(".table-body");
         bookTitles = document.querySelectorAll(".table-title");
         bookAuthors = document.querySelectorAll(".table-author");
+    }
+    if(!barText){
+        if(document.querySelector(".search-no-results")!==null){
+            document.querySelector(".search-no-results").remove();
+        }
     }
     if(allBooks.length===0){
         console.log("jkds")

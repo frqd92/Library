@@ -37,15 +37,17 @@ let modeToggle = document.querySelector(".toggle-in");
 
 modeToggle.addEventListener("change", tableMode);
 function toggleEffectMode(){
+
     let movingTextMode = document.querySelector(".moving-text-mode-yes");
     if(modeToggle.checked){
         movingTextMode.textContent="Table"
         movingTextMode.classList.add("moving-text-mode-no");
-     
+  
     }
     else{
         movingTextMode.textContent="Grid";
         movingTextMode.classList.remove("moving-text-mode-no");
+ 
     }
 }
 
@@ -67,7 +69,6 @@ function tableMode(){
     if(isSelect===true){
 
         navSelect("toggle-sel");
-        checkIfEmpty();
         document.querySelector(".nav-select").style.background="";
         addBoxBtn.style.display="flex";
         selectNavMenu.style.display="none";
@@ -83,9 +84,9 @@ function tableMode(){
 
         gridMode= false;
         boxContainer.classList.add("book-container-grid");
-        if(bookTable.children.length>1){
-            bookTable.style.display="flex";
-        }
+
+
+        
     }
 
     else{
@@ -220,7 +221,9 @@ function designTable(url, title, author, totPages, readPages, read, value){
     else{
         bookTable.appendChild(tableRow)
     }
-
+    if(document.querySelectorAll(".table-body").length>0){
+        bookTable.style.display="block";
+    }
 
 }
 
@@ -396,14 +399,12 @@ let statMenu = document.querySelector(".stats");//change to button
 let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
 statMenuBtn.addEventListener("click", ()=>{
+    if(document.querySelectorAll(".table-body").length===0 || document.querySelectorAll(".book").length===0){
+        checkIfEmpty("wiggle");
+    }
     let allBooks = document.querySelectorAll(".book");
     let allBooksTab = document.querySelectorAll(".table-row")
-    if(gridMode && !document.querySelector(".book") ){
-        checkIfEmpty("nav");
-    }
-    else if(document.querySelectorAll(".table-row").length<2){     
-        checkIfEmpty("table");
-    }
+
     if(allBooks.length>0 || allBooksTab.length>1){
         if(!statMode){
             document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
@@ -551,7 +552,7 @@ function navSelect(from){
         allBooks = document.querySelectorAll(".table-body");
     }
     if(allBooks.length===0){
-        checkIfEmpty("navBtn")
+        // checkIfEmpty("navBtn")
     };
         if(from==="toggle"){
         gridMode?removeSelectMode(): removeSelectModeTable();
@@ -609,7 +610,7 @@ function navSelect(from){
                 numItemsSelectedText.textContent = `No items selected`;
                 if(boxContainer.querySelector(".book")===null){
                     removeSelectMode();
-                    checkIfEmpty();
+                    // checkIfEmpty();
                     selectAllBtn.removeEventListener("click", selectAll);
                     deselectAllBtn.removeEventListener("click", deselectAll);
                     deleteSelectionBtn.removeEventListener("click", deleteSelected);
@@ -679,7 +680,7 @@ function navSelect(from){
                 numItemsSelectedText.textContent = `No items selected`;
                 if(boxContainer.querySelector(".table-body")===null){
                     removeSelectModeTable();
-                    checkIfEmpty("selectTable");
+                    // checkIfEmpty("selectTable");
                     selectAllBtn.removeEventListener("click", selectAllTable);
                     deselectAllBtn.removeEventListener("click", deselectAllTable);
                     deleteSelectionBtn.removeEventListener("click", deleteSelectedTable);
@@ -815,6 +816,71 @@ function navSelect(from){
 
 
 function checkIfEmpty(from){
+
+    let main = document.querySelector("main");
+    let allBooks = document.querySelectorAll(".book");
+    let allRows = document.querySelectorAll(".table-body");
+    if(from==="wiggle"){
+        if(allBooks.length===0 || allRows.length===0){
+            wiggleText();
+            return;
+        }
+
+    }
+    if(gridMode){
+        if(allBooks.length===0){
+            createText(true)
+        }
+        else{
+            createText(false)
+        }
+    }
+
+    else{
+        if(allRows.length===0){
+            createText(true)
+            bookTable.style.display="none";
+        }
+        else{
+            bookTable.style.display="block";
+            createText(false)
+      
+        }
+    }
+
+
+    function createText(is){
+        if(is){
+        if(document.querySelector(".empty-text")===null){
+            let emptyText = document.createElement("div");
+            emptyText.classList.add("empty-text");
+            main.appendChild(emptyText);
+            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
+           
+        }
+
+        }
+        else{
+            if(document.querySelector(".empty-text")!==null){
+                document.querySelector(".empty-text").remove();
+                
+            }      
+        }
+    }
+        function wiggleText(){
+           
+            let text = main.querySelector(".empty-text");
+            text.classList.add("wiggle-effect");
+            setTimeout(()=>{
+                text.classList.remove("wiggle-effect");
+            }, 400)  
+            
+
+        }
+        
+    }
+
+function checkIfEmptyz(from){
     let main = document.querySelector("main");
     let allBooks = document.querySelectorAll(".book");
     let allRows = document.querySelectorAll(".table-row");
@@ -882,6 +948,7 @@ function checkIfEmpty(from){
 
 
 
+
 //focusses search bar when users types letters
 window.addEventListener("keydown", (e)=>{
     let addBoxVis = addBox.style.display;
@@ -938,7 +1005,7 @@ function checkForm(e){
         editTableMode(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, "edit")
       
     }
-    checkIfEmpty();
+    // checkIfEmpty();
 }
 
 function editBook(editBtn, currentPage, text){
@@ -981,6 +1048,7 @@ function addBookToLibrary(){
     let bookObj = new Book(textInputs[0].value,textInputs[1].value,textInputs[2].value,textInputs[3].value,toggle.checked,textInputs[4].value);
     myLibrary.unshift(bookObj); //changed from push order check if theres bugs
     gridMode===true? createBook(true):designTable(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, "add");
+    checkIfEmpty();
 }
 
 
@@ -1182,7 +1250,7 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
     if(create){clearInputs();}
     if(!create){bgDiv.style.display="none"; addBox.style.display="none";}
-    checkIfEmpty();
+    // checkIfEmpty();
 }
 
 //Make the add book box appear and disappear
@@ -1489,7 +1557,7 @@ window.onload = function (){
 
 
 function addDemoBooks(){
-    checkIfEmpty();
+    // checkIfEmpty();
     let demoArray = [
         {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
         {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
@@ -1523,7 +1591,7 @@ function addDemoBooks(){
     }
 
     }
- 
+    checkIfEmpty();
 }
 
 //search bar functionality 

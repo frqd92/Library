@@ -20,7 +20,6 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Title"){
         console.log(myLibrary)
-        console.log(isSelect)
     }
 })
 
@@ -52,18 +51,10 @@ function toggleEffectMode(){
 
 
 
-
-
 //Table Mode
 let navSettingsBtn = document.querySelector(".nav-settings");
 let bookTable = document.querySelector(".book-table");
 
-
-
-
-
-
-// navSettingsBtn.addEventListener("click",tableMode)
 
 let gridMode = true;
 function tableMode(){
@@ -112,7 +103,7 @@ function tableMode(){
         }
        
     }
-    // checkIfEmpty();
+    
 
 }
 
@@ -836,12 +827,15 @@ function checkIfEmpty(from){
         if(!allBooks.length){
             createText(true);
             if(from){wiggleText()}
+          
         }
         if(from==="toggle-sel"){
             createText(false);
+       
         }
 
         else{
+       
             createText(false);
         }
    
@@ -866,11 +860,11 @@ function checkIfEmpty(from){
             emptyText.classList.add("empty-text");
             main.appendChild(emptyText);
             emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
-            
+          
         }
         else{
             if(document.querySelector(".empty-text")!==null){
-                document.querySelector(".empty-text").remove()
+                document.querySelector(".empty-text").remove();
             }      
         }
     }

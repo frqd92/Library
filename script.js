@@ -697,7 +697,7 @@ function navSelect(from){
                 index=0;
                 numItemsSelected=0;
                 numItemsSelectedText.textContent = `No items selected`;
-                if(boxContainer.querySelector(".table-body")===null){
+                if(document.querySelector(".table-body")===null){
                     removeSelectModeTable();
                     // checkIfEmpty("selectTable");
                     selectAllBtn.removeEventListener("click", selectAllTable);

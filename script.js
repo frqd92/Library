@@ -20,7 +20,7 @@ window.addEventListener("click", (e)=>{ //to test
     }
     if(target==="Title"){
         console.log(myLibrary)
-
+        console.log(isSelect)
     }
 })
 
@@ -73,10 +73,15 @@ function tableMode(){
     for(let element of books){
         element.remove();
     }
-    // if(isSelect===true){
-    //     isSelect=false;
-    //     navSelect("toggle");
-    // }
+    if(isSelect===true){
+
+        navSelect("toggle-sel");
+        checkIfEmpty();
+        document.querySelector(".nav-select").style.background="";
+        addBoxBtn.style.display="flex";
+        selectNavMenu.style.display="none";
+        isSelect=false;
+    }
     toggleEffectMode()
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
         if(myLibrary.length>0){
@@ -545,9 +550,8 @@ let selectNavMenu = document.querySelector(".select-nav-menu");
 let isSelect = false;
 let numItemsSelected = 0;
 navSelectBtn.addEventListener("click",navSelect);
-function navSelect(){
+function navSelect(from){
     let selectNavClose = document.querySelector(".close-select-nav");
-
     let selectAllBtn = document.getElementById("select-nav-all-btn");
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
     let deleteSelectionBtn = document.getElementById("delete-select");
@@ -558,7 +562,11 @@ function navSelect(){
     if(allBooks.length===0){
         checkIfEmpty("navBtn")
     };
+        if(from==="toggle"){
+        gridMode?removeSelectMode(): removeSelectModeTable();
+        return;
 
+    }
 
     if(gridMode){
         if(!isSelect && allBooks.length>0 ){ //if select button is not selected hide add book nav and show select nav
@@ -670,11 +678,9 @@ function navSelect(){
                         element.remove();
                         myLibrary.splice(index,1);
                         index--;
-                        idRefresh();
+                        idRefresh(); //why the fuck do i need this for table mode and not grid mode 
                     }
-  
                     index++;
-
                 }
 
                 index=0;
@@ -696,10 +702,10 @@ function navSelect(){
                         x++;
                       
                     }
-
                 }
             }
-            window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectModeTable();} });//esc key closes select nav
+            window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){
+                removeSelectModeTable();} });//esc key closes select nav
             isSelect=true;
         }
         else{
@@ -718,8 +724,10 @@ function navSelect(){
         let index=0;
         for(let element of allRows){
             element.classList.remove("table-body-select-mode");
-            element.classList.remove("selected-book-table")
-            all[index].remove()
+            element.classList.remove("selected-book-table");
+            if(all[index]!==undefined){ //test
+                all[index].remove()
+            }
             element.querySelector(".table-delete").style.opacity="1";
             element.querySelector(".table-edit").style.opacity="1";
             element.querySelector(".table-book-img").style.opacity="1";
@@ -732,6 +740,7 @@ function navSelect(){
         isSelect=false;
         numItemsSelected = 0
         numItemsSelectedText.textContent = "No items selected";
+     
     }
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");
@@ -828,6 +837,9 @@ function checkIfEmpty(from){
             createText(true);
             if(from){wiggleText()}
         }
+        if(from==="toggle-sel"){
+            createText(false);
+        }
 
         else{
             createText(false);
@@ -838,9 +850,11 @@ function checkIfEmpty(from){
         if(allRows.length>0 && !from){
             createText(false);
             bookTable.style.display="flex";
+           
         }
         else{
             wiggleText()
+       
         }
     
      
@@ -1606,7 +1620,7 @@ function exportTable(){
     thRead.textContent="Read?";
     
     let tbody = document.createElement("tbody");
-
+    
     let allBooks = document.querySelectorAll(".book");
     for(let index=0;index<allBooks.length;index++){
         if(allBooks[index].classList.contains("selected-book")){

@@ -1618,12 +1618,20 @@ function exportTable(){
     thAuthor.textContent="Author";
     thPages.textContent="Pages";
     thRead.textContent="Read?";
-    
+
+    let allBooks, selectedItem;
+
+    if(!gridMode){
+        allBooks = document.querySelectorAll(".table-body")
+        selectedItem="selected-book-table";
+    }
+    else{
+        allBooks = document.querySelectorAll(".book");
+        selectedItem="selected-book";
+    }
     let tbody = document.createElement("tbody");
-    
-    let allBooks = document.querySelectorAll(".book");
     for(let index=0;index<allBooks.length;index++){
-        if(allBooks[index].classList.contains("selected-book")){
+        if(allBooks[index].classList.contains(selectedItem)){
             let tr = document.createElement("tr");
             let tdTitle = document.createElement("td");
             let tdAuthor = document.createElement("td");

@@ -24,10 +24,10 @@ window.addEventListener("click", (e)=>{ //to test
 })
 
 //DON'T FORGET:
-//When search bar is selected it should have a shiny outline thing 
-//fix when users use search bar and then click select all, selects files that are invisible also
-//style select menu buttons
-//yes no labels on toggle not working properly on edit windows
+
+
+
+
 
 
 
@@ -37,6 +37,13 @@ let modeToggle = document.querySelector(".toggle-in");
 
 modeToggle.addEventListener("change", tableMode);
 function toggleEffectMode(){
+    if(isSelect===true){
+        navSelect("toggle-sel")
+        document.querySelector(".nav-select").style.background="";
+        addBoxBtn.style.display="flex";
+        selectNavMenu.style.display="none";
+        isSelect=false;
+    }
     document.getElementById("search-bar").value="";
     if(document.querySelector(".search-no-results")!==null){
         document.querySelector(".search-no-results").remove();
@@ -68,14 +75,6 @@ function tableMode(){
     let rows = document.querySelectorAll(".table-row");
     for(let element of books){
         element.remove();
-    }
-    if(isSelect===true){
-
-        navSelect("toggle-sel");
-        document.querySelector(".nav-select").style.background="";
-        addBoxBtn.style.display="flex";
-        selectNavMenu.style.display="none";
-        isSelect=false;
     }
     toggleEffectMode()
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
@@ -240,15 +239,22 @@ function changeOrder(){
     }
 
     
-function editTableMode(url, title, author, total, pagesRead, read ){
 
+
+
+
+
+
+function editTableMode(){
+    bgDiv.style.display="none"; 
+    addBox.style.display="none";
     myLibrary[currentEditIndex].title = textInputs[0].value;
     myLibrary[currentEditIndex].author = textInputs[1].value;
     myLibrary[currentEditIndex].url = textInputs[2].value;
     myLibrary[currentEditIndex].read = toggle.checked;
     myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
     myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
-    console.log(myLibrary[currentEditIndex].checked)
+
     let bookCovers = document.querySelectorAll(".table-book-img");
  
     if(textInputs[2].value){ 
@@ -270,7 +276,6 @@ function editTableMode(url, title, author, total, pagesRead, read ){
     let arrowsUpDel = document.querySelectorAll(".up-table");
     let arrowsDownDel = document.querySelectorAll(".down-table");
 
-
     arrowsUpDel[currentEditIndex].remove();
     arrowsDownDel[currentEditIndex].remove();
     let newArrowUp = document.createElement("img");
@@ -280,14 +285,11 @@ function editTableMode(url, title, author, total, pagesRead, read ){
     newArrowUp.classList.add("up-table");
     newArrowDown.classList.add("down-table");
 
-
     arrowContainers[currentEditIndex].appendChild(newArrowUp);
     arrowContainers[currentEditIndex].appendChild(newArrowDown);
    
-
     arrowFuncTable(newArrowUp, newArrowDown, curr, parseInt(tot.textContent));
     progressBarTable(currentEditIndex);
-
     }
 
 
@@ -435,18 +437,13 @@ statMenuBtn.addEventListener("click", ()=>{
     }
 
     function calcStats(){
-         if(statMenu.childNodes!==0){
-            statMenu.innerHTML="";
-       }
-      
+        statMenu.innerHTML="";
         gridMode?statMode(allBooks):statMode(allBooksTab);
         function statMode(books){
             let totalPages = 0;
             let totalRead = 0;
             let totalLeft= 0;
             let totalBooks= books.length;
-        
-
             for(let index = 0;index<totalBooks;index++){       
                 //total pages
                 totalPages +=Number(myLibrary[index].pagesTotal);
@@ -481,8 +478,6 @@ statMenuBtn.addEventListener("click", ()=>{
             }
         }
     }
-    
-
 })
 
 
@@ -537,8 +532,6 @@ function deselectAllTable(){
     }
     numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
 }
-
-
 
 
 
@@ -608,31 +601,61 @@ function navSelect(from){
             deselectAllBtn.addEventListener("click", deselectAll);
             deleteSelectionBtn.addEventListener("click", deleteSelected);
             selectNavClose.addEventListener("click", removeSelectMode);
-    
+            
             function deleteSelected(){ //delete all selected books
-                let allBooks = document.querySelectorAll(".book");
-                let boxContainer = document.querySelector(".book-container")
-                let index=0;
-          
-                for(let element of allBooks){
-                    if(element.classList.contains("selected-book")){
-                        element.remove();
-                        myLibrary.splice(index,1);
-                        index--;
-                    };
-                    index++;
+                if(numItemsSelected===0){return};
+                document.getElementById("search-bar").value="";
+                let darkBg = document.createElement("div");
+                darkBg.classList.add("dark-bg")
+                document.querySelector("body").prepend(darkBg);
+                let warningDiv = document.querySelector(".warning-div");
+                let warningMsg = document.querySelector(".warning-msg");
+                let warningYes = document.querySelector(".warning-yes");
+                let warningNo = document.querySelector(".warning-no");
+                warningYes.classList.add("warning-btn")
+                warningNo.classList.add("warning-btn");
+                darkBg.addEventListener("click", ()=>{
+                    cancelRemove();
+                })
+                warningDiv.style.display="flex";
+                numItemsSelected!==1?warningMsg.textContent=`Are you sure you want to permanently remove ${numItemsSelected} items?`:warningMsg.textContent=`Are you sure you want to permanently remove ${numItemsSelected} item?`;
+                warningYes.addEventListener("click", permRemove);
+                warningNo.addEventListener("click", cancelRemove);
+                function cancelRemove(){
+                    warningDiv.style.display="none";
+                    warningYes.removeEventListener("click", permRemove);
+                    warningNo.removeEventListener("click", cancelRemove);
+                    darkBg.remove();
                 }
-                index=0;
-                numItemsSelected=0;
-                numItemsSelectedText.textContent = `No items selected`;
-                if(boxContainer.querySelector(".book")===null){
-                    removeSelectMode();
-                    checkIfEmpty();
-                    selectAllBtn.removeEventListener("click", selectAll);
-                    deselectAllBtn.removeEventListener("click", deselectAll);
-                    deleteSelectionBtn.removeEventListener("click", deleteSelected);
-                
+                function permRemove(){
+                    let allBooks = document.querySelectorAll(".book");
+                    let boxContainer = document.querySelector(".book-container")
+                    let index=0;
+              
+                    for(let element of allBooks){
+                        if(element.classList.contains("selected-book")){
+                            element.remove();
+                            myLibrary.splice(index,1);
+                            index--;
+                        };
+                        index++;
+                    }
+                    index=0;
+                    numItemsSelected=0;
+                    numItemsSelectedText.textContent = `No items selected`;
+                    searchBar.focus();
+                    if(boxContainer.querySelector(".book")===null){
+                        removeSelectMode();
+                        checkIfEmpty();
+                        selectAllBtn.removeEventListener("click", selectAll);
+                        deselectAllBtn.removeEventListener("click", deselectAll);
+                        deleteSelectionBtn.removeEventListener("click", deleteSelected);
+                    
+                    }
+                    cancelRemove()
                 }
+
+ 
             }
     
             window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
@@ -676,10 +699,9 @@ function navSelect(from){
             selectNavClose.addEventListener("click", removeSelectModeTable);
 
             function deleteSelectedTable(){
+                if(numItemsSelected===0){return};
                 document.getElementById("search-bar").value="";
                 let allRows = document.querySelectorAll(".table-body");
-                let selectTables = document.querySelectorAll(".select-table");
-                let boxContainer = document.querySelector(".book-container-grid");
                 let index = 0;
                 for(let element of allRows){
                     element.style.display="grid"
@@ -886,14 +908,13 @@ function checkIfEmpty(from){
         }
     }
         function wiggleText(){
-           
-            let text = main.querySelector(".empty-text");
-            text.classList.add("wiggle-effect");
-            setTimeout(()=>{
-                text.classList.remove("wiggle-effect");
-            }, 400)  
-            
+            if(main.querySelector(".empty-text")!==null){
 
+                let text = main.querySelector(".empty-text");
+                text.classList.add("wiggle-effect");
+                setTimeout(()=>{
+                    text.classList.remove("wiggle-effect");
+                }, 400)              }
         }
         
     }

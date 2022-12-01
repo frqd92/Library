@@ -487,7 +487,6 @@ document.addEventListener("mousedown", (e)=>{
 
 function bookSelectionTable(index){
     let allRows = document.querySelectorAll(".table-body");
-
     let numItemsSelectedText = document.querySelector(".num-items-selected");
     if(!allRows[index].classList.contains("selected-book-table")){
         allRows[index].classList.add("selected-book-table");
@@ -504,6 +503,38 @@ function bookSelectionTable(index){
         }
 }
 
+function selectAllTable(){
+    let allRows = document.querySelectorAll(".table-body");
+    for(let element of allRows){
+        if(!element.classList.contains("selected-book-table")){
+            element.classList.add("selected-book-table");
+        }
+    }
+    numItemsSelected=allRows.length;
+    numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
+}
+
+function deselectAllTable(){
+    let allRows = document.querySelectorAll(".table-body");
+
+      for(let element of allRows){
+        if(element.classList.contains("selected-book-table")){
+            element.classList.remove("selected-book-table");
+        }
+    }
+    numItemsSelected=0;
+    numItemsSelectedText.textContent = `No items selected`;
+}
+
+
+
+
+
+
+
+
+
+let numItemsSelectedText = document.querySelector(".num-items-selected");
 //all the select option logic
 let navSelectBtn = document.querySelector(".nav-select");
 let selectNavMenu = document.querySelector(".select-nav-menu");
@@ -512,7 +543,7 @@ let numItemsSelected = 0;
 navSelectBtn.addEventListener("click",navSelect);
 function navSelect(){
     let selectNavClose = document.querySelector(".close-select-nav");
-    let numItemsSelectedText = document.querySelector(".num-items-selected");
+
     let selectAllBtn = document.getElementById("select-nav-all-btn");
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
     let deleteSelectionBtn = document.getElementById("delete-select");
@@ -554,8 +585,8 @@ function navSelect(){
             }
             selectAllBtn.addEventListener("click", selectAll);
             deselectAllBtn.addEventListener("click", deselectAll);
-            deleteSelectionBtn.addEventListener("click", deleteSelected)
-            selectNavClose.addEventListener("click", removeSelectMode )
+            deleteSelectionBtn.addEventListener("click", deleteSelected);
+            selectNavClose.addEventListener("click", removeSelectMode);
     
             function deleteSelected(){ //delete all selected books
                 let allBooks = document.querySelectorAll(".book");
@@ -592,7 +623,9 @@ function navSelect(){
         selectAllBtn.removeEventListener("click", selectAll);
         selectNavClose.removeEventListener("click", removeSelectMode); 
         removeSelectMode(); 
-    }
+    }    
+
+    
     }
     else{ //table mode
         if(!isSelect && allBooks.length>0){
@@ -610,15 +643,90 @@ function navSelect(){
                 selectContainer.addEventListener("click", (e)=>{
                     bookSelectionTable(e.target.id);
                  })
-                console.log("bass")
+        
                 element.querySelector(".table-edit").style.opacity="0.2";
                 element.querySelector(".table-delete").style.opacity="0.2";
                 element.querySelector(".table-book-img").style.opacity="0.6";
                 index++;
             }
+            selectAllBtn.addEventListener("click", selectAllTable);
+            deselectAllBtn.addEventListener("click", deselectAllTable);
+            deleteSelectionBtn.addEventListener("click", deleteSelectedTable);
+            selectNavClose.addEventListener("click", removeSelectModeTable);
+
+            function deleteSelectedTable(){
+                let allRows = document.querySelectorAll(".table-body");
+                let selectTables = document.querySelectorAll(".select-table");
+                let boxContainer = document.querySelector(".book-container-grid");
+                let index = 0;
+                for(let element of allRows){
+           
+                    if(element.classList.contains("selected-book-table")){
+                        console.log(index)
+                        element.remove();
+                        myLibrary.splice(index,1);
+                        index--;
+                        idRefresh();
+                    }
+  
+                    index++;
+
+                }
+
+                index=0;
+                numItemsSelected=0;
+                numItemsSelectedText.textContent = `No items selected`;
+                if(boxContainer.querySelector(".table-body")===null){
+                    removeSelectModeTable();
+                    checkIfEmpty("selectTable");
+                    selectAllBtn.removeEventListener("click", selectAllTable);
+                    deselectAllBtn.removeEventListener("click", deselectAllTable);
+                    deleteSelectionBtn.removeEventListener("click", deleteSelectedTable);
+                }
+                function idRefresh(){
+                    let selectTables = document.querySelectorAll(".select-table");
+                    let x=0;
+                    for (element of selectTables){
+                        element.removeAttribute("id");
+                        element.id=index;
+                        x++;
+                    }
+
+                }
+            }
+            window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectModeTable();} });//esc key closes select nav
+            isSelect=true;
         }
+        else{
+            deselectAllBtn.removeEventListener("click", deselectAll);
+            selectAllBtn.removeEventListener("click", selectAll);
+            selectNavClose.removeEventListener("click", removeSelectModeTable); 
+            removeSelectModeTable(); 
+        }    
     }
 
+
+    function removeSelectModeTable(){
+        document.querySelector(".nav-select").style.background="";
+        let allRows = document.querySelectorAll(".table-body");
+        let all = document.querySelectorAll(".select-table");
+        let index=0;
+        for(let element of allRows){
+            element.classList.remove("table-body-select-mode");
+            all[index].remove()
+            element.querySelector(".table-delete").style.opacity="1";
+            element.querySelector(".table-edit").style.opacity="1";
+            element.querySelector(".table-book-img").style.opacity="1";
+            index++;
+        }
+        index=0;
+        addBoxBtn.style.display="flex";
+        selectNavMenu.style.display="none";
+        selectNavClose.removeEventListener("click", removeSelectModeTable);
+        isSelect=false;
+        numItemsSelected = 0
+        numItemsSelectedText.textContent = "No items selected";
+    }
     function selectAll(){
         let allBooks = document.querySelectorAll(".book");
 
@@ -671,6 +779,7 @@ function navSelect(){
 
     function removeSelectMode(){
         document.querySelector(".nav-select").style.background="";
+    
     for(let element of allBooks){
         if(element.classList.contains("selected-book")){
             element.classList.remove("selected-book")
@@ -703,6 +812,11 @@ function checkIfEmpty(from){
     let main = document.querySelector("main");
     let allBooks = document.querySelectorAll(".book");
     let allRows = document.querySelectorAll(".table-row");
+    if(from==="selectTable"){
+        bookTable.style.display="none";
+        createText(true);
+        return;
+    }
     if(gridMode){
         if(!allBooks.length){
             createText(true);

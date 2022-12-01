@@ -73,6 +73,10 @@ function tableMode(){
     for(let element of books){
         element.remove();
     }
+    // if(isSelect===true){
+    //     isSelect=false;
+    //     navSelect("toggle");
+    // }
     toggleEffectMode()
     if(!boxContainer.classList.contains("book-container-grid") && gridMode===true){
         if(myLibrary.length>0){
@@ -239,10 +243,10 @@ function editTableMode(url, title, author, total, pagesRead, read ){
     myLibrary[currentEditIndex].title = textInputs[0].value;
     myLibrary[currentEditIndex].author = textInputs[1].value;
     myLibrary[currentEditIndex].url = textInputs[2].value;
-    myLibrary[currentEditIndex].checked = toggle.checked;
+    myLibrary[currentEditIndex].read = toggle.checked;
     myLibrary[currentEditIndex].pagesTotal= textInputs[3].value;
     myLibrary[currentEditIndex].pagesRead = textInputs[4].value;
-
+    console.log(myLibrary[currentEditIndex].checked)
     let bookCovers = document.querySelectorAll(".table-book-img");
  
     if(textInputs[2].value){ 
@@ -688,8 +692,9 @@ function navSelect(){
                     let x=0;
                     for (element of selectTables){
                         element.removeAttribute("id");
-                        element.id=index;
+                        element.id=x;
                         x++;
+                      
                     }
 
                 }
@@ -713,6 +718,7 @@ function navSelect(){
         let index=0;
         for(let element of allRows){
             element.classList.remove("table-body-select-mode");
+            element.classList.remove("selected-book-table")
             all[index].remove()
             element.querySelector(".table-delete").style.opacity="1";
             element.querySelector(".table-edit").style.opacity="1";

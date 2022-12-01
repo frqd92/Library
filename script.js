@@ -37,7 +37,8 @@ let modeToggle = document.querySelector(".toggle-in");
 
 modeToggle.addEventListener("change", tableMode);
 function toggleEffectMode(){
-
+    document.getElementById("search-bar").value="";
+    document.querySelector(".search-no-results").remove();
     let movingTextMode = document.querySelector(".moving-text-mode-yes");
     if(modeToggle.checked){
         movingTextMode.textContent="Table"
@@ -570,13 +571,9 @@ function navSelect(from){
     if(!gridMode){
         allBooks = document.querySelectorAll(".table-body");
     }
-    if(allBooks.length===0){
-        // checkIfEmpty("navBtn")
-    };
-        if(from==="toggle"){
-        gridMode?removeSelectMode(): removeSelectModeTable();
-        return;
-
+    if(from==="toggle"){
+    gridMode?removeSelectMode(): removeSelectModeTable();
+    return;
     }
 
     if(gridMode){
@@ -699,7 +696,6 @@ function navSelect(from){
                 numItemsSelectedText.textContent = `No items selected`;
                 if(document.querySelector(".table-body")===null){
                     removeSelectModeTable();
-                    // checkIfEmpty("selectTable");
                     selectAllBtn.removeEventListener("click", selectAllTable);
                     deselectAllBtn.removeEventListener("click", deselectAllTable);
                     deleteSelectionBtn.removeEventListener("click", deleteSelectedTable);
@@ -900,73 +896,6 @@ function checkIfEmpty(from){
         
     }
 
-function checkIfEmptyz(from){
-    let main = document.querySelector("main");
-    let allBooks = document.querySelectorAll(".book");
-    let allRows = document.querySelectorAll(".table-row");
-    if(from==="selectTable"){
-        bookTable.style.display="none";
-        createText(true);
-        return;
-    }
-    if(gridMode){
-        if(!allBooks.length){
-            createText(true);
-            if(from){wiggleText()}
-          
-        }
-        if(from==="toggle-sel"){
-            createText(false);
-       
-        }
-
-        else{
-       
-            createText(false);
-        }
-   
-    }
-    else{
-        if(allRows.length>0 && !from){
-            createText(false);
-            bookTable.style.display="flex";
-           
-        }
-        else{
-            wiggleText()
-       
-        }
-    
-     
-    }
-
-    function createText(is){
-        if(is){
-            let emptyText = document.createElement("div");
-            emptyText.classList.add("empty-text");
-            main.appendChild(emptyText);
-            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
-          
-        }
-        else{
-            if(document.querySelector(".empty-text")!==null){
-                document.querySelector(".empty-text").remove();
-            }      
-        }
-    }
-        function wiggleText(){
-            let text = main.querySelector(".empty-text");
-            text.classList.add("wiggle-effect");
-            setTimeout(()=>{
-                text.classList.remove("wiggle-effect");
-            }, 400)  
-        }
-        
-    }
-
-
-
-
 
 
 //focusses search bar when users types letters
@@ -1013,7 +942,6 @@ function checkForm(e){
     }
 
     if(validityCheck === true && from ==="add-book"){
-        // checkIfEmpty("main");
         addBookToLibrary()
         clearInputs();
     }
@@ -1025,7 +953,6 @@ function checkForm(e){
         editTableMode(textInputs[2].value, textInputs[0].value,textInputs[1].value, textInputs[3].value,textInputs[4].value,toggle.checked, "edit")
       
     }
-    // checkIfEmpty();
 }
 
 function editBook(editBtn, currentPage, text){
@@ -1270,7 +1197,6 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
     if(create){clearInputs();}
     if(!create){bgDiv.style.display="none"; addBox.style.display="none";}
-    // checkIfEmpty();
 }
 
 //Make the add book box appear and disappear
@@ -1577,7 +1503,7 @@ window.onload = function (){
 
 
 function addDemoBooks(){
-    // checkIfEmpty();
+
     let demoArray = [
         {title: "The Short-Timers", author: "Gustav Hasford", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c0/The_Short_timers_Cover.jpg/220px-The_Short_timers_Cover.jpg', pagesTotal:192, read:true, pagesRead: 69},
         {title: "The Illuminatus! Trilogy", author: "Robert Shea, Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/f/fb/Illuminatus1sted.jpg', pagesTotal: 805, read:true, pagesRead: 420},
@@ -1617,14 +1543,26 @@ function addDemoBooks(){
 //search bar functionality 
 let searchBar = document.getElementById("search-bar");
 searchBar.addEventListener("input", searchBarFunc);
-
 searchBar.addEventListener("focus",searchBarFunc);
 function searchBarFunc(){
-    let allBooks= document.querySelectorAll(".book");
     let barText = searchBar.value;
-    let bookTitles = document.querySelectorAll(".book-title");
-    let bookAuthors = document.querySelectorAll(".book-author");
-
+    let allBooks, bookTitles, bookAuthors;
+    if(gridMode){
+        allBooks= document.querySelectorAll(".book");
+        bookTitles = document.querySelectorAll(".book-title");
+        bookAuthors = document.querySelectorAll(".book-author");
+    }
+    else{
+        allBooks= document.querySelectorAll(".table-body");
+        bookTitles = document.querySelectorAll(".table-title");
+        bookAuthors = document.querySelectorAll(".table-author");
+    }
+    if(allBooks.length===0){
+        console.log("jkds")
+        searchBar.value="";
+        checkIfEmpty("wiggle");
+        return;
+    }
     if(option==="title"){
         searchBy(bookTitles);
     }
@@ -1633,22 +1571,45 @@ function searchBarFunc(){
     }
     function searchBy(element){
         if(barText){
-            for(let index in allBooks){
+            let noResults = allBooks.length;
+            let count = 0;
+            for(let index=0;index<allBooks.length; index++){
                     if(element[index].textContent!==undefined){
                         if(element[index].textContent.match(/[a-z\d!?]/gi).join("").toLowerCase().includes(barText.toLocaleLowerCase().replace(/\s/g, "").match(/[a-z\d!?]/gi).join(""))){
                             allBooks[index].style.display="grid";
                         }
                         else{allBooks[index].style.display="none";}
                     }
+                    if(allBooks[index].style.display==="none"){
+                        count++;
+                    }
             }
+            if(count === noResults){
+                if(document.querySelector(".search-no-results")===null){
+                    let text = document.createElement("div");
+                    text.textContent="No results...";
+                    text.classList.add("search-no-results");
+                    document.querySelector("main").appendChild(text);
+                }
+                document.querySelector(".header-sticky").style.display="none";
             }
             else{
-                    for(let index in allBooks){
-                        if(element[index].textContent!==undefined){
-                            allBooks[index].style.display="grid";
-                        }
+                if(document.querySelector(".search-no-results")!==null){
+                    document.querySelector(".search-no-results").remove();
+                }
+                document.querySelector(".header-sticky").style.display="block";
+     
+            }
+
+
+            }
+        else{
+                for(let index in allBooks){
+                    if(element[index].textContent!==undefined){
+                        allBooks[index].style.display="grid";
                     }
                 }
+            }
     }
 
 }

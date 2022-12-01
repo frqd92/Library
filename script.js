@@ -415,9 +415,9 @@ statMenuBtn.addEventListener("click", ()=>{
 
 
     let allBooks = document.querySelectorAll(".book");
-    let allBooksTab = document.querySelectorAll(".table-row")
+    let allBooksTab = document.querySelectorAll(".table-body")
 
-    if(allBooks.length>0 || allBooksTab.length>1){
+    if(allBooks.length>0 || allBooksTab.length>0){
         if(!statMode){
             document.querySelector(".nav-stats").style.background="rgba(80, 80, 97, 0.28)";
             statMenu.classList.add("stats-shown");   //for unnecessary animation
@@ -445,7 +445,7 @@ statMenuBtn.addEventListener("click", ()=>{
             let totalRead = 0;
             let totalLeft= 0;
             let totalBooks= books.length;
-            if(!gridMode){totalBooks-=1} //minus the header row
+        
 
             for(let index = 0;index<totalBooks;index++){       
                 //total pages

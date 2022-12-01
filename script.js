@@ -399,9 +399,18 @@ let statMenu = document.querySelector(".stats");//change to button
 let statMenuBtn = document.querySelector(".nav-stats");
 let statMode = false;
 statMenuBtn.addEventListener("click", ()=>{
-    if(document.querySelectorAll(".table-body").length===0 || document.querySelectorAll(".book").length===0){
-        checkIfEmpty("wiggle");
+    if(gridMode){
+        if(document.querySelectorAll(".book").length===0){
+            checkIfEmpty("wiggle");
+        }
     }
+    else{
+        if(document.querySelectorAll(".table-body").length===0){
+            checkIfEmpty("wiggle");
+        }
+    }
+
+
     let allBooks = document.querySelectorAll(".book");
     let allBooksTab = document.querySelectorAll(".table-row")
 
@@ -543,6 +552,16 @@ let isSelect = false;
 let numItemsSelected = 0;
 navSelectBtn.addEventListener("click",navSelect);
 function navSelect(from){
+    if(gridMode){
+        if(document.querySelectorAll(".book").length===0){
+            checkIfEmpty("wiggle");
+        }
+    }
+    else{
+        if(document.querySelectorAll(".table-body").length===0){
+            checkIfEmpty("wiggle");
+        }
+    }
     let selectNavClose = document.querySelector(".close-select-nav");
     let selectAllBtn = document.getElementById("select-nav-all-btn");
     let deselectAllBtn = document.getElementById("deselect-nav-all-btn");
@@ -610,7 +629,7 @@ function navSelect(from){
                 numItemsSelectedText.textContent = `No items selected`;
                 if(boxContainer.querySelector(".book")===null){
                     removeSelectMode();
-                    // checkIfEmpty();
+                    checkIfEmpty();
                     selectAllBtn.removeEventListener("click", selectAll);
                     deselectAllBtn.removeEventListener("click", deselectAll);
                     deleteSelectionBtn.removeEventListener("click", deleteSelected);
@@ -695,6 +714,7 @@ function navSelect(from){
                       
                     }
                 }
+                checkIfEmpty();
             }
             window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){
                 removeSelectModeTable();} });//esc key closes select nav

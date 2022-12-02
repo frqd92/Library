@@ -784,16 +784,13 @@ nav h2{
 
 .select-menu-items{
     display: grid;
-    grid-template-columns: 5fr 2fr 2fr 2fr 2fr 1fr;
- 
+    grid-template-columns: 5fr 2.5fr 2.5fr 2fr 2fr 1fr;
     width: 100%;
     font-family: 'Mulish', sans-serif;
     color:rgb(213, 213, 226);
- 
     align-items: center;
-  user-select: none;
+    user-select: none;
     justify-content: space-evenly;
-
 }
 .num-items-selected{
     justify-self: center;
@@ -819,8 +816,31 @@ sup{
     color:rgb(213, 213, 226);
 }
 
+.exp-con, .del-con{
+    position: relative;
+
+}
+.delete-text-select, .export-text-select{
+    position: absolute;
+    font-size: 0.9rem;
+    top: 36px;
+    white-space: nowrap;
+    width: fit-content;
+    padding: 2px 6px;
+    border: 1px solid rgba(249, 249, 249, 0.214);
+    display: none;
+    border-radius: 5px;
+    color: white;
+}
+.export-text-select{
+
+    left: -15px;
 
 
+}
+.delete-text-select{
+    left: -20px;
+}
 
 
 
@@ -1296,8 +1316,6 @@ form{
     color: rgb(86, 127, 142);
     font-size: 1.1rem;
 }
-
-
 
 
 @media screen and (max-width:1300px){

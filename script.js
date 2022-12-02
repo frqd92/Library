@@ -43,6 +43,7 @@ function toggleEffectMode(){
         addBoxBtn.style.display="flex";
         selectNavMenu.style.display="none";
         isSelect=false;
+        numItemsSelected=0;
     }
     document.getElementById("search-bar").value="";
     if(document.querySelector(".search-no-results")!==null){
@@ -599,63 +600,127 @@ function navSelect(from){
             }
             selectAllBtn.addEventListener("click", selectAll);
             deselectAllBtn.addEventListener("click", deselectAll);
-            deleteSelectionBtn.addEventListener("click", deleteSelected);
+            deleteSelectionBtn.addEventListener("mousedown", deleteSelected);
             selectNavClose.addEventListener("click", removeSelectMode);
-            
+            deleteSelectionBtn.addEventListener("mouseover", deleteHover); 
+            let exportText = document.querySelector(".export-text-select");
+            document.querySelector("#export-select").addEventListener("mouseover", ()=>{
+                exportText.style.display="block";
+                if(numItemsSelected===0){
+                    exportText.textContent="Select something to export";
+                }
+                else{
+                    exportText.textContent="Export as an xls excel file";
+                }
+            })
+            document.querySelector("#export-select").addEventListener("mouseleave", ()=>{
+                exportText.style.display="none";
+            })
+
+            function deleteHover(){
+                let text = document.querySelector(".delete-text-select");
+                text.style.color="white"; 
+                if(numItemsSelected===0){
+                    text.textContent="Select something to delete";
+                }
+                else{
+                    text.textContent="Hold 3 seconds to delete";
+                }
+                text.style.display="block";
+                deleteSelectionBtn.addEventListener("mouseleave", deleteHoverExit);
+                function deleteHoverExit(){
+                    text.style.display="none";
+                    }
+            }
+
+            function timerThing(hoverText){ //test
+                let timer = 0;
+                let counter =2;
+                let revTimer;
+                let intervals;
+                let text = document.querySelector(hoverText);
+                intervals = setInterval(()=>{
+                    timer +=1;
+                    revTimer = counter + timer;
+                    text.innerText = `Hold ${revTimer-1} seconds to delete`;
+                    counter = counter - 2;
+                    switch(timer){
+                        case 1: text.style.color="rgb(199, 45, 45)"; break;
+                        case 2: text.style.color="red"; break;
+                    }
+                    if(timer===3){
+                        deleteSelected();
+                    }
+
+                }, 1000)
+            }
+
+
+
+
             function deleteSelected(){ //delete all selected books
                 if(numItemsSelected===0){return};
                 document.getElementById("search-bar").value="";
-                let darkBg = document.createElement("div");
-                darkBg.classList.add("dark-bg")
-                document.querySelector("body").prepend(darkBg);
-                let warningDiv = document.querySelector(".warning-div");
-                let warningMsg = document.querySelector(".warning-msg");
-                let warningYes = document.querySelector(".warning-yes");
-                let warningNo = document.querySelector(".warning-no");
-                warningYes.classList.add("warning-btn")
-                warningNo.classList.add("warning-btn");
-                darkBg.addEventListener("click", ()=>{
-                    cancelRemove();
-                })
-                warningDiv.style.display="flex";
-                numItemsSelected!==1?warningMsg.textContent=`Are you sure you want to permanently remove ${numItemsSelected} items?`:warningMsg.textContent=`Are you sure you want to permanently remove ${numItemsSelected} item?`;
-                warningYes.addEventListener("click", permRemove);
-                warningNo.addEventListener("click", cancelRemove);
-                function cancelRemove(){
-                    warningDiv.style.display="none";
-                    warningYes.removeEventListener("click", permRemove);
-                    warningNo.removeEventListener("click", cancelRemove);
-                    darkBg.remove();
-                }
-                function permRemove(){
-                    let allBooks = document.querySelectorAll(".book");
-                    let boxContainer = document.querySelector(".book-container")
-                    let index=0;
-              
-                    for(let element of allBooks){
-                        if(element.classList.contains("selected-book")){
-                            element.remove();
-                            myLibrary.splice(index,1);
-                            index--;
-                        };
-                        index++;
+                let timer = 0;
+                let counter =2;
+                let revTimer;
+                let intervals;
+                let text = document.querySelector(".delete-text-select");
+                intervals = setInterval(()=>{
+                
+                
+                    timer +=1;
+                    revTimer = counter + timer;
+                    text.innerText = `Hold ${revTimer-1} seconds to delete`;
+                    counter = counter - 2;
+                    switch(timer){
+                        case 1: text.style.color="rgb(199, 45, 45)"; break;
+                        case 2: text.style.color="red"; break;
                     }
-                    index=0;
-                    numItemsSelected=0;
-                    numItemsSelectedText.textContent = `No items selected`;
-                    searchBar.focus();
-                    if(boxContainer.querySelector(".book")===null){
-                        removeSelectMode();
-                        checkIfEmpty();
-                        selectAllBtn.removeEventListener("click", selectAll);
-                        deselectAllBtn.removeEventListener("click", deselectAll);
-                        deleteSelectionBtn.removeEventListener("click", deleteSelected);
+                    if(timer===3){
+                        let allBooks = document.querySelectorAll(".book");
+                        let boxContainer = document.querySelector(".book-container")
+                        let index=0;
                     
-                    }
-                    cancelRemove()
-                }
+                        for(let element of allBooks){
+                            if(element.classList.contains("selected-book")){
+                                element.remove();
+                                myLibrary.splice(index,1);
+                                index--;
+                            };
+                            index++;
+                        }
+                        index=0;
+                        numItemsSelected=0;
+                        numItemsSelectedText.textContent = `No items selected`;
 
- 
+                        searchBar.focus();
+                        if(boxContainer.querySelector(".book")===null){
+                            removeSelectMode();
+                            checkIfEmpty();
+                            selectAllBtn.removeEventListener("click", selectAll);
+                            deselectAllBtn.removeEventListener("click", deselectAll);
+                            deleteSelectionBtn.removeEventListener("mousedown", deleteSelected);
+                        
+                        }
+                        clearInterval(intervals);
+                        checkIfEmpty();
+                    }
+
+                }, 1000)
+                deleteSelectionBtn.addEventListener("mouseup", ()=>{
+                    clearInterval(intervals);
+                    timer =0;
+                    counter=2;
+                    text.innerText = `Hold 3 seconds to delete`;
+                    text.style.color="rgb(180, 92, 97)";
+                }); 
+                deleteSelectionBtn.addEventListener("mouseleave",()=>{
+                    clearInterval(intervals);
+                    timer =0;
+                    counter=2;
+                })
+
             }
     
             window.addEventListener("keyup", (e)=>{if(e.key==="Escape"){removeSelectMode();} });//esc key closes select nav
@@ -701,6 +766,16 @@ function navSelect(from){
             function deleteSelectedTable(){
                 if(numItemsSelected===0){return};
                 document.getElementById("search-bar").value="";
+                intervals = setInterval(()=>{
+            
+
+
+
+
+                },1000)
+
+
+
                 let allRows = document.querySelectorAll(".table-body");
                 let index = 0;
                 for(let element of allRows){
@@ -722,7 +797,7 @@ function navSelect(from){
                     removeSelectModeTable();
                     selectAllBtn.removeEventListener("click", selectAllTable);
                     deselectAllBtn.removeEventListener("click", deselectAllTable);
-                    deleteSelectionBtn.removeEventListener("click", deleteSelectedTable);
+                    deleteSelectionBtn.removeEventListener("mousedown", deleteSelectedTable);
                 }
                 function idRefresh(){
                     let selectTables = document.querySelectorAll(".select-table");
@@ -1343,7 +1418,6 @@ function deleteBook(trashBtn, text){
                 }
             }
                 let currentIndex = e.target.id;
-
                 myLibrary.splice(currentIndex,1);
                 if(gridMode){
                     e.target.parentNode.remove() 
@@ -1352,7 +1426,6 @@ function deleteBook(trashBtn, text){
                     let parent = e.target.parentNode;
                     parent.parentNode.remove();
                 }
-              
         
                 clearInterval(interval);
                 checkIfEmpty();

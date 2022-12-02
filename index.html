@@ -12,14 +12,6 @@
 </head>
 <body>
     <div class="bg-div"></div>
-    <div class="warning-div">
-        <p class="warning-msg"></p>
-        <div class="warning-btn-div">
-            <button class="warning-btn warning-yes">Yes</button>
-            <button class="warning-btn warning-no">No</button>
-        </div>
-
-    </div>
 <nav>
     <h1>Library Thing</h1>
 
@@ -65,9 +57,17 @@
         <p class="num-items-selected">0 items selected</p>
         <button class="select-nav-btn" id="select-nav-all-btn">Select All</button>
         <button class="select-nav-btn" id="deselect-nav-all-btn">Deselect All</button>
-        <button class="select-nav-btn" id="delete-select">Delete</button>
-        <button class="select-nav-btn" id="export-select"">Export</button>
+        <div class="del-con">
+            <button class="select-nav-btn" id="delete-select">Delete</button>
+            <span class="delete-text-select"></span>
+        </div>
+        <div class="exp-con">
+            <button class="select-nav-btn" id="export-select"">Export</button>
+            <span class="export-text-select"></span>
+        </div>
+
         <div class="close-select-nav">X<sup>(esc)</sup></div>
+
     </div>
 
 </div>
@@ -212,7 +212,6 @@
             <img src="images/arrow-down-white.png" class="down-table" alt="">
         </div>
     </div>
-
     <div class="body-field table-progress">
         <div class="progress-text-table">50% complete</div>
         <div class="progress-bar-container-table">
@@ -221,12 +220,8 @@
             </div>
         </div>
     </div>
-
     <div class="body-field table-other">
-
             <img src="images/delete-white.png" class="table-delete" alt="">
-
-
             <img src="images/application-edit-white.png" class="table-edit" alt="">
  
     </div>

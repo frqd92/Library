@@ -1739,9 +1739,18 @@ function addDemoBooks(){
         {title: "Flowers for Algernon", author: "Daniel Keyes", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/FlowersForAlgernon.jpg/220px-FlowersForAlgernon.jpg', pagesTotal: 311, read:true, pagesRead: 32},
         {title: "Prometheus Rising", author: "Robert Anton Wilson", url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a6/PrometheusRisingCover.jpg/220px-PrometheusRisingCover.jpg', pagesTotal:262 , read:false, pagesRead:262 },
         {title: "If on a Winter's Night a Traveler", author: "Italo Calvino", url: 'https://pictures.abebooks.com/isbn/9780749399238-us.jpg', pagesTotal: 260, read:true, pagesRead:34},
+        {title:"Deep Work" , author: "Cal Newport", url:'https://m.media-amazon.com/images/I/41W+SUER72L._SY344_BO1,204,203,200_.jpg' , pagesTotal: 287 , read: false , pagesRead:287 },
+        {title: "Grokking Algorithms: An Illustrated Guide for Programmers and Other Curious People ", author: 'Aditya Bhargava' , url: 'https://m.media-amazon.com/images/I/51lIp433IVL._SX397_BO1,204,203,200_.jpg', pagesTotal:256 , read:true , pagesRead: 0},
         {title: "A Scanner Darkly", author: "Philip K. Dick", url: 'https://upload.wikimedia.org/wikipedia/en/2/27/AScannerDarkly%281stEd%29.jpg', pagesTotal: 220 , read:false , pagesRead: 220},
+        {title: "One Hundred Years of Solitude", author:"Gabriel García Márquez" , url: 'https://m.media-amazon.com/images/I/51Zr6Pd32ML._SY291_BO1,204,203,200_QL40_FMwebp_.jpg', pagesTotal:398 , read:false , pagesRead:398 },
         {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
-        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
+        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0},
+        {title: "The Stranger", author: "Albert Camus" , url:'http://bookcoverarchive.com/wp-content/uploads/amazon/the_stranger.jpg', pagesTotal: 159, read:false , pagesRead: 159 },
+        {title:"Ficciones" , author:"Jorge Luis Borges", url: 'https://m.media-amazon.com/images/I/412gKngAuJL._BO1,204,203,200_.jpg', pagesTotal:203, read: false, pagesRead: 203},
+        {title: "The Origin of Consciousness in the Breakdown of the Bicameral Mind", author:"Julian Jaynes" , url: 'https://m.media-amazon.com/images/I/31BUndhh03L._SX329_BO1,204,203,200_.jpg', pagesTotal:512 , read: false, pagesRead: 512},
+        {title:"The Book Thief" , author: "Markus Zusak", url:'https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/The_Book_Thief_by_Markus_Zusak_book_cover.jpg/220px-The_Book_Thief_by_Markus_Zusak_book_cover.jpg' , pagesTotal:"584" , read:true , pagesRead: "0"},
+        {title:"Slaughterhouse-Five" , author:"Kurt Vonnegut" , url: 'https://m.media-amazon.com/images/I/51OJlYgvrFL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg', pagesTotal: 190, read: true, pagesRead:10 },
+        {title: 'The Great Shark Hunt', author:"Hunter S. Thompson", url:'https://upload.wikimedia.org/wikipedia/en/thumb/e/ef/Great_shark_hunt.jpg/220px-Great_shark_hunt.jpg', pagesTotal: 624, read: false, pagesRead:624}
     ]
     
     injectBooks(demoArray);

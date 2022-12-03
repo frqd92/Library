@@ -31,21 +31,30 @@ window.addEventListener("click", (e)=>{ //to test
 let titleBtnHead = document.querySelector(".hf-title");
 let authorBtnHead = document.querySelector(".hf-author");
 titleBtnHead.addEventListener("click", ()=>{
-    sort("title")
+    let titText = document.querySelector(".sort-text-title");
+    sort("title", titText);
 });
 authorBtnHead.addEventListener("click", ()=>{
-    sort("author")
+    let titAuthor = document.querySelector(".sort-text-author");
+    sort("author",  titAuthor);
 });
+
 //sorting table
 let sortingStage= 0;
-function sort(sortBy){
+function sort(sortBy, text){
+    if(sortBy==="author"){
+        document.querySelector(".sort-text-title").textContent="";
+    }
+    else if(sortBy==="title"){
+        document.querySelector(".sort-text-author").textContent="";
+    }
     let myLibCopy = [...myLibrary];
     let tableBody = document.querySelectorAll(".table-body");
- 
+
     switch(sortingStage){
-        case 0: sortAz(); sortingStage=1; break;
-        case 1: sortZa(); sortingStage=2; break;
-        case 2: sortZa(insertSorted(myLibrary)); sortingStage=0; break;
+        case 0: sortAz(); sortingStage=1; text.textContent="(Az)"; break;
+        case 1: sortZa(); sortingStage=2;text.textContent="(zA)"; break;
+        case 2: sortZa(insertSorted(myLibrary)); sortingStage=0;text.textContent="";
     }
     function sortAz(){
         let libCopyAz = myLibCopy;

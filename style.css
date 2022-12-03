@@ -75,9 +75,23 @@ margin: -20px;
     border-bottom: var(--table-border);
 }
 
+
 .table-sort-arrow{
     width: 20px;
 
+}
+
+.header-field:nth-child(2), .header-field:nth-child(3){
+    cursor: pointer;
+    position: relative;
+}
+.sort-text-title,.sort-text-author{
+    font-size: 0.8rem;
+    position: absolute;
+    right: 85px;
+}
+.sort-text-author{
+    right: 70px;
 }
 .table-row{
     user-select: none;

@@ -38,26 +38,33 @@ authorBtnHead.addEventListener("click", ()=>{
     let titAuthor = document.querySelector(".sort-text-author");
     sort("author",  titAuthor);
 });
-
+let myLibCopy = [];
 //sorting table
 let sortingStage= 0;
 function sort(sortBy, text){
+    let tableBody = document.querySelectorAll(".table-body");
+
     if(sortBy==="author"){
         document.querySelector(".sort-text-title").textContent="";
     }
     else if(sortBy==="title"){
         document.querySelector(".sort-text-author").textContent="";
     }
-    let myLibCopy = [...myLibrary];
-    let tableBody = document.querySelectorAll(".table-body");
+
+
 
     switch(sortingStage){
         case 0: sortAz(); sortingStage=1; text.textContent="(Az)"; break;
         case 1: sortZa(); sortingStage=2;text.textContent="(zA)"; break;
-        case 2: sortZa(insertSorted(myLibrary)); sortingStage=0;text.textContent="";
+        case 2: ogOrder(); sortingStage=0;text.textContent="";
     }
     function sortAz(){
-        let libCopyAz = myLibCopy;
+        myLibCopy=[];
+        for(let index in myLibrary){
+            myLibCopy.push(myLibrary[index]);
+        }
+        console.log(myLibCopy)
+        let libCopyAz = myLibrary;
         libCopyAz.sort((a,b)=>{
             let iA = a[sortBy].toLowerCase().replace("the ", "");
             let iB = b[sortBy].toLowerCase().replace("the ", "");
@@ -67,7 +74,7 @@ function sort(sortBy, text){
         insertSorted(libCopyAz)
     }
     function sortZa(){
-        let libCopyZa = myLibCopy;
+        let libCopyZa = myLibrary;
         libCopyZa.sort((a,b)=>{
             let iA = a[sortBy].toLowerCase().replace("the ", "");
             let iB = b[sortBy].toLowerCase().replace("the ", "");
@@ -76,11 +83,18 @@ function sort(sortBy, text){
         })
         insertSorted(libCopyZa)
     }
-
-    function insertSorted(arr){
+    function ogOrder(){
+        myLibrary=myLibCopy;
+        insertSorted(myLibrary);
+      
+    }
+    function clearSorted(){
         for(let element of tableBody){
             element.remove();
         }
+    }
+    function insertSorted(arr){
+        clearSorted();
         for(let index = 0; index<myLibrary.length;index++){
             designTable(arr[index].url, arr[index].title, arr[index].author, arr[index].pagesTotal,arr[index].pagesRead, arr[index].read)
         }

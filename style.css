@@ -169,10 +169,14 @@ margin: -20px;
 .sort-text-title,.sort-text-author{
     font-size: 0.8rem;
     position: absolute;
-    right: 85px;
+
+}
+.sort-text-title{
+    right: 165px;
+
 }
 .sort-text-author{
-    right: 70px;
+    right: 150px;
 }
 .table-row{
     user-select: none;

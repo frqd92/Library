@@ -27,26 +27,28 @@ main{
     position: absolute;
     width: 160px;
     height: fit-content;
-    background: rgba(132, 134, 163, 0.895);
+    background: rgba(18, 24, 110, 0.895);
     padding: 10px;
     top: 71px;
-    left: -75px;
+    left: -42px;
     flex-direction: column;
-    border-radius: 0px 0px 0px 10px;
+    border-radius: 0px 0px 10px 10px;
     z-index: 999;
     display: none;
     user-select: none;
+    color: rgb(143, 139, 169);
+
 }
 
 .more-menu p{
     text-align: center;
     padding: 5px;
     user-select: none;
-    cursor: default;
+    
 }
 
 .more-demo{
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.454);
+    border-bottom: 0.5px solid rgba(176, 171, 171, 0.454);
    
 }
 .more-demo:hover, .more-about:hover{
@@ -62,7 +64,7 @@ main{
     transform: translate(-50%, -50%); 
     width: 800px;
     height: 130px;
-    background: rgba(70, 76, 122, 0.982);
+    background: rgba(9, 10, 18, 0.982);
     z-index: 802;
     color: white;
     flex-direction: column;
@@ -73,6 +75,8 @@ main{
     font-family: 'Sarabun', sans-serif;
     border-radius: 10px;
     display: none;
+    border: 1px solid rgb(135, 131, 163);
+    box-shadow: 5px 10px 100px rgb(85, 77, 77);
 }
 .more-about-box a{
     text-decoration: none;
@@ -81,6 +85,9 @@ main{
     border: 1px solid white;
     padding: 5px;
     border-radius: 5px;
+    display: flex;
+
+    gap: 10px;
 }
 
 .more-about-box a:hover{
@@ -89,7 +96,11 @@ main{
 }
 
 
-
+.more-about-box img{
+    margin-top: 2px;
+    width: 27px;
+    height: 27px;
+}
 
  
                                                                     /* table mode */
@@ -449,7 +460,7 @@ display: none;
                                                                     /* Nav Stuff */
 nav {
     display: grid;
-    grid-template-columns: 4fr 4fr 2fr 1fr;
+    grid-template-columns: 4fr 4fr 2fr 2.7fr;
     background-color: var(--nav-bg);
     color: var( --font-color-white);
     justify-content: center;
@@ -801,15 +812,14 @@ nav h2{
     border-right: 2px solid rgba(0, 0, 0, 0.251);
     padding: 3px;
     background: rgba(112, 110, 186, 0.262);
-   border-top:2px ;
-   border-bottom: 0;
+    border-top:2px ;
+    border-bottom: 0;
     color: rgba(214, 215, 223, 0.673);
     font-family: 'Rajdhani', sans-serif;
     font-size: 1rem;
     margin-left: 1rem;
     cursor: pointer;
-    max-width: 250px;
-    min-width: 120px;
+    width: 80%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 .select-nav-btn:hover{
@@ -885,13 +895,13 @@ nav h2{
 
 .select-menu-items{
     display: grid;
-    grid-template-columns: 5fr 2.5fr 2.5fr 2fr 2fr 1fr;
+    grid-template-columns: 6fr repeat(4, 3fr) 1fr;
     width: 100%;
     font-family: 'Mulish', sans-serif;
     color:rgb(213, 213, 226);
     align-items: center;
     user-select: none;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 .num-items-selected{
     justify-self: center;
@@ -903,7 +913,6 @@ nav h2{
     font-size: 1.4rem;
     margin-right: 5px;
     cursor: pointer;
-
 }
 .close-select-nav:hover{
     transform: scale(1.2);
@@ -933,14 +942,8 @@ sup{
     border-radius: 5px;
     color: white;
 }
-.export-text-select{
-
-    left: -15px;
-
-
-}
-.delete-text-select{
-    left: -20px;
+.export-text-select, .delete-text-select{
+    left: -5px;
 }
 
 
@@ -1427,7 +1430,7 @@ form{
 }
 
 @media screen and (max-width:820px){
-    nav{
-        
+    nav h1{
+        font-size: calc(3vw - 6px);
     }
 }

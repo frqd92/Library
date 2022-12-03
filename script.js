@@ -15,30 +15,10 @@ addBookBtn.addEventListener("click", checkForm);
 
 window.addEventListener("click", (e)=>{ //to test
     let target = e.target.textContent;
-    if(target==="Library Thing"){
-       
-    }
     if(target==="More"){
         console.log("og: " , myLibrary)
     }
 })
-
-//DON'T FORGET:
-// fix hover image thing on table mode
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -92,17 +72,6 @@ moreAbout.addEventListener("click",()=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 //sorting table mode
 let titleBtnHead = document.querySelector(".hf-title");
 let authorBtnHead = document.querySelector(".hf-author");
@@ -119,7 +88,6 @@ let myLibCopy = [];
 let sortingStage= 0;
 function sort(sortBy, text){
     let tableBody = document.querySelectorAll(".table-body");
-
     if(sortBy==="author"){
         document.querySelector(".sort-text-title").textContent="";
     }
@@ -129,7 +97,7 @@ function sort(sortBy, text){
 
     switch(sortingStage){
         case 0: sortAz(); sortingStage=1; text.textContent="(Az)"; break;
-        case 1: sortZa(); sortingStage=2;text.textContent="(zA)"; break;
+        case 1: sortZa(); sortingStage=2;text.textContent="(Za)"; break;
         case 2: ogOrder(); sortingStage=0;text.textContent="";
     }
     function sortAz(){
@@ -262,7 +230,7 @@ function tableMode(){
 
 
 function designTable(url, title, author, totPages, readPages, read, value){
-    
+
     let bookTable = document.querySelector(".book-table");
     let tableRow = document.createElement("div");
     tableRow.classList.add("table-row")
@@ -835,7 +803,6 @@ function navSelect(from){
     }
     else{ //table mode
         if(!isSelect && allBooks.length>0){
-            console.log("hello")
             let index=0;
             addBoxBtn.style.display="none";
             selectNavMenu.style.display="flex";
@@ -1431,6 +1398,17 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 
 //Make the add book box appear and disappear
 addBoxBtn.addEventListener("click", ()=>{
+    if(!gridMode){
+
+        sortingStage=2;
+        sort("title", document.querySelector(".sort-text-title"));
+        // if(sortingStage===0){
+        //     sortingStage=2;
+        //     sort("title", document.querySelector(".sort-text-title"));
+        // }
+
+
+    }
     clearInputs();
     bgDiv.style.display="block"
     addBox.style.display="block"
@@ -1799,7 +1777,6 @@ function searchBarFunc(){
         }
     }
     if(allBooks.length===0){
-        console.log("jkds")
         searchBar.value="";
         checkIfEmpty("wiggle");
         return;

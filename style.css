@@ -21,6 +21,76 @@ main{
     position: relative;
 }
 
+                                                                    /* More Menu */
+
+.more-menu{
+    position: absolute;
+    width: 160px;
+    height: fit-content;
+    background: rgba(132, 134, 163, 0.895);
+    padding: 10px;
+    top: 71px;
+    left: -75px;
+    flex-direction: column;
+    border-radius: 0px 0px 0px 10px;
+    z-index: 999;
+    display: none;
+    user-select: none;
+}
+
+.more-menu p{
+    text-align: center;
+    padding: 5px;
+    user-select: none;
+    cursor: default;
+}
+
+.more-demo{
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.454);
+   
+}
+.more-demo:hover, .more-about:hover{
+    background: rgba(0, 0, 0, 0.429);
+}
+
+
+
+.more-about-box{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 800px;
+    height: 130px;
+    background: rgba(70, 76, 122, 0.982);
+    z-index: 802;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    font-size: 1.5rem;
+    font-family: 'Sarabun', sans-serif;
+    border-radius: 10px;
+    display: none;
+}
+.more-about-box a{
+    text-decoration: none;
+    font-family: 'Nunito Sans', sans-serif;
+    color: #7f86b5;
+    border: 1px solid white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.more-about-box a:hover{
+    background: rgba(6, 1, 78, 0.635);
+    color: white;
+}
+
+
+
+
  
                                                                     /* table mode */
 .book-container-grid{
@@ -1272,7 +1342,7 @@ form{
     height: fit-content;
     padding: 10px;
     background: rgba(13, 19, 83, 0.958);
-  
+    border-radius: 0px 0px 0px 10px;
     position: absolute;
     top:71px;
     cursor:default;

@@ -16,18 +16,75 @@ addBookBtn.addEventListener("click", checkForm);
 window.addEventListener("click", (e)=>{ //to test
     let target = e.target.textContent;
     if(target==="Library Thing"){
-        addDemoBooks();
+       
     }
-    if(target==="Settings"){
+    if(target==="More"){
         console.log("og: " , myLibrary)
     }
 })
 
 //DON'T FORGET:
+let navMoreBtn = document.querySelector(".nav-more");
+let moreDemo = document.querySelector(".more-demo");
+let moreAbout = document.querySelector(".more-about");
+
+let moreState=false;
+moreDemo.addEventListener("click",addDemoBooks);
+
+navMoreBtn.addEventListener("click",()=>{
+    let moreMenu = document.querySelector(".more-menu");
+    if(moreState===false){
+        moreMenu.style.display="flex";
+        moreState= true;
+        navMoreBtn.style.background="rgba(80, 80, 97, 0.28)"
+    }
+    else{
+        moreMenu.style.display="none";
+        moreState= false;
+        navMoreBtn.style.background="";
+    }
+    window.addEventListener("mousedown", (e)=>{
+        let tar = e.target;
+        if(!tar.closest(".nav-more")){
+            moreMenu.style.display="none";
+            moreState= false;
+            navMoreBtn.style.background="";
+        }
+    })
+})
+
+moreAbout.addEventListener("click",()=>{
+    let moreAboutBox = document.querySelector(".more-about-box");
+    
+        moreAboutBox.style.display="flex";
+       
+    window.addEventListener("mousedown", (e)=>{
+        let tar= e.target;
+        if(!tar.closest("#git-link")){
+            moreAboutBox.style.display="none";
+        }
+    })
+
+ 
+})
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//sorting table mode
 let titleBtnHead = document.querySelector(".hf-title");
 let authorBtnHead = document.querySelector(".hf-author");
 titleBtnHead.addEventListener("click", ()=>{
@@ -51,8 +108,6 @@ function sort(sortBy, text){
         document.querySelector(".sort-text-author").textContent="";
     }
 
-
-
     switch(sortingStage){
         case 0: sortAz(); sortingStage=1; text.textContent="(Az)"; break;
         case 1: sortZa(); sortingStage=2;text.textContent="(zA)"; break;
@@ -63,7 +118,6 @@ function sort(sortBy, text){
         for(let index in myLibrary){
             myLibCopy.push(myLibrary[index]);
         }
-        console.log(myLibCopy)
         let libCopyAz = myLibrary;
         libCopyAz.sort((a,b)=>{
             let iA = a[sortBy].toLowerCase().replace("the ", "");
@@ -141,7 +195,7 @@ function toggleEffectMode(){
 
 
 //Table Mode
-let navSettingsBtn = document.querySelector(".nav-settings");
+
 let bookTable = document.querySelector(".book-table");
 
 
@@ -1028,7 +1082,7 @@ function checkIfEmpty(from){
             let emptyText = document.createElement("div");
             emptyText.classList.add("empty-text");
             main.appendChild(emptyText);
-            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>Settings</span> > <span>Add Demo Books</span> to add content...`;
+            emptyText.innerHTML=`Click on <span>Add Book+</span> button or <span>More</span> > <span>Add Demo Books</span> to add content...`;
            
         }
 
@@ -1667,8 +1721,7 @@ function addDemoBooks(){
         {title: "If on a Winter's Night a Traveler", author: "Italo Calvino", url: 'https://pictures.abebooks.com/isbn/9780749399238-us.jpg', pagesTotal: 260, read:true, pagesRead:34},
         {title: "A Scanner Darkly", author: "Philip K. Dick", url: 'https://upload.wikimedia.org/wikipedia/en/2/27/AScannerDarkly%281stEd%29.jpg', pagesTotal: 220 , read:false , pagesRead: 220},
         {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
-        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0},
-        {title: "Maen", author:"Qaddoura", url:'https://ambassadors.cert.gov.om/images/ambassadors/Mae6089272016.jpg', pagesTotal: 10, read: false, pagesRead: 10}
+        {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0}
     ]
     
     injectBooks(demoArray);

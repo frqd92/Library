@@ -1723,7 +1723,7 @@ function addDemoBooks(){
         {title: "One Hundred Years of Solitude", author:"Gabriel García Márquez" , url: 'https://m.media-amazon.com/images/I/51Zr6Pd32ML._SY291_BO1,204,203,200_QL40_FMwebp_.jpg', pagesTotal:398 , read:false , pagesRead:398 },
         {title: "Eloquent Javascript", author: "Marijn Haverbeke", url: 'https://m.media-amazon.com/images/I/51InjRPaF7L._SX377_BO1,204,203,200_.jpg', pagesTotal: 472 , read: true, pagesRead: 98},
         {title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", url: 'https://kbimages1-a.akamaihd.net/63002aee-af94-4a52-b41c-3bbb6bc2c6f6/1200/1200/False/pragmatic-programmer-the-1.jpg', pagesTotal: 320 , read:true, pagesRead: 0},
-        {title: "The Stranger", author: "Albert Camus" , url:'http://bookcoverarchive.com/wp-content/uploads/amazon/the_stranger.jpg', pagesTotal: 159, read:false , pagesRead: 159 },
+        {title: "The Stranger", author: "Albert Camus" , url:'https://pbs.twimg.com/media/DJcTgtAWsAAAWZV?format=jpg&name=4096x4096', pagesTotal: 159, read:false , pagesRead: 159 },
         {title:"Ficciones" , author:"Jorge Luis Borges", url: 'https://m.media-amazon.com/images/I/412gKngAuJL._BO1,204,203,200_.jpg', pagesTotal:203, read: false, pagesRead: 203},
         {title: "The Origin of Consciousness in the Breakdown of the Bicameral Mind", author:"Julian Jaynes" , url: 'https://m.media-amazon.com/images/I/31BUndhh03L._SX329_BO1,204,203,200_.jpg', pagesTotal:512 , read: false, pagesRead: 512},
         {title:"The Book Thief" , author: "Markus Zusak", url:'https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/The_Book_Thief_by_Markus_Zusak_book_cover.jpg/220px-The_Book_Thief_by_Markus_Zusak_book_cover.jpg' , pagesTotal:"584" , read:true , pagesRead: "0"},

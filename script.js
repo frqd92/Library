@@ -18,13 +18,66 @@ window.addEventListener("click", (e)=>{ //to test
     if(target==="Library Thing"){
         addDemoBooks();
     }
-    if(target==="Title"){
-        console.log(myLibrary)
+    if(target==="Settings"){
+        console.log("og: " , myLibrary)
     }
 })
 
 //DON'T FORGET:
 
+
+
+
+let titleBtnHead = document.querySelector(".hf-title");
+let authorBtnHead = document.querySelector(".hf-author");
+titleBtnHead.addEventListener("click", ()=>{
+    sort("title")
+});
+authorBtnHead.addEventListener("click", ()=>{
+    sort("author")
+});
+//sorting table
+let sortingStage= 0;
+function sort(sortBy){
+    let myLibCopy = [...myLibrary];
+    let tableBody = document.querySelectorAll(".table-body");
+ 
+    switch(sortingStage){
+        case 0: sortAz(); sortingStage=1; break;
+        case 1: sortZa(); sortingStage=2; break;
+        case 2: sortZa(insertSorted(myLibrary)); sortingStage=0; break;
+    }
+    function sortAz(){
+        let libCopyAz = myLibCopy;
+        libCopyAz.sort((a,b)=>{
+            let iA = a[sortBy].toLowerCase().replace("the ", "");
+            let iB = b[sortBy].toLowerCase().replace("the ", "");
+            if(iA < iB){return -1}
+            else{return 1;}
+        })
+        insertSorted(libCopyAz)
+    }
+    function sortZa(){
+        let libCopyZa = myLibCopy;
+        libCopyZa.sort((a,b)=>{
+            let iA = a[sortBy].toLowerCase().replace("the ", "");
+            let iB = b[sortBy].toLowerCase().replace("the ", "");
+            if(iA > iB){return -1}
+            else{return 1;}
+        })
+        insertSorted(libCopyZa)
+    }
+
+    function insertSorted(arr){
+        for(let element of tableBody){
+            element.remove();
+        }
+        for(let index = 0; index<myLibrary.length;index++){
+            designTable(arr[index].url, arr[index].title, arr[index].author, arr[index].pagesTotal,arr[index].pagesRead, arr[index].read)
+        }
+    }
+
+}
 
 
 
@@ -231,13 +284,12 @@ function designTable(url, title, author, totPages, readPages, read, value){
 }
 
 function changeOrder(){
-    ;
-        let topElement = document.querySelectorAll(".table-row")[1];
-        let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
-        let parent = topElement.parentNode;
-        parent.insertBefore(bottomElement, topElement);
+    let topElement = document.querySelectorAll(".table-row")[1];
+    let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
+    let parent = topElement.parentNode;
+    parent.insertBefore(bottomElement, topElement);
     
-    }
+}
 
     
 
@@ -533,10 +585,6 @@ function deselectAllTable(){
     }
     numItemsSelected===1?numItemsSelectedText.textContent = `${numItemsSelected} item selected`:numItemsSelectedText.textContent = `${numItemsSelected} items selected`;
 }
-
-
-
-
 
 
 

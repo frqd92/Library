@@ -24,6 +24,25 @@ window.addEventListener("click", (e)=>{ //to test
 })
 
 //DON'T FORGET:
+// fix hover image thing on table mode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//More btn
 let navMoreBtn = document.querySelector(".nav-more");
 let moreDemo = document.querySelector(".more-demo");
 let moreAbout = document.querySelector(".more-about");
@@ -352,7 +371,8 @@ function designTable(url, title, author, totPages, readPages, read, value){
         // parent.insertBefore(bottomElement, topElement);
     }
     else{
-        bookTable.appendChild(tableRow)
+        bookTable.append(tableRow);
+
     }
     if(document.querySelectorAll(".table-body").length>0){
         bookTable.style.display="block";
@@ -507,7 +527,7 @@ window.addEventListener('scroll',()=>{
     if(scroll>=50 && scroll<100){
         let numBg = Math.abs((53-scroll) / 53).toFixed(3) ;
         let numBr = numBg / 2.32;
-        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, ${numBg}), rgba(42, 45, 140, ${numBg}), rgba(12, 21, 65, ${numBg})`
+        tableHeader.style.background = `rgba(12, 21, 65, ${numBg}`
         for(element of headerCell){
             element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, ${numBr})`
         }
@@ -519,7 +539,7 @@ window.addEventListener('scroll',()=>{
         }
     }
     else if(scroll > 100){
-        tableHeader.style.background = ` linear-gradient(to right, rgba(40, 40, 114, 0.92), rgba(42, 45, 140,0.85), rgba(12, 21, 65, 0.92)`
+        tableHeader.style.background =`rgba(12, 21, 65, 0.95)`
         for(element of headerCell){
             element.style.borderLeft = ` 0.5px solid rgba(248, 248, 248, 0.37)`
         }
@@ -1738,7 +1758,7 @@ function addDemoBooks(){
             for(let index=arr.length-1;index>=0;index--){
                 let bookObj = new Book(arr[index].title, arr[index].author, arr[index].url, arr[index].pagesTotal, arr[index].read, arr[index].pagesRead);
                 myLibrary.unshift(bookObj); 
-                designTable(arr[index].url, arr[index].title, arr[index].author, arr[index].pagesTotal, arr[index].pagesRead, arr[index].read);
+                designTable(arr[index].url, arr[index].title, arr[index].author, arr[index].pagesTotal, arr[index].pagesRead, arr[index].read, true);
             }
             getIndex("image")
     }
@@ -1746,7 +1766,7 @@ function addDemoBooks(){
     }
     checkIfEmpty();
 }
-
+//let index=arr.length-1;index>=0;index--
 //search bar functionality 
 let searchBar = document.getElementById("search-bar");
 searchBar.addEventListener("input", searchBarFunc);

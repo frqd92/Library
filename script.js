@@ -17,6 +17,7 @@ window.addEventListener("click", (e)=>{ //to test
     let target = e.target.textContent;
     if(target==="More"){
         console.log("og: " , myLibrary)
+        console.log(sortingStage)
     }
 })
 
@@ -332,11 +333,7 @@ function designTable(url, title, author, totPages, readPages, read, value){
     if(value){
         bookTable.appendChild(tableRow)
         changeOrder();
-        // bookTable.appendChild(tableRow);
-        // let topElement = document.querySelectorAll(".table-row")[1];
-        // let bottomElement = document.querySelectorAll(".table-row")[bookTable.children.length-1];
-        // let parent = topElement.parentNode;
-        // parent.insertBefore(bottomElement, topElement);
+;
     }
     else{
         bookTable.append(tableRow);
@@ -1399,13 +1396,10 @@ function createBook(create,tot,aut,url,pagesTot,rd, pagesRe){
 //Make the add book box appear and disappear
 addBoxBtn.addEventListener("click", ()=>{
     if(!gridMode){
-
-        sortingStage=2;
-        sort("title", document.querySelector(".sort-text-title"));
-        // if(sortingStage===0){
-        //     sortingStage=2;
-        //     sort("title", document.querySelector(".sort-text-title"));
-        // }
+        if(sortingStage!==0){
+            sortingStage=2;
+            sort("title", document.querySelector(".sort-text-title"));
+        }
 
 
     }
@@ -1753,7 +1747,7 @@ function addDemoBooks(){
     }
     checkIfEmpty();
 }
-//let index=arr.length-1;index>=0;index--
+
 //search bar functionality 
 let searchBar = document.getElementById("search-bar");
 searchBar.addEventListener("input", searchBarFunc);
